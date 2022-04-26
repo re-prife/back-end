@@ -1,8 +1,11 @@
-package kr.hs.mirim.family.entity;
+package kr.hs.mirim.family.entity.Group;
 
+import kr.hs.mirim.family.entity.User.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "group_tb")
@@ -21,13 +24,12 @@ public class Group {
     @Column(length = 20, nullable = false, name="group_name")
     private String groupName;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<User> userList = new ArrayList<>();
+
     @Builder
     public Group(String groupInviteCode, String groupName){
         this.groupInviteCode = groupInviteCode;
         this.groupName = groupName;
-    }
-
-    public static Group createGroup(String groupName, String groupInviteCode){
-        return new Group(groupInviteCode, groupName);
     }
 }

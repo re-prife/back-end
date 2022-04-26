@@ -1,5 +1,6 @@
-package kr.hs.mirim.family.entity;
+package kr.hs.mirim.family.entity.User;
 
+import kr.hs.mirim.family.entity.Group.Group;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,9 +39,5 @@ public class User {
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userImageName = userImageName;
-    }
-
-    public static User createUser(String userName, String userPassword, String userEmail, String userImageName){
-        return new User(userName, userPassword, userEmail, userImageName);
     }
 }
