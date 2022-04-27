@@ -20,7 +20,7 @@ public class User {
     @Column(length = 20, nullable = false, name = "user_name")
     private String userName;
 
-    @Column(length = 50, nullable = false, name = "user_password")
+    @Column(length = 60, nullable = false, name = "user_password")
     private String userPassword;
 
     @Column(length = 50, nullable = false, name = "user_email")
@@ -32,6 +32,11 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @PrePersist
+    public void prePersist(){
+        this.userImageName = this.userImageName==null?"0":this.userImageName;
+    }
 
     @Builder
     public User(String userName, String userPassword, String userEmail, String userImageName) {
