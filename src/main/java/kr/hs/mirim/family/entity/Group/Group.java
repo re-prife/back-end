@@ -3,6 +3,7 @@ package kr.hs.mirim.family.entity.Group;
 import kr.hs.mirim.family.entity.User.User;
 import kr.hs.mirim.family.entity.chores.Chore;
 import kr.hs.mirim.family.entity.ingredient.Ingredient;
+import kr.hs.mirim.family.entity.quest.Quest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,6 +35,9 @@ public class Group {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<Chore> choresList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<Quest> questList = new ArrayList<>();
 
     @Builder
     public Group(String groupInviteCode, String groupName){

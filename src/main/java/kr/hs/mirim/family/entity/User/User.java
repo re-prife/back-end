@@ -2,6 +2,7 @@ package kr.hs.mirim.family.entity.User;
 
 import kr.hs.mirim.family.entity.Group.Group;
 import kr.hs.mirim.family.entity.chores.Chore;
+import kr.hs.mirim.family.entity.quest.Quest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,6 +39,9 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Chore> choresList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Quest> questList = new ArrayList<>();
 
     @Builder
     public User(String userName, String userPassword, String userEmail, String userImageName) {
