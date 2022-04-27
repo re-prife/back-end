@@ -33,7 +33,7 @@ public class Chore extends BaseEntity {
     private Category choreCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_user_id")
+    @JoinColumn(name = "chore_user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
