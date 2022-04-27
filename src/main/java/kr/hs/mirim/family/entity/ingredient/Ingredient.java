@@ -41,7 +41,7 @@ public class Ingredient extends BaseEntity {
     @Column(length = 100, nullable = false, name = "ingredient_memo")
     private String ingredientMemo;
 
-    @Column(length = 10, name = "ingredient_image_name")
+    @Column(length = 10, name = "ingredient_image_name", nullable = false)
     private String ingredientImageName;
 
     @OneToOne
