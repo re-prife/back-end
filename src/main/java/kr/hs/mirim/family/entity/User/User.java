@@ -1,9 +1,12 @@
 package kr.hs.mirim.family.entity.User;
 
 import kr.hs.mirim.family.entity.Group.Group;
+import kr.hs.mirim.family.entity.chores.Chore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_tb")
@@ -32,6 +35,9 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Chore> choresList = new ArrayList<>();
 
     @Builder
     public User(String userName, String userPassword, String userEmail, String userImageName) {
