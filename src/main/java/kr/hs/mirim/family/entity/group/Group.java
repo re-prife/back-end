@@ -1,6 +1,6 @@
-package kr.hs.mirim.family.entity.Group;
+package kr.hs.mirim.family.entity.group;
 
-import kr.hs.mirim.family.entity.User.User;
+import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.chores.Chore;
 import kr.hs.mirim.family.entity.ingredient.Ingredient;
 import kr.hs.mirim.family.entity.quest.Quest;

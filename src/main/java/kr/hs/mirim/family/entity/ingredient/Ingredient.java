@@ -1,12 +1,10 @@
 package kr.hs.mirim.family.entity.ingredient;
 
 import kr.hs.mirim.family.entity.BaseEntity;
-import kr.hs.mirim.family.entity.Group.Group;
+import kr.hs.mirim.family.entity.group.Group;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
