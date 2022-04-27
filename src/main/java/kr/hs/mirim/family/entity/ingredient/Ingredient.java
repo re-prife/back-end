@@ -1,12 +1,12 @@
 package kr.hs.mirim.family.entity.ingredient;
 
+import kr.hs.mirim.family.entity.BaseEntity;
 import kr.hs.mirim.family.entity.Group.Group;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,9 +14,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "ingredient_tb")
-public class Ingredient {
+public class Ingredient extends BaseEntity {
     @Id
     @Column(name = "ingredient_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ingredientId;
 
     @Column(length = 30, nullable = false, name = "ingredient_name")
@@ -26,10 +27,10 @@ public class Ingredient {
     private int ingredientCount;
 
     @Column(columnDefinition = "CHAR(10)", nullable = false, name = "ingredient_save_type")
-    private String ingredientSaveType;
+    private SaveType ingredientSaveType;
 
     @Column(length = 20, nullable = false, name = "ingredient_category")
-    private String ingredientCategory;
+    private Category ingredientCategory;
 
     @Column(nullable = false, name = "ingredient_purchase_date")
     private Date ingredientPurchaseDate;
@@ -46,4 +47,17 @@ public class Ingredient {
     @OneToOne
     @JoinColumn(name = "group_id", unique = true)
     private Group group;
+
+    @Builder
+    public Ingredient(String ingredientName, int ingredientCount, SaveType ingredientSaveType, Category ingredientCategory,
+                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo, String ingredientImageName) {
+        this.ingredientName = ingredientName;
+        this.ingredientCount = ingredientCount;
+        this.ingredientSaveType = ingredientSaveType;
+        this.ingredientCategory = ingredientCategory;
+        this.ingredientPurchaseDate = ingredientPurchaseDate;
+        this.ingredientExpirationDate = ingredientExpirationDate;
+        this.ingredientMemo = ingredientMemo;
+        this.ingredientImageName = ingredientImageName;
+    }
 }
