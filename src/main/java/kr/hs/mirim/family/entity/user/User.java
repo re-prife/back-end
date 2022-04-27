@@ -1,6 +1,6 @@
-package kr.hs.mirim.family.entity.User;
+package kr.hs.mirim.family.entity.user;
 
-import kr.hs.mirim.family.entity.Group.Group;
+import kr.hs.mirim.family.entity.group.Group;
 import lombok.*;
 
 import javax.persistence.*;
