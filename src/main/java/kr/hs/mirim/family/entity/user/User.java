@@ -39,10 +39,9 @@ public class User {
     }
 
     @Builder
-    public User(String userName, String userPassword, String userEmail, String userImageName) {
+    public User(String userName, String userPassword, String userEmail) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-        this.userImageName = userImageName;
     }
 }

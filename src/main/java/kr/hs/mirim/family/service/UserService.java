@@ -5,24 +5,17 @@ import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.AlreadyExistsException;
 import kr.hs.mirim.family.exception.FormValidateException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import javax.validation.Valid;
-
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Transactional
     public void signUp(UserSignUpDto userSignUpDto, BindingResult bindingResult){
@@ -35,11 +28,7 @@ public class UserService {
         }
 
         String encodePassword = passwordEncoder.encode(userSignUpDto.getUserPassword());
-        User user = User.builder()
-                .userName(userSignUpDto.getUserName())
-                .userEmail(userSignUpDto.getUserEmail())
-                .userPassword(encodePassword)
-                .build();
+        User user = new User(userSignUpDto.getUserName(), userSignUpDto.getUserEmail(), encodePassword);
 
         userRepository.save(user);
     }
