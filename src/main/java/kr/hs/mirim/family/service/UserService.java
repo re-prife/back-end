@@ -1,8 +1,8 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.UserSignUpDto;
-import kr.hs.mirim.family.entity.User.User;
-import kr.hs.mirim.family.entity.User.repository.UserRepository;
+import kr.hs.mirim.family.entity.user.User;
+import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
