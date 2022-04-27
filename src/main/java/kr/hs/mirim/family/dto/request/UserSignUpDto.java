@@ -1,18 +1,21 @@
 package kr.hs.mirim.family.dto.request;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @AllArgsConstructor
 public class UserSignUpDto {
-    @NotNull
+    @NotEmpty
     private String userName;
 
-    @NotNull
+    @NotEmpty
+    @Email
     private String userEmail;
 
-    @NotNull
+    @NotEmpty
     private String userPassword;
 }
