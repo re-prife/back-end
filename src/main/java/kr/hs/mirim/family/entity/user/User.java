@@ -9,6 +9,11 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.*;
+
+import javax.persistence.*;
+
+
 @Entity
 @Table(name = "user_tb")
 @Getter
@@ -24,10 +29,18 @@ public class User {
     @Column(length = 20, nullable = false, name = "user_name")
     private String userName;
 
+
     @Column(length = 50, nullable = false, name = "user_password")
     private String userPassword;
 
     @Column(length = 50, nullable = false, name = "user_email")
+
+
+    @Column(length = 60, nullable = false, name = "user_password")
+    private String userPassword;
+
+    @Column(length = 50, nullable = false, name = "user_email", unique = true)
+
     private String userEmail;
 
     @Column(length = 10, nullable = false, name = "user_image_name")
@@ -36,6 +49,7 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
+
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Chore> choresList = new ArrayList<>();
@@ -48,6 +62,10 @@ public class User {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-        this.userImageName = userImageName;
+    }
+
+    @PrePersist
+    public void prePersist(){
+        this.userImageName = this.userImageName == null ? "0" : this.userImageName;
     }
 }
