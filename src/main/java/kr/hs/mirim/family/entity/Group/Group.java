@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.entity.Group;
 
 import kr.hs.mirim.family.entity.User.User;
+import kr.hs.mirim.family.entity.ingredient.Ingredient;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,10 @@ public class Group {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<User> userList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "group")
+    private Ingredient ingredient;
+
 
     @Builder
     public Group(String groupInviteCode, String groupName){
