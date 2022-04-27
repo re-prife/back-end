@@ -1,12 +1,14 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.request.CreateGroupRequestDto;
+import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.exception.DataNotFoundException;
+import kr.hs.mirim.family.exception.FormValidateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import javax.transaction.Transactional;
 import java.util.Random;
@@ -18,7 +20,10 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
-    public void createGroup(CreateGroupRequestDto requestDto) {
+    public void createGroup(CreateGroupRequest requestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new FormValidateException("유효하지 않은 형식입니다.");
+        }
         existsUser(requestDto.getUserId());
         String code = createInviteCode();
         Group group = new Group(code, requestDto.getGroupName());
@@ -28,7 +33,7 @@ public class GroupService {
 
     private void existsUser(long userId) {
         if (!userRepository.existsByUserId(userId)) {
-            throw new DataNotFoundException("User Not Found");
+            throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
     }
 
