@@ -24,6 +24,7 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
                                 UserListResponse.class,
                                 user.userId,
                                 user.userName,
+                                user.userNickname,
                                 user.userImageName
                         )
                 )
