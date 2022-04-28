@@ -6,7 +6,7 @@ import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.exception.DataNotFoundException;
-import kr.hs.mirim.family.exception.FormValidateException;
+import kr.hs.mirim.family.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -60,7 +60,7 @@ public class GroupService {
 
     private void formValidate(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new FormValidateException("유효하지 않은 형식입니다.");
+            throw new BadRequestException("유효하지 않은 형식입니다.");
         }
     }
 
