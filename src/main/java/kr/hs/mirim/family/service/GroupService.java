@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
+import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Random;
 
 @Transactional(readOnly = true)
@@ -20,10 +22,16 @@ public class GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
+    /*
+    * 그룹 생성
+    * 성공 시 그룹 초대 코드 생성 후 201
+    * dto form이 일치하지 않으면 400 Bad request
+    * 계정이 존재하지 않으면 404 Not found
+    *
+    * @author: m04j00
+    * */
     public void createGroup(CreateGroupRequest requestDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new FormValidateException("유효하지 않은 형식입니다.");
-        }
+        formValidate(bindingResult);
         existsUser(requestDto.getUserId());
         String code = createInviteCode();
         Group group = new Group(code, requestDto.getGroupName());
@@ -31,11 +39,37 @@ public class GroupService {
         userRepository.updateGroupId(group.getGroupId(), requestDto.getUserId());
     }
 
+    /*
+    * 기존에 생성되어 있는 그룹 가입
+    * dto form이 일치하지 않으면 400 Bad request
+    * 계정이 존재하지 않으면 404 Not found
+    *
+    * @author: m04j00
+    * */
+    public void joinGroup(JoinGroupRequest request, BindingResult bindingResult) {
+        formValidate(bindingResult);
+        existsUser(request.getUserId());
+        Group group = groupRepository.findByGroupInviteCode(request.getGroupInviteCode()).orElseThrow(() ->
+        {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
+        System.out.println(group);
+        userRepository.updateGroupId(group.getGroupId(), request.getUserId());
+        System.out.println(group);
+    }
+
+    private void formValidate(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new FormValidateException("유효하지 않은 형식입니다.");
+        }
+    }
+
     private void existsUser(long userId) {
         if (!userRepository.existsByUserId(userId)) {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
     }
+
 
     private String createInviteCode() {
         int leftLimit = 48;
