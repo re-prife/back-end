@@ -1,17 +1,13 @@
 package kr.hs.mirim.family.entity.user;
 
 import kr.hs.mirim.family.entity.group.Group;
-import kr.hs.mirim.family.entity.chores.Chore;
+import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.quest.Quest;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.*;
-
-import javax.persistence.*;
 
 
 @Entity
@@ -29,18 +25,10 @@ public class User {
     @Column(length = 20, nullable = false, name = "user_name")
     private String userName;
 
-
-    @Column(length = 50, nullable = false, name = "user_password")
-    private String userPassword;
-
-    @Column(length = 50, nullable = false, name = "user_email")
-
-
     @Column(length = 60, nullable = false, name = "user_password")
     private String userPassword;
 
     @Column(length = 50, nullable = false, name = "user_email", unique = true)
-
     private String userEmail;
 
     @Column(length = 10, nullable = false, name = "user_image_name")
@@ -50,22 +38,16 @@ public class User {
     @JoinColumn(name = "group_id")
     private Group group;
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Chore> choresList = new ArrayList<>();
+    private List<Chore> choreList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Quest> questList = new ArrayList<>();
 
     @Builder
-    public User(String userName, String userPassword, String userEmail, String userImageName) {
+    public User(String userName, String userPassword, String userEmail) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-    }
-
-    @PrePersist
-    public void prePersist(){
-        this.userImageName = this.userImageName == null ? "0" : this.userImageName;
     }
 }
