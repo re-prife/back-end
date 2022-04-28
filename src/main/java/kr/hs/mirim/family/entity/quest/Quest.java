@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Quest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quest_id")
@@ -25,7 +26,6 @@ public class Quest {
 
     @Column(name = "accept_user_id", nullable = false)
     private int acceptUserId;
-
 
     @Column(name = "complete_check", nullable = false)
     private boolean completeCheck;
