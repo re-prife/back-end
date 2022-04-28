@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public LoginUserResponse joinUser(@RequestBody @Valid LoginUserRequest loginUserRequest, BindingResult bindingResult){
-        return userService.joinUser(loginUserRequest, bindingResult);
+    public LoginUserResponse loginUser(@RequestBody @Valid LoginUserRequest loginUserRequest, BindingResult bindingResult){
+        return userService.loginUser(loginUserRequest, bindingResult);
     }
 }

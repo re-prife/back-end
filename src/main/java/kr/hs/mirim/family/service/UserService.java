@@ -38,7 +38,7 @@ public class UserService {
     }
 
     @Transactional
-    public LoginUserResponse joinUser(LoginUserRequest loginUserRequest, BindingResult bindingResult){
+    public LoginUserResponse loginUser(LoginUserRequest loginUserRequest, BindingResult bindingResult){
         //형식이 맞지 않을때(null, 공백, 이메일 형식)
         formValidateException(bindingResult);
 
