@@ -2,7 +2,7 @@ package kr.hs.mirim.family.entity.group;
 
 import kr.hs.mirim.family.entity.user.User;
 
-import kr.hs.mirim.family.entity.chores.Chore;
+import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.ingredient.Ingredient;
 import kr.hs.mirim.family.entity.quest.Quest;
 
@@ -32,8 +32,8 @@ public class Group {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<User> userList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "group")
-    private Ingredient ingredient;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<Ingredient> ingredientList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<Chore> choresList = new ArrayList<>();
