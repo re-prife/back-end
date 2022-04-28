@@ -1,4 +1,4 @@
-package kr.hs.mirim.family.entity.chores;
+package kr.hs.mirim.family.entity.chore;
 
 import kr.hs.mirim.family.entity.BaseEntity;
 import kr.hs.mirim.family.entity.group.Group;
@@ -23,14 +23,14 @@ public class Chore extends BaseEntity {
     @Column(name = "chore_title", length = 20, nullable = false)
     private String choreTitle;
 
-    @Column(name = "chore_check", nullable = false)
-    private boolean choreCheck;
+    @Column(name = "chore_check", nullable = false, columnDefinition = "CHAR(7)")
+    private ChoreCheck choreCheck;
 
     @Column(name = "chore_date", nullable = false)
     private Date choreDate;
 
     @Column(name = "chore_category", nullable = false)
-    private Category choreCategory;
+    private ChoreCategory choreCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chore_user_id")
@@ -41,7 +41,7 @@ public class Chore extends BaseEntity {
     private Group group;
 
     @Builder
-    public Chore(String choreTitle, boolean choreCheck, Category choreCategory){
+    public Chore(String choreTitle, ChoreCheck choreCheck, ChoreCategory choreCategory){
         this.choreTitle = choreTitle;
         this.choreCheck = choreCheck;
         this.choreCategory = choreCategory;
