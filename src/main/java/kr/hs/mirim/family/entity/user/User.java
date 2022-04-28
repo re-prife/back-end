@@ -37,10 +37,11 @@ public class User {
     private Group group;
 
     @Builder
-    public User(String userName, String userNickname, String userPassword, String userEmail) {
+    public User(String userName, String userNickname, String userPassword, String userEmail, String userImageName) {
         this.userName = userName;
         this.userNickname = userNickname;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
+        this.userImageName = userImageName;
     }
 }

@@ -1,9 +1,11 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateUserRequest;
+import kr.hs.mirim.family.dto.request.JoinUserRequest;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.AlreadyExistsException;
+import kr.hs.mirim.family.exception.DataNotFoundException;
 import kr.hs.mirim.family.exception.FormValidateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +30,7 @@ public class UserService {
         }
 
         String encodePassword = passwordEncoder.encode(createUserRequest.getUserPassword());
-        User user = new User(createUserRequest.getUserName(), createUserRequest.getUserNickname(), encodePassword, createUserRequest.getUserEmail());
+        User user = new User(createUserRequest.getUserName(), createUserRequest.getUserNickname(), encodePassword, createUserRequest.getUserEmail(), "");
 
         userRepository.save(user);
     }
