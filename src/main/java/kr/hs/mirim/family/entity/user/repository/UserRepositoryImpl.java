@@ -17,4 +17,18 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
         super(User.class);
         this.queryFactory = jpaQueryFactory;
     }
+
+    @Override
+    public List<UserListResponse> userList(Long groupId, Long userId) {
+        return queryFactory.select(Projections.constructor(
+                                UserListResponse.class,
+                                user.userId,
+                                user.userName,
+                                user.userImageName
+                        )
+                )
+                .from(user)
+                .where(user.group.groupId.eq(groupId), user.userId.ne(userId))
+                .fetch();
+    }
 }

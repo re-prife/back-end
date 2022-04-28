@@ -14,5 +14,7 @@ public class UserListResponse {
     @NonNull
     private String userName;
     @NonNull
+    private String userNickname;
+    @NonNull
     private String userImageName;
 }

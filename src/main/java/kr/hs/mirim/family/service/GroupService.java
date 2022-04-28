@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
+import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Random;
 
 @Transactional(readOnly = true)
@@ -31,8 +34,25 @@ public class GroupService {
         userRepository.updateGroupId(group.getGroupId(), requestDto.getUserId());
     }
 
+    /*
+    * 그룹에 속한 회원을 조회하는 기능
+    * 해당 API를 요청한 회원의 정보는 반환하지 않는다.
+    *
+    * API를 요청한 회원을 제외한 그룹에 속한 회원의 id, name, nickname, imageName을 list로 전달한다.
+    * 그룹이 없을 경우 404 not found
+    * 계정이 없을 경우 404 not found
+    * */
+    @Transactional
+    public List<UserListResponse> userList(long groupId, long userId) {
+        if (!groupRepository.existsById(groupId)) {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        }
+        existsUser(userId);
+        return userRepository.userList(groupId, userId);
+    }
+
     private void existsUser(long userId) {
-        if (!userRepository.existsByUserId(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
     }
