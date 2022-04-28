@@ -23,11 +23,14 @@ public class LoginUserResponse {
     @NonNull
     private String userImageName;
 
+    private Long groupId;
+
     public LoginUserResponse(User user){
         this.userId = user.getUserId();
         this.userName = user.getUserName();
         this.userNickname = user.getUserNickname();
         this.userEmail = user.getUserEmail();
         this.userImageName = user.getUserImageName();
+        this.groupId = user.getGroup().getGroupId();
     }
 }
