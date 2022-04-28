@@ -1,6 +1,6 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.request.UserSignUpDto;
+import kr.hs.mirim.family.dto.request.CreateUserRequest;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.AlreadyExistsException;
@@ -18,17 +18,17 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void signUp(UserSignUpDto userSignUpDto, BindingResult bindingResult){
+    public void createUser (CreateUserRequest createUserRequest, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new FormValidateException("유효하지 않은 형식입니다.");
         }
 
-        if(userRepository.existsByUserEmail(userSignUpDto.getUserEmail())){
+        if(userRepository.existsByUserEmail(createUserRequest.getUserEmail())){
             throw new AlreadyExistsException("이미 가입된 회원입니다.");
         }
 
-        String encodePassword = passwordEncoder.encode(userSignUpDto.getUserPassword());
-        User user = new User(userSignUpDto.getUserName(), userSignUpDto.getUserEmail(), encodePassword);
+        String encodePassword = passwordEncoder.encode(createUserRequest.getUserPassword());
+        User user = new User(createUserRequest.getUserName(), createUserRequest.getUserNickname(), encodePassword, createUserRequest.getUserEmail());
 
         userRepository.save(user);
     }

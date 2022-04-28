@@ -8,9 +8,12 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @AllArgsConstructor
-public class UserSignUpDto {
+public class CreateUserRequest {
     @NotEmpty
     private String userName;
+
+    @NotEmpty
+    private String userNickname;
 
     @NotEmpty
     @Email
