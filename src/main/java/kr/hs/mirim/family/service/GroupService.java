@@ -70,7 +70,6 @@ public class GroupService {
         }
     }
 
-
     private String createInviteCode() {
         int leftLimit = 48;
         int rightLimit = 122;
