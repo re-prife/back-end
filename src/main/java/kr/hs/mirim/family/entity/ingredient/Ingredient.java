@@ -25,10 +25,10 @@ public class Ingredient extends BaseEntity {
     private int ingredientCount;
 
     @Column(columnDefinition = "CHAR(10)", nullable = false, name = "ingredient_save_type")
-    private SaveType ingredientSaveType;
+    private IngredientSaveType ingredientSaveType;
 
-    @Column(length = 20, nullable = false, name = "ingredient_category")
-    private Category ingredientCategory;
+    @Column(nullable = false, name = "ingredient_category", columnDefinition = "CHAR(15)")
+    private IngredientCategory ingredientCategory;
 
     @Column(nullable = false, name = "ingredient_purchase_date")
     private Date ingredientPurchaseDate;
@@ -42,13 +42,13 @@ public class Ingredient extends BaseEntity {
     @Column(length = 10, name = "ingredient_image_name", nullable = false)
     private String ingredientImageName;
 
-    @OneToOne
-    @JoinColumn(name = "group_id", unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
     private Group group;
 
     @Builder
-    public Ingredient(String ingredientName, int ingredientCount, SaveType ingredientSaveType, Category ingredientCategory,
-                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo, String ingredientImageName) {
+    public Ingredient(String ingredientName, int ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
+                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo) {
         this.ingredientName = ingredientName;
         this.ingredientCount = ingredientCount;
         this.ingredientSaveType = ingredientSaveType;
@@ -56,6 +56,5 @@ public class Ingredient extends BaseEntity {
         this.ingredientPurchaseDate = ingredientPurchaseDate;
         this.ingredientExpirationDate = ingredientExpirationDate;
         this.ingredientMemo = ingredientMemo;
-        this.ingredientImageName = ingredientImageName;
     }
 }
