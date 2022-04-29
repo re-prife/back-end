@@ -1,6 +1,6 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.UserSignUpDto;
+import kr.hs.mirim.family.dto.request.CreateUserRequest;
 import kr.hs.mirim.family.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void signUp(@RequestBody @Valid UserSignUpDto userSignUpDto, BindingResult bindingResult){
-        userService.signUp(userSignUpDto, bindingResult);
+    public void createUser(@RequestBody @Valid CreateUserRequest createUserRequest, BindingResult bindingResult){
+        userService.createUser(createUserRequest, bindingResult);
     }
 }
