@@ -6,8 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryExtension {
+
     boolean existsByUserEmail(String email);
+
+    Optional<User> findByUserEmail(String email);
 
     @Modifying
     @Transactional

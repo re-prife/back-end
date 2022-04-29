@@ -1,6 +1,8 @@
 package kr.hs.mirim.family.controller;
 
 import kr.hs.mirim.family.dto.request.CreateUserRequest;
+import kr.hs.mirim.family.dto.request.LoginUserRequest;
+import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,5 +21,10 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public void createUser(@RequestBody @Valid CreateUserRequest createUserRequest, BindingResult bindingResult){
         userService.createUser(createUserRequest, bindingResult);
+    }
+
+    @PostMapping("/login")
+    public LoginUserResponse loginUser(@RequestBody @Valid LoginUserRequest loginUserRequest, BindingResult bindingResult){
+        return userService.loginUser(loginUserRequest, bindingResult);
     }
 }
