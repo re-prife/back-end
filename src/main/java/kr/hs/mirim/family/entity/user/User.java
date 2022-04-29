@@ -45,9 +45,10 @@ public class User {
     private List<Quest> questList = new ArrayList<>();
 
     @Builder
-    public User(String userName, String userPassword, String userEmail) {
+    public User(String userName, String userPassword, String userEmail, String userImageName) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
+        this.userImageName = userImageName;
     }
 }

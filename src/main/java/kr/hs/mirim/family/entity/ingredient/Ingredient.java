@@ -48,7 +48,7 @@ public class Ingredient extends BaseEntity {
 
     @Builder
     public Ingredient(String ingredientName, int ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
-                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo) {
+                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo, String ingredientImageName) {
         this.ingredientName = ingredientName;
         this.ingredientCount = ingredientCount;
         this.ingredientSaveType = ingredientSaveType;
@@ -56,5 +56,6 @@ public class Ingredient extends BaseEntity {
         this.ingredientPurchaseDate = ingredientPurchaseDate;
         this.ingredientExpirationDate = ingredientExpirationDate;
         this.ingredientMemo = ingredientMemo;
+        this.ingredientImageName = ingredientImageName;
     }
 }
