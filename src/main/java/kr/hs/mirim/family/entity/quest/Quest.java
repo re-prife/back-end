@@ -32,18 +32,20 @@ public class Quest extends BaseEntity {
     private boolean completeCheck;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_user_id")
+    @JoinColumn(name = "request_user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
     @Builder
-    public Quest(String questTitle, String questContent, int acceptUserId, boolean completeCheck){
+    public Quest(String questTitle, String questContent, int acceptUserId, boolean completeCheck, User user, Group group){
         this.questTitle = questTitle;
         this.questContent = questContent;
         this.acceptUserId = acceptUserId;
         this.completeCheck = completeCheck;
+        this.user = user;
+        this.group = group;
     }
 }

@@ -2,6 +2,7 @@ package kr.hs.mirim.family.entity.ingredient;
 
 import kr.hs.mirim.family.entity.BaseEntity;
 import kr.hs.mirim.family.entity.group.Group;
+import kr.hs.mirim.family.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -43,12 +44,12 @@ public class Ingredient extends BaseEntity {
     private String ingredientImageName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
     @Builder
     public Ingredient(String ingredientName, int ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
-                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo, String ingredientImageName) {
+                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo, String ingredientImageName, Group group) {
         this.ingredientName = ingredientName;
         this.ingredientCount = ingredientCount;
         this.ingredientSaveType = ingredientSaveType;
@@ -57,5 +58,6 @@ public class Ingredient extends BaseEntity {
         this.ingredientExpirationDate = ingredientExpirationDate;
         this.ingredientMemo = ingredientMemo;
         this.ingredientImageName = ingredientImageName;
+        this.group = group;
     }
 }
