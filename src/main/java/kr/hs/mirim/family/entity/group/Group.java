@@ -29,6 +29,9 @@ public class Group {
     @Column(length = 20, nullable = false, name="group_name")
     private String groupName;
 
+    @Column(length = 50, name = "group_report")
+    private String groupReport;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<User> userList = new ArrayList<>();
 
