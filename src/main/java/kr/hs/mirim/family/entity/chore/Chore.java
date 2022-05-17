@@ -41,10 +41,11 @@ public class Chore extends BaseEntity {
     private Group group;
 
     @Builder
-    public Chore(String choreTitle, ChoreCheck choreCheck, ChoreCategory choreCategory, User user, Group group){
+    public Chore(String choreTitle, ChoreCheck choreCheck, ChoreCategory choreCategory, Date choreDate,User user, Group group){
         this.choreTitle = choreTitle;
         this.choreCheck = choreCheck;
         this.choreCategory = choreCategory;
+        this.choreDate = choreDate;
         this.user = user;
         this.group = group;
     }
