@@ -1,6 +1,11 @@
 package kr.hs.mirim.family.entity.group;
 
 import kr.hs.mirim.family.entity.user.User;
+
+import kr.hs.mirim.family.entity.chore.Chore;
+import kr.hs.mirim.family.entity.ingredient.Ingredient;
+import kr.hs.mirim.family.entity.quest.Quest;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,8 +29,20 @@ public class Group {
     @Column(length = 20, nullable = false, name="group_name")
     private String groupName;
 
+    @Column(length = 50, name = "group_report")
+    private String groupReport;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private List<User> userList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<Ingredient> ingredientList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<Chore> choresList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<Quest> questList = new ArrayList<>();
 
     @Builder
     public Group(String groupInviteCode, String groupName){
