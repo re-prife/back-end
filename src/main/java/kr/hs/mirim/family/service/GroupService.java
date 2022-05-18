@@ -30,13 +30,13 @@ public class GroupService {
     *
     * @author: m04j00
     * */
-    public void createGroup(CreateGroupRequest requestDto, BindingResult bindingResult) {
+    public void createGroup(CreateGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
-        existsUser(requestDto.getUserId());
+        existsUser(userId);
         String code = createInviteCode();
-        Group group = new Group(code, requestDto.getGroupName());
+        Group group = new Group(code, request.getGroupName());
         groupRepository.save(group);
-        userRepository.updateGroupId(group.getGroupId(), requestDto.getUserId());
+        userRepository.updateGroupId(group.getGroupId(), userId);
     }
 
     /*
@@ -46,15 +46,15 @@ public class GroupService {
     *
     * @author: m04j00
     * */
-    public void joinGroup(JoinGroupRequest request, BindingResult bindingResult) {
+    public void joinGroup(JoinGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
-        existsUser(request.getUserId());
+        existsUser(userId);
         Group group = groupRepository.findByGroupInviteCode(request.getGroupInviteCode()).orElseThrow(() ->
         {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
         System.out.println(group);
-        userRepository.updateGroupId(group.getGroupId(), request.getUserId());
+        userRepository.updateGroupId(group.getGroupId(), userId);
         System.out.println(group);
     }
 

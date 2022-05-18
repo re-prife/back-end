@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 public class JoinGroupRequest {
-    @NotNull
-    private long userId;
     @NotEmpty
     private String groupInviteCode;
 }

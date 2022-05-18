@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -20,15 +17,15 @@ import javax.validation.Valid;
 public class GroupController {
     private final GroupService groupService;
 
-    @PostMapping
+    @PostMapping("/{userId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createGroup(@Valid @RequestBody CreateGroupRequest createGroupRequestDto, BindingResult bindingResult) {
-        groupService.createGroup(createGroupRequestDto, bindingResult);
+    public void createGroup(@Valid @RequestBody CreateGroupRequest request, @PathVariable long userId, BindingResult bindingResult) {
+        groupService.createGroup(request, userId, bindingResult);
     }
 
-    @PostMapping(value = "/join")
+    @PostMapping(value = "/join/{userId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public void joinGroup(@Valid @RequestBody JoinGroupRequest request, BindingResult bindingResult) {
-        groupService.joinGroup(request, bindingResult);
+    public void joinGroup(@Valid @RequestBody JoinGroupRequest request, @PathVariable long userId, BindingResult bindingResult) {
+        groupService.joinGroup(request, userId, bindingResult);
     }
 }
