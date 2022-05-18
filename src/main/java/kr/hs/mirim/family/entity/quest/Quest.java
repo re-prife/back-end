@@ -26,7 +26,7 @@ public class Quest extends BaseEntity {
     private String questContent;
 
     @Column(name = "accept_user_id", nullable = false)
-    private int acceptUserId;
+    private Long acceptUserId;
 
     @Column(name = "complete_check", nullable = false)
     private boolean completeCheck;
@@ -40,7 +40,7 @@ public class Quest extends BaseEntity {
     private Group group;
 
     @Builder
-    public Quest(String questTitle, String questContent, int acceptUserId, boolean completeCheck, User user, Group group){
+    public Quest(String questTitle, String questContent, Long acceptUserId, boolean completeCheck, User user, Group group) {
         this.questTitle = questTitle;
         this.questContent = questContent;
         this.acceptUserId = acceptUserId;
