@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.controller;
 
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
+import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.service.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping(value = "/groups")
 public class GroupController {
     private final GroupService groupService;
@@ -24,8 +26,12 @@ public class GroupController {
     }
 
     @PostMapping(value = "/join/{userId}")
-    @ResponseStatus(code = HttpStatus.OK)
     public void joinGroup(@Valid @RequestBody JoinGroupRequest request, @PathVariable long userId, BindingResult bindingResult) {
         groupService.joinGroup(request, userId, bindingResult);
+    }
+
+    @GetMapping(value = "{groupId}/user-list/{userId}")
+    public List<UserListResponse> userList(@PathVariable Long groupId, @PathVariable Long userId) {
+        return groupService.userList(groupId, userId);
     }
 }

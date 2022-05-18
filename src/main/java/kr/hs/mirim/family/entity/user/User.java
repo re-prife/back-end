@@ -1,9 +1,14 @@
 package kr.hs.mirim.family.entity.user;
 
 import kr.hs.mirim.family.entity.group.Group;
+import kr.hs.mirim.family.entity.chore.Chore;
+import kr.hs.mirim.family.entity.quest.Quest;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "user_tb")
@@ -20,9 +25,6 @@ public class User {
     @Column(length = 20, nullable = false, name = "user_name")
     private String userName;
 
-    @Column(length = 20, nullable = false, name = "user_nickname")
-    private String userNickname;
-
     @Column(length = 60, nullable = false, name = "user_password")
     private String userPassword;
 
@@ -30,18 +32,23 @@ public class User {
     private String userEmail;
 
     @Column(length = 10, nullable = false, name = "user_image_name")
-    private String userImageName = "";
+    private String userImageName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Chore> choreList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Quest> questList = new ArrayList<>();
+
     @Builder
-    public User(String userName, String userNickname, String userPassword, String userEmail, String userImageName) {
+    public User(String userName, String userPassword, String userEmail, String userImageName) {
         this.userName = userName;
-        this.userNickname = userNickname;
-        this.userPassword = userPassword;
         this.userEmail = userEmail;
+        this.userPassword = userPassword;
         this.userImageName = userImageName;
     }
 }
