@@ -19,6 +19,20 @@ public class QuestService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
 
+    /* *
+     * 심부름 추가 기능
+     * 심부름 추가 완료 시 200 OK
+     *
+     * dto form이 일치하지 않으면 400 Bad request
+     * 그룹이 존재하지 않으면 404 Not found
+     * 계정이 존재하지 않으면 404 Not found
+     *
+     * Quest Entity의 기본값 세팅
+     * - acceptUserId : 심부름 수락자의 id로, 심부름 추가 시 수락자가 없으므로 기본값 -1
+     * - completeCheck : 심부름 수락자가 심부름을 완료했을 경우 true, 아닐 경우 기본값 false
+     *
+     * @author: m04j00
+     * */
     public void createQuest(long groupId, long userId, CreateQuestRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
         existsGroup(groupId);
