@@ -25,6 +25,9 @@ public class User {
     @Column(length = 20, nullable = false, name = "user_name")
     private String userName;
 
+    @Column(nullable = false, name = "user_nickname")
+    private String userNickname;
+
     @Column(length = 60, nullable = false, name = "user_password")
     private String userPassword;
 
@@ -45,8 +48,9 @@ public class User {
     private List<Quest> questList = new ArrayList<>();
 
     @Builder
-    public User(String userName, String userPassword, String userEmail, String userImageName) {
+    public User(String userName, String userNickname, String userPassword, String userEmail, String userImageName) {
         this.userName = userName;
+        this.userNickname = userNickname;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userImageName = userImageName;
