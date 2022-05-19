@@ -1,6 +1,8 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateQuestRequest;
+import kr.hs.mirim.family.dto.response.QuestListResponse;
+import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.quest.Quest;
 import kr.hs.mirim.family.entity.quest.repository.QuestRepository;
@@ -11,6 +13,9 @@ import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,9 +41,23 @@ public class QuestService {
     public void createQuest(long groupId, long userId, CreateQuestRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
         existsGroup(groupId);
-        User user = existsUser(userId);
+        User user = findUser(userId);
         Quest quest = new Quest(request.getQuestTitle(), request.getQuestContent(), (long) -1, false, user, user.getGroup());
         questRepository.save(quest);
+    }
+
+    /* *
+     * 심부름 조회 기능
+     * 그룹이 존재하지 않으면 404 Not found
+     * */
+    public List<QuestListResponse> questList(long groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
+        List<Quest> questList = questRepository.findAllByGroup(group);
+        return questList.stream()
+                .map(QuestListResponse::of)
+                .collect(Collectors.toList());
     }
 
     private void formValidate(BindingResult bindingResult) {
@@ -53,7 +72,7 @@ public class QuestService {
         }
     }
 
-    private User existsUser(long userId) {
+    private User findUser(long userId) {
         return userRepository.findById(userId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         });
