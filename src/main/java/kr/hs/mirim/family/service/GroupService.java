@@ -37,7 +37,7 @@ public class GroupService {
      * */
     public void createGroup(CreateGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
-        existsUser(userId);
+        validationUser(userId);
         String code = createInviteCode();
         Group group = new Group(code, request.getGroupName());
         groupRepository.save(group);
@@ -54,7 +54,7 @@ public class GroupService {
      * */
     public void joinGroup(JoinGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
-        existsUser(userId);
+        validationUser(userId);
 
         Group group = groupRepository.findByGroupInviteCode(request.getGroupInviteCode()).orElseThrow(() ->
         {
@@ -86,12 +86,18 @@ public class GroupService {
         }
     }
 
-    private void existsUser(long userId) {
+    private void validationUser(long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         });
-        if(user.getGroup() != null){
+        if (user.getGroup() != null) {
             throw new AlreadyExistsException("이미 그룹에 가입된 회원입니다.");
+        }
+    }
+
+    private void existsUser(long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
     }
 
