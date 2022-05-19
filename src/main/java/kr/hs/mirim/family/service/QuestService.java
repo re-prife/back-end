@@ -89,6 +89,22 @@ public class QuestService {
         questRepository.updateAcceptUserId(questId, acceptorId);
     }
 
+    public void questCompleteCheck(long groupId, long questId, long requestId) {
+        relationValidate(groupId, questId, requestId);
+        Quest quest = getQuest(questId);
+
+        if (quest.getUser().getUserId() != requestId) {
+            throw new ConflictException("심부름 요청자가 아닙니다.");
+        }
+        if (quest.getAcceptUserId() == -1) {
+            throw new ConflictException("심부름을 수락한 사람이 없습니다.");
+        }
+        if (quest.isCompleteCheck()) {
+            throw new ConflictException("완료된 심부름입니다.");
+        }
+        questRepository.updateCompleteCheck(questId);
+    }
+
     private void formValidate(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException("유효하지 않은 형식입니다.");

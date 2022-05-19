@@ -35,4 +35,12 @@ public class QuestController {
             BindingResult bindingResult) {
         questService.questAcceptor(groupId, questId, request, bindingResult);
     }
+
+    @PostMapping("/{questId}/complete/{requestId}")
+    public void questCompleteCheck(
+            @PathVariable long groupId,
+            @PathVariable long questId,
+            @PathVariable long requestId) {
+        questService.questCompleteCheck(groupId, questId, requestId);
+    }
 }
