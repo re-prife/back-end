@@ -1,9 +1,6 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.CreateQuestRequest;
-import kr.hs.mirim.family.dto.request.QuestAcceptorRequest;
-import kr.hs.mirim.family.service.GroupService;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -27,12 +24,11 @@ public class QuestController {
         questService.createQuest(groupId, userId, request, bindingResult);
     }
 
-    @PostMapping("/{questId}/acceptor")
+    @PostMapping("/{questId}/acceptor/{acceptorId}")
     public void questAcceptor(
             @PathVariable long groupId,
             @PathVariable long questId,
-            @Valid @RequestBody QuestAcceptorRequest request,
-            BindingResult bindingResult) {
-        questService.questAcceptor(groupId, questId, request, bindingResult);
+            @PathVariable long acceptorId) {
+        questService.questAcceptor(groupId, questId, acceptorId);
     }
 }
