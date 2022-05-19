@@ -3,9 +3,11 @@ package kr.hs.mirim.family.service;
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.dto.response.UserListResponse;
+import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
+import kr.hs.mirim.family.exception.AlreadyExistsException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import kr.hs.mirim.family.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -29,33 +31,36 @@ public class GroupService {
      * 성공 시 그룹 초대 코드 생성 후 201
      * dto form이 일치하지 않으면 400 Bad request
      * 계정이 존재하지 않으면 404 Not found
+     * 이미 그룹에 가입된 경우 409 conflict
      *
      * @author: m04j00
      * */
-    public void createGroup(CreateGroupRequest requestDto, BindingResult bindingResult) {
+    public void createGroup(CreateGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
-        existsUser(requestDto.getUserId());
+        validationUser(userId);
         String code = createInviteCode();
-        Group group = new Group(code, requestDto.getGroupName());
+        Group group = new Group(code, request.getGroupName());
         groupRepository.save(group);
-        userRepository.updateGroupId(group.getGroupId(), requestDto.getUserId());
+        userRepository.updateGroupId(group.getGroupId(), userId);
     }
 
     /*
      * 기존에 생성되어 있는 그룹 가입
      * dto form이 일치하지 않으면 400 Bad request
      * 계정이 존재하지 않으면 404 Not found
+     * 이미 그룹에 가입된 경우 409 conflict
      *
      * @author: m04j00
      * */
-    public void joinGroup(JoinGroupRequest request, BindingResult bindingResult) {
+    public void joinGroup(JoinGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
-        existsUser(request.getUserId());
+        validationUser(userId);
+
         Group group = groupRepository.findByGroupInviteCode(request.getGroupInviteCode()).orElseThrow(() ->
         {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
-        userRepository.updateGroupId(group.getGroupId(), request.getUserId());
+        userRepository.updateGroupId(group.getGroupId(), userId);
     }
 
     /*
@@ -77,6 +82,15 @@ public class GroupService {
     private void formValidate(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException("유효하지 않은 형식입니다.");
+        }
+    }
+
+    private void validationUser(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new DataNotFoundException("존재하지 않는 회원입니다.");
+        });
+        if (user.getGroup() != null) {
+            throw new AlreadyExistsException("이미 그룹에 가입된 회원입니다.");
         }
     }
 
