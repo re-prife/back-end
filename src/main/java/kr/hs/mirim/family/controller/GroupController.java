@@ -25,12 +25,12 @@ public class GroupController {
         groupService.createGroup(request, userId, bindingResult);
     }
 
-    @PostMapping(value = "/join/{userId}")
+    @PostMapping("/join/{userId}")
     public void joinGroup(@Valid @RequestBody JoinGroupRequest request, @PathVariable long userId, BindingResult bindingResult) {
         groupService.joinGroup(request, userId, bindingResult);
     }
 
-    @GetMapping(value = "{groupId}/user-list/{userId}")
+    @GetMapping("{groupId}/user-list/{userId}")
     public List<UserListResponse> userList(@PathVariable Long groupId, @PathVariable Long userId) {
         return groupService.userList(groupId, userId);
     }
