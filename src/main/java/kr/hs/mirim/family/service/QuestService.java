@@ -89,6 +89,18 @@ public class QuestService {
         questRepository.updateAcceptUserId(questId, acceptorId);
     }
 
+    /*
+     * 수락자가 심부름 완료 시 요청자가 완료 요청할 때 사용하는 기능
+     * - API 호출 시 completeCheck를 true로 변경
+     *
+     * 404 not found
+     * - groupId가 존재하지 않을 시
+     * - questId가 존재하지 않거나 group에 속하지 않을 경우
+     * - questId가 존재하지 않거나 group에 속하지 않을 경우
+     * 409 conflict
+     * - quest의 requestId가 API의 매개변수 requestId와 일치하지 않을 경우 (요청자만이 완료 여부를 판단할 수 있음)
+     * - quest의 acceptUSerId가 -1인 경우 (심부름을 수락한 사람이 있어야지만 완료 여부를 판단할 수 있음)
+     * */
     public void questCompleteCheck(long groupId, long questId, long requestId) {
         relationValidate(groupId, questId, requestId);
         Quest quest = getQuest(questId);
@@ -99,9 +111,7 @@ public class QuestService {
         if (quest.getAcceptUserId() == -1) {
             throw new ConflictException("심부름을 수락한 사람이 없습니다.");
         }
-        if (quest.isCompleteCheck()) {
-            throw new ConflictException("완료된 심부름입니다.");
-        }
+
         questRepository.updateCompleteCheck(questId);
     }
 
