@@ -60,7 +60,6 @@ public class GroupService {
         {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
-        System.out.println(group);
         userRepository.updateGroupId(group.getGroupId(), userId);
     }
 
