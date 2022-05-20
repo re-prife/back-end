@@ -53,15 +53,17 @@ public class QuestService {
     /*
      * 심부름을 수락하거나 수락한 후 취소하는 메소드
      * - quest의 acceptUserId를 변경하는 기능
+     * - 컬럼명 acceptUserId, 자바 변수로 acceptorId로 사용
      *
      * 404 not found
      * - groupId가 존재하지 않을 시
      * - questId가 존재하지 않거나 group에 속하지 않을 경우
-     * - questId가 존재하지 않거나 group에 속하지 않을 경우
+     * - acceptorId가 존재하지 않거나 group에 속하지 않을 경우
      * 409 conflict
      * - completeCheck가 true일 경우 (이미 해결된 심부름일 경우)
-     * - quest의 acceptUserId가 -1이 아니고 API의 매개변수 acceptUserId와 일치하지 않을 경우 (수락자가 존재하는데, 다른 사람이 API를 요청한 경우)
+     * - quest의 acceptUserId가 -1이 아니고 API의 매개변수 acceptorId와 일치하지 않을 경우 (수락자가 존재하는데, 다른 사람이 API를 요청한 경우)
      * - quest 추가한 사람이 API를 요청할 때
+     *
      * @author: m04j00
      * */
     public void questAcceptor(long groupId, long questId, long acceptorId) {
