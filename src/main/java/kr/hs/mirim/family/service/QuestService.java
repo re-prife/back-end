@@ -92,20 +92,22 @@ public class QuestService {
     /*
      * 수락자가 심부름 완료 시 요청자가 완료 요청할 때 사용하는 기능
      * - API 호출 시 completeCheck를 true로 변경
-     *
+     * - 컬럼명 requestUserId, 자바 코드 상 requesterId로 사용
      * 404 not found
      * - groupId가 존재하지 않을 시
      * - questId가 존재하지 않거나 group에 속하지 않을 경우
-     * - questId가 존재하지 않거나 group에 속하지 않을 경우
+     * - requesterId가 존재하지 않거나 group에 속하지 않을 경우
      * 409 conflict
-     * - quest의 requestId가 API의 매개변수 requestId와 일치하지 않을 경우 (요청자만이 완료 여부를 판단할 수 있음)
-     * - quest의 acceptUSerId가 -1인 경우 (심부름을 수락한 사람이 있어야지만 완료 여부를 판단할 수 있음)
+     * - quest의 requestUserId가 API의 매개변수 requesterId와 일치하지 않을 경우 (요청자만이 완료 여부를 판단할 수 있음)
+     * - quest의 acceptUserId가 -1인 경우 (심부름을 수락한 사람이 있어야지만 완료 여부를 판단할 수 있음)
+     *
+     * @author : m04j00
      * */
-    public void questCompleteCheck(long groupId, long questId, long requestId) {
-        relationValidate(groupId, questId, requestId);
+    public void questCompleteCheck(long groupId, long questId, long requesterId) {
+        relationValidate(groupId, questId, requesterId);
         Quest quest = getQuest(questId);
 
-        if (quest.getUser().getUserId() != requestId) {
+        if (quest.getUser().getUserId() != requesterId) {
             throw new ConflictException("심부름 요청자가 아닙니다.");
         }
         if (quest.getAcceptUserId() == -1) {
