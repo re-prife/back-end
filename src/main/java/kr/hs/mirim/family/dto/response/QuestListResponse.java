@@ -19,7 +19,7 @@ public class QuestListResponse {
     @NonNull
     private String questContent;
     @NonNull
-    private LocalDateTime questCreateDate;
+    private LocalDateTime questCreatedDate;
     @NonNull
     private LocalDateTime questModifiedDate;
     @NonNull

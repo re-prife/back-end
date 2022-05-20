@@ -65,6 +65,8 @@ public class GroupService {
      * API를 요청한 회원을 제외한 그룹에 속한 회원의 id, name, nickname, imageName을 list로 전달한다.
      * 그룹이 없을 경우 404 not found
      * 계정이 없을 경우 404 not found
+     *
+     * @author: m04j00
      * */
     public List<UserListResponse> userList(long groupId, long userId) {
         if (!groupRepository.existsById(groupId)) {
