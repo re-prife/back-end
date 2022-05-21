@@ -42,7 +42,14 @@ public class QuestService {
         formValidate(bindingResult);
         existsGroup(groupId);
         User user = findUser(userId);
-        Quest quest = new Quest(request.getQuestTitle(), request.getQuestContent(), (long) -1, false, user, user.getGroup());
+        Quest quest = Quest.builder()
+                .questTitle(request.getQuestTitle())
+                .questContent(request.getQuestContent())
+                .acceptUserId((long) -1)
+                .completeCheck(false)
+                .user(user)
+                .group(user.getGroup())
+                .build();
         questRepository.save(quest);
     }
 
