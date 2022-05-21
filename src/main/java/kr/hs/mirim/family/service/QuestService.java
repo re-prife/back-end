@@ -56,6 +56,8 @@ public class QuestService {
     /* *
      * 심부름 조회 기능
      * 그룹이 존재하지 않으면 404 Not found
+     *
+     * @author : m04j00
      * */
     public List<QuestListResponse> questList(long groupId) {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> {
