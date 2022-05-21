@@ -32,7 +32,7 @@ public class QuestListResponse {
         questListResponse.requestUserId = quest.getUser().getUserId();
         questListResponse.questTitle = quest.getQuestTitle();
         questListResponse.questContent = quest.getQuestContent();
-        questListResponse.questCreateDate = quest.getCreatedDate();
+        questListResponse.questCreatedDate = quest.getCreatedDate();
         questListResponse.questModifiedDate = quest.getModifiedDate();
         questListResponse.completeCheck = quest.isCompleteCheck();
         questListResponse.acceptUserId = quest.getAcceptUserId();
