@@ -38,4 +38,12 @@ public class QuestController {
             @PathVariable long acceptorId) {
         questService.questAcceptor(groupId, questId, acceptorId);
     }
+
+    @PostMapping("/{questId}/complete/{requesterId}")
+    public void questCompleteCheck(
+            @PathVariable long groupId,
+            @PathVariable long questId,
+            @PathVariable long requesterId) {
+        questService.questCompleteCheck(groupId, questId, requesterId);
+    }
 }

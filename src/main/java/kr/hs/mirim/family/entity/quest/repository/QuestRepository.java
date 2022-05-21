@@ -16,5 +16,10 @@ public interface QuestRepository extends JpaRepository<Quest, Long> {
     @Query(value = "UPDATE quest_tb q set q.accept_user_id = :userId where q.quest_id = :questId", nativeQuery = true)
     void updateAcceptUserId(long questId, long userId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE quest_tb q set q.complete_check = true where q.quest_id = :questId", nativeQuery = true)
+    void updateCompleteCheck(long questId);
+
     boolean existsByQuestIdAndGroup(long id, Group group);
 }
