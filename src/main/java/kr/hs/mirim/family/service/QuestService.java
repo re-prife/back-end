@@ -3,7 +3,6 @@ package kr.hs.mirim.family.service;
 import kr.hs.mirim.family.dto.request.CreateQuestRequest;
 import kr.hs.mirim.family.dto.response.QuestListResponse;
 import kr.hs.mirim.family.entity.group.Group;
-import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.quest.Quest;
 import kr.hs.mirim.family.entity.quest.repository.QuestRepository;
@@ -141,3 +140,4 @@ public class QuestService {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
     }
+}
