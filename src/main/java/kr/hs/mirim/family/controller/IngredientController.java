@@ -22,7 +22,7 @@ public class IngredientController {
     }
 
     @GetMapping
-    public List<IngredientListResponse> ingredientList(@PathVariable long groupId, @RequestParam(required = false, defaultValue = "ALL") String saveType){
+    public List<IngredientListResponse> ingredientList(@PathVariable long groupId, @RequestParam(required = false) String saveType){
         return service.ingredientSaveTypeList(groupId, saveType);
     }
 }
