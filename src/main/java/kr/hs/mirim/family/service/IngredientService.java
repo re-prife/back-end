@@ -49,7 +49,7 @@ public class IngredientService {
 
     private void formValidate(BindingResult result){
         if(result.hasErrors()){
-            throw new BadRequestException("유효하지 않은 형식입니다."+result.getAllErrors());
+            throw new BadRequestException("유효하지 않은 형식입니다.");
         }
     }
 
