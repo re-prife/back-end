@@ -31,4 +31,11 @@ public class QuestController {
         return questService.questList(groupId);
     }
 
+    @PostMapping("/{questId}/acceptor/{acceptorId}")
+    public void questAcceptor(
+            @PathVariable long groupId,
+            @PathVariable long questId,
+            @PathVariable long acceptorId) {
+        questService.questAcceptor(groupId, questId, acceptorId);
+    }
 }
