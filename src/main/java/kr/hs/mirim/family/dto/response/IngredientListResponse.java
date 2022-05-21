@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class IngredientListResponse {
 
-    @NotNull
+    @NotEmpty
     private String ingredientName;
 
     @NotNull
@@ -26,9 +27,9 @@ public class IngredientListResponse {
     @NotNull
     private IngredientCategory ingredientCategory;
 
-    @NotNull
+    @NotEmpty
     private String ingredientCount;
 
-    @NotNull
+    @NotEmpty
     private String ingredientImageName;
 }
