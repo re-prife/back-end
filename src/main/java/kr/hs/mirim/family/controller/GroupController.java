@@ -6,6 +6,7 @@ import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,18 +19,18 @@ import java.util.List;
 public class GroupController {
     private final GroupService groupService;
 
-    @PostMapping
+    @PostMapping("/{userId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createGroup(@Valid @RequestBody CreateGroupRequest createGroupRequestDto, BindingResult bindingResult) {
-        groupService.createGroup(createGroupRequestDto, bindingResult);
+    public void createGroup(@Valid @RequestBody CreateGroupRequest request, @PathVariable long userId, BindingResult bindingResult) {
+        groupService.createGroup(request, userId, bindingResult);
     }
 
-    @PostMapping(value = "/join")
-    public void joinGroup(@Valid @RequestBody JoinGroupRequest request, BindingResult bindingResult) {
-        groupService.joinGroup(request, bindingResult);
+    @PostMapping("/join/{userId}")
+    public void joinGroup(@Valid @RequestBody JoinGroupRequest request, @PathVariable long userId, BindingResult bindingResult) {
+        groupService.joinGroup(request, userId, bindingResult);
     }
 
-    @GetMapping(value = "{groupId}/user-list/{userId}")
+    @GetMapping("{groupId}/{userId}")
     public List<UserListResponse> userList(@PathVariable Long groupId, @PathVariable Long userId) {
         return groupService.userList(groupId, userId);
     }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
@@ -12,6 +13,6 @@ import javax.validation.constraints.NotEmpty;
 public class CreateQuestRequest {
     @NotEmpty
     private String questTitle;
-    @NotEmpty
+    @NotNull
     private String questContent;
 }

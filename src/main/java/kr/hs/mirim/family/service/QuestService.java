@@ -1,6 +1,8 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateQuestRequest;
+import kr.hs.mirim.family.dto.response.QuestListResponse;
+import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.quest.Quest;
@@ -13,6 +15,9 @@ import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +53,22 @@ public class QuestService {
                 .group(user.getGroup())
                 .build();
         questRepository.save(quest);
+    }
+
+    /* *
+     * 심부름 조회 기능
+     * 그룹이 존재하지 않으면 404 Not found
+     *
+     * @author : m04j00
+     * */
+    public List<QuestListResponse> questList(long groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
+        List<Quest> questList = questRepository.findAllByGroup(group);
+        return questList.stream()
+                .map(QuestListResponse::of)
+                .collect(Collectors.toList());
     }
 
     /*
@@ -120,5 +141,3 @@ public class QuestService {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
     }
-
-}

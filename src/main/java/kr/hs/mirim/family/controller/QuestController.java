@@ -24,6 +24,11 @@ public class QuestController {
         questService.createQuest(groupId, userId, request, bindingResult);
     }
 
+    @GetMapping
+    public List<QuestListResponse> questList(@PathVariable long groupId) {
+        return questService.questList(groupId);
+    }
+
     @PostMapping("/{questId}/acceptor/{acceptorId}")
     public void questAcceptor(
             @PathVariable long groupId,
