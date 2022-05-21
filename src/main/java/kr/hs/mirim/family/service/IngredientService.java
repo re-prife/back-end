@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateIngredientRequest;
+import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.ingredient.Ingredient;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import java.util.List;
 
 
 @Service
@@ -38,9 +40,16 @@ public class IngredientService {
         ingredientRepository.save(ingredient);
     }
 
+    public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType){
+        if(!groupRepository.existsById(groupId)){
+            throw new DataNotFoundException("존재하지 않는 그룹입니다,");
+        }
+        return ingredientRepository.ingredientSaveTypeList(groupId, saveType);
+    }
+
     private void formValidate(BindingResult result){
         if(result.hasErrors()){
-            throw new BadRequestException("유효하지 않은 형식입니다.");
+            throw new BadRequestException("유효하지 않은 형식입니다."+result.getAllErrors());
         }
     }
 
