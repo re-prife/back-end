@@ -6,7 +6,7 @@ import kr.hs.mirim.family.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -24,12 +24,14 @@ public class Chore extends BaseEntity {
     private String choreTitle;
 
     @Column(name = "chore_check", nullable = false, columnDefinition = "CHAR(7)")
+    @Enumerated(EnumType.STRING)
     private ChoreCheck choreCheck;
 
     @Column(name = "chore_date", nullable = false)
-    private Date choreDate;
+    private LocalDate choreDate;
 
     @Column(name = "chore_category", nullable = false)
+    @Enumerated(EnumType.STRING)
     private ChoreCategory choreCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,7 +43,7 @@ public class Chore extends BaseEntity {
     private Group group;
 
     @Builder
-    public Chore(String choreTitle, ChoreCheck choreCheck, ChoreCategory choreCategory, Date choreDate,User user, Group group){
+    public Chore(String choreTitle, ChoreCheck choreCheck, ChoreCategory choreCategory, LocalDate choreDate,User user, Group group){
         this.choreTitle = choreTitle;
         this.choreCheck = choreCheck;
         this.choreCategory = choreCategory;

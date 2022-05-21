@@ -9,4 +9,5 @@ public interface GroupRepository extends CrudRepository<Group, Long>, GroupRepos
     boolean existsByGroupInviteCode(String code);
 
     Optional<Group> findByGroupInviteCode(String code);
+    Optional<Group> findByGroupId(long groupId);
 }
