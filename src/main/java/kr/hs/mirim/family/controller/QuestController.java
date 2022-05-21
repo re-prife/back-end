@@ -1,15 +1,14 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.CreateQuestRequest;
-import kr.hs.mirim.family.dto.request.QuestAcceptorRequest;
-import kr.hs.mirim.family.service.GroupService;
+import kr.hs.mirim.family.dto.response.QuestListResponse;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,13 +26,17 @@ public class QuestController {
         questService.createQuest(groupId, userId, request, bindingResult);
     }
 
-    @PostMapping("/{questId}/acceptor")
+    @GetMapping
+    public List<QuestListResponse> questList(@PathVariable long groupId) {
+        return questService.questList(groupId);
+    }
+
+    @PostMapping("/{questId}/acceptor/{acceptorId}")
     public void questAcceptor(
             @PathVariable long groupId,
             @PathVariable long questId,
-            @Valid @RequestBody QuestAcceptorRequest request,
-            BindingResult bindingResult) {
-        questService.questAcceptor(groupId, questId, request, bindingResult);
+            @PathVariable long acceptorId) {
+        questService.questAcceptor(groupId, questId, acceptorId);
     }
 
     @PostMapping("/{questId}/complete/{requesterId}")

@@ -1,7 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateQuestRequest;
-import kr.hs.mirim.family.dto.request.QuestAcceptorRequest;
+import kr.hs.mirim.family.dto.response.QuestListResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.quest.Quest;
@@ -14,6 +14,9 @@ import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,27 +54,40 @@ public class QuestService {
         questRepository.save(quest);
     }
 
+    /* *
+     * 심부름 조회 기능
+     * 그룹이 존재하지 않으면 404 Not found
+     *
+     * @author : m04j00
+     * */
+    public List<QuestListResponse> questList(long groupId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
+        List<Quest> questList = questRepository.findAllByGroup(group);
+        return questList.stream()
+                .map(QuestListResponse::of)
+                .collect(Collectors.toList());
+    }
+
     /*
      * 심부름을 수락하거나 수락한 후 취소하는 메소드
      * - quest의 acceptUserId를 변경하는 기능
+     * - 컬럼명 acceptUserId, 자바 변수로 acceptorId로 사용
      *
-     * 400 bad request
-     * - dto form이 일치하지 않을 경우
      * 404 not found
      * - groupId가 존재하지 않을 시
      * - questId가 존재하지 않거나 group에 속하지 않을 경우
-     * - questId가 존재하지 않거나 group에 속하지 않을 경우
+     * - acceptorId가 존재하지 않거나 group에 속하지 않을 경우
      * 409 conflict
      * - completeCheck가 true일 경우 (이미 해결된 심부름일 경우)
-     * - quest의 acceptUserId가 -1이 아니고 request body의 acceptUserId와 일치하지 않을 경우 (수락자가 존재하는데, 다른 사람이 API를 요청한 경우)
+     * - quest의 acceptUserId가 -1이 아니고 API의 매개변수 acceptorId와 일치하지 않을 경우 (수락자가 존재하는데, 다른 사람이 API를 요청한 경우)
      * - quest 추가한 사람이 API를 요청할 때
+     *
      * @author: m04j00
      * */
-    public void questAcceptor(long groupId, long questId, QuestAcceptorRequest request, BindingResult bindingResult) {
-        formValidate(bindingResult);
-        relationValidate(groupId, questId, request.getAcceptUserId());
-
-        long acceptorId = request.getAcceptUserId();
+    public void questAcceptor(long groupId, long questId, long acceptorId) {
+        relationValidate(groupId, questId, acceptorId);
         Quest quest = getQuest(questId);
 
         if (quest.isCompleteCheck()) {
@@ -152,5 +168,4 @@ public class QuestService {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
     }
-
 }
