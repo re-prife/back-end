@@ -1,6 +1,8 @@
 package kr.hs.mirim.family.service;
 
+import kr.hs.mirim.family.dto.request.ChoreListOneDayRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
+import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.repository.ChoreRepository;
@@ -53,10 +55,22 @@ public class ChoreService {
         choreRepository.save(chore);
     }
 
+    @Transactional
+    public ChoreListOneDayResponse choreListOneDay(long groupId, ChoreListOneDayRequest choreListOneDayRequest){
+        existsGroup(groupId);
+        return ChoreListOneDayResponse.of(choreRepository.findByChoreGroupAndDate(groupId, choreListOneDayRequest.getDate()));
+    }
+
     private User getUser(long userId){
         return userRepository.findById(userId).orElseThrow(()-> {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         });
+    }
+
+    private void existsGroup(long groupId){
+        if (!groupRepository.existsById(groupId)) {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        }
     }
 
     private Group getGroup(long groupId){
