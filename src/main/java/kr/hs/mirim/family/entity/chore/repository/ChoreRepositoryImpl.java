@@ -7,6 +7,7 @@ import kr.hs.mirim.family.entity.chore.Chore;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import static kr.hs.mirim.family.entity.chore.QChore.chore;
@@ -37,7 +38,7 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
     }
 
     @Override
-    public List<ChoreListDataResponse> findByChoreGroupAndDateMonth(Long groupId) {
+    public List<ChoreListDataResponse> findByChoreGroupAndDateMonth(Long groupId, YearMonth date) {
         return queryFactory
                 .select(Projections.constructor(
                         ChoreListDataResponse.class,
@@ -48,7 +49,7 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
                         chore.choreDate
                 ))
                 .from(chore)
-                .where(chore.user.group.groupId.eq(groupId))
+                .where(chore.user.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()))
                 .fetch();
     }
 }

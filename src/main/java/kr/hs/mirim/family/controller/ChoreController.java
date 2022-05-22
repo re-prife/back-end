@@ -27,8 +27,8 @@ public class ChoreController {
         return choreService.choreListOneDay(groupId, choreListOneDayRequest);
     }
 
-    @GetMapping()
-    public ChoreListMonthResponse choreListMonth(@PathVariable long groupId){
-        return choreService.choreListMonth(groupId);
+    @GetMapping
+    public ChoreListMonthResponse choreListMonth(@PathVariable long groupId, @RequestParam String date){
+        return choreService.choreListMonth(groupId, date);
     }
 }

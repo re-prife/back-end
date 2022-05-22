@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.REQUEST;
 
 @Service
@@ -63,9 +66,12 @@ public class ChoreService {
     }
 
     @Transactional
-    public ChoreListMonthResponse choreListMonth(long groupId){
+    public ChoreListMonthResponse choreListMonth(long groupId, String date){
         existsGroup(groupId);
-        return ChoreListMonthResponse.of(choreRepository.findByChoreGroupAndDateMonth(groupId));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        YearMonth localDate = YearMonth.parse(date, formatter);
+
+        return ChoreListMonthResponse.of(choreRepository.findByChoreGroupAndDateMonth(groupId, localDate));
     }
 
     private User getUser(long userId){
