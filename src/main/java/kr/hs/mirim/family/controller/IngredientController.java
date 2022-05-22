@@ -10,7 +10,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("groups/{groupId}/ingredient")
+@RequestMapping("groups/{groupId}/ingredients")
 public class IngredientController {
     private final IngredientService service;
 
