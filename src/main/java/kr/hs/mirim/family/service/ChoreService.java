@@ -32,15 +32,17 @@ public class ChoreService {
      *
      * 당번 추가시, 초기 choreCheck는 인증 요청인 'REQUEST'로 표기
      * choreCategory에 해당하는 enum에 값 있는지 확인 후, 없으면 404 error 반환
-     *
+     * 해당 그룹 내 유저가 아닐 경우 404 반환
+     * 
      * @author : SRin23
      */
     @Transactional
     public void createChore(long groupId, CreateChoreRequest createChoreRequest, BindingResult bindingResult){
         Group group = getGroup(groupId);
         User user = getUser(createChoreRequest.getChoreUserId());
+        userInGroup(user.getGroup().getGroupId(), group.getGroupId());
         formValidate(bindingResult);
-
+        
         Chore chore = Chore.builder()
                 .choreTitle(createChoreRequest.getChoreTitle())
                 .choreCheck(REQUEST)
@@ -65,6 +67,12 @@ public class ChoreService {
         });
     }
 
+    private void userInGroup(long userGroupId, long groupId){
+        if(userGroupId!=groupId) {
+            throw new DataNotFoundException("그룹 내 존재하지 않는 회원입니다.");
+        }
+    }
+    
     private void formValidate(BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
             throw new BadRequestException("유효하지 않은 형식입니다.");
