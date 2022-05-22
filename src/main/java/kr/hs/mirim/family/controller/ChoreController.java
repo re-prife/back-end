@@ -1,6 +1,5 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.ChoreListOneDayRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
 import kr.hs.mirim.family.service.ChoreService;

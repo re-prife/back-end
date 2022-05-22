@@ -1,6 +1,5 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.request.ChoreListOneDayRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.REQUEST;
