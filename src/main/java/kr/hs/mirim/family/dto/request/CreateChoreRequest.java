@@ -14,15 +14,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CreateChoreRequest {
     @NotEmpty
-    String choreTitle;
+    private String choreTitle;
 
     @NotNull
-    String choreCategory;
+    private String choreCategory;
 
     @NotNull
     @JsonFormat(timezone = "Asia/Seoul", pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    LocalDate choreDate;
+    private LocalDate choreDate;
 
     @NotNull
-    long choreUserId;
+    private long choreUserId;
 }

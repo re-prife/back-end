@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import static kr.hs.mirim.family.entity.chore.ChoreCategory.fromString;
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.REQUEST;
 
 @Service
@@ -38,14 +37,14 @@ public class ChoreService {
      */
     @Transactional
     public void createChore(long groupId, CreateChoreRequest createChoreRequest, BindingResult bindingResult){
-        formValidate(bindingResult);
-        User user = getUser(createChoreRequest.getChoreUserId());
         Group group = getGroup(groupId);
-        ChoreCategory choreCategory = fromString(createChoreRequest.getChoreCategory());
+        User user = getUser(createChoreRequest.getChoreUserId());
+        formValidate(bindingResult);
+
         Chore chore = Chore.builder()
                 .choreTitle(createChoreRequest.getChoreTitle())
                 .choreCheck(REQUEST)
-                .choreCategory(choreCategory)
+                .choreCategory(enumValid(createChoreRequest.getChoreCategory()))
                 .choreDate(createChoreRequest.getChoreDate())
                 .user(user)
                 .group(group)
@@ -55,21 +54,28 @@ public class ChoreService {
     }
 
     private User getUser(long userId){
-        return userRepository.findByUserId(userId).orElseThrow(()-> {
+        return userRepository.findById(userId).orElseThrow(()-> {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         });
     }
 
     private Group getGroup(long groupId){
-        return groupRepository.findByGroupId(groupId).orElseThrow(()->{
+        return groupRepository.findById(groupId).orElseThrow(()->{
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
     }
 
     private void formValidate(BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()) {
             throw new BadRequestException("유효하지 않은 형식입니다.");
         }
     }
 
+    public ChoreCategory enumValid(String category){
+        try {
+            return ChoreCategory.valueOf(category);
+        } catch (Exception e) {
+            throw new DataNotFoundException("존재하지 않는 목록의 형식입니다.");
+        }
+    }
 }
