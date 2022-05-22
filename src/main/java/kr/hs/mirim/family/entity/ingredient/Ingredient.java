@@ -2,11 +2,10 @@ package kr.hs.mirim.family.entity.ingredient;
 
 import kr.hs.mirim.family.entity.BaseEntity;
 import kr.hs.mirim.family.entity.group.Group;
-import kr.hs.mirim.family.entity.user.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -14,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "ingredient_tb")
 public class Ingredient extends BaseEntity {
+
     @Id
     @Column(name = "ingredient_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,20 +22,22 @@ public class Ingredient extends BaseEntity {
     @Column(length = 30, nullable = false, name = "ingredient_name")
     private String ingredientName;
 
-    @Column(nullable = false, name="ingredient_count")
-    private int ingredientCount;
+    @Column(nullable = false, name="ingredient_count", length = 10)
+    private String ingredientCount;
 
     @Column(columnDefinition = "CHAR(10)", nullable = false, name = "ingredient_save_type")
+    @Enumerated(value = EnumType.STRING)
     private IngredientSaveType ingredientSaveType;
 
     @Column(nullable = false, name = "ingredient_category", columnDefinition = "CHAR(15)")
+    @Enumerated(value = EnumType.STRING)
     private IngredientCategory ingredientCategory;
 
     @Column(nullable = false, name = "ingredient_purchase_date")
-    private Date ingredientPurchaseDate;
+    private LocalDate ingredientPurchaseDate;
 
     @Column(nullable = false, name = "ingredient_expiration_date")
-    private Date ingredientExpirationDate;
+    private LocalDate ingredientExpirationDate;
 
     @Column(length = 100, nullable = false, name = "ingredient_memo")
     private String ingredientMemo;
@@ -48,8 +50,8 @@ public class Ingredient extends BaseEntity {
     private Group group;
 
     @Builder
-    public Ingredient(String ingredientName, int ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
-                      Date ingredientPurchaseDate, Date ingredientExpirationDate, String ingredientMemo, String ingredientImageName, Group group) {
+    public Ingredient(String ingredientName, String ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
+                      LocalDate ingredientPurchaseDate, LocalDate ingredientExpirationDate, String ingredientMemo, String ingredientImageName, Group group) {
         this.ingredientName = ingredientName;
         this.ingredientCount = ingredientCount;
         this.ingredientSaveType = ingredientSaveType;
