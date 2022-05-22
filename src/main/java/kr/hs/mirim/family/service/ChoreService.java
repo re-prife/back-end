@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import static kr.hs.mirim.family.entity.chore.ChoreCheck.REQUEST;
+import static kr.hs.mirim.family.entity.chore.ChoreCheck.BEFORE;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +45,7 @@ public class ChoreService {
         
         Chore chore = Chore.builder()
                 .choreTitle(createChoreRequest.getChoreTitle())
-                .choreCheck(REQUEST)
+                .choreCheck(BEFORE)
                 .choreCategory(enumValid(createChoreRequest.getChoreCategory()))
                 .choreDate(createChoreRequest.getChoreDate())
                 .user(user)
