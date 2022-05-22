@@ -2,7 +2,7 @@ package kr.hs.mirim.family.entity.chore.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.hs.mirim.family.dto.response.ChoreListOneDayDataResponse;
+import kr.hs.mirim.family.dto.response.ChoreListDataResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -21,10 +21,10 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
 
 
     @Override
-    public List<ChoreListOneDayDataResponse> findByChoreGroupAndDate(Long groupId, LocalDate date) {
+    public List<ChoreListDataResponse> findByChoreGroupAndDate(Long groupId, LocalDate date) {
         return queryFactory
                 .select(Projections.constructor(
-                        ChoreListOneDayDataResponse.class,
+                        ChoreListDataResponse.class,
                         chore.choreId,
                         chore.user.userId,
                         chore.choreTitle,
@@ -33,6 +33,22 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
                         ))
                 .from(chore)
                 .where(chore.choreDate.eq(date), chore.user.group.groupId.eq(groupId))
+                .fetch();
+    }
+
+    @Override
+    public List<ChoreListDataResponse> findByChoreGroupAndDateMonth(Long groupId) {
+        return queryFactory
+                .select(Projections.constructor(
+                        ChoreListDataResponse.class,
+                        chore.choreId,
+                        chore.user.userId,
+                        chore.choreTitle,
+                        chore.choreCategory,
+                        chore.choreDate
+                ))
+                .from(chore)
+                .where(chore.user.group.groupId.eq(groupId))
                 .fetch();
     }
 }

@@ -2,6 +2,7 @@ package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.ChoreListOneDayRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
+import kr.hs.mirim.family.dto.response.ChoreListMonthResponse;
 import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
@@ -59,6 +60,12 @@ public class ChoreService {
     public ChoreListOneDayResponse choreListOneDay(long groupId, ChoreListOneDayRequest choreListOneDayRequest){
         existsGroup(groupId);
         return ChoreListOneDayResponse.of(choreRepository.findByChoreGroupAndDate(groupId, choreListOneDayRequest.getDate()));
+    }
+
+    @Transactional
+    public ChoreListMonthResponse choreListMonth(long groupId){
+        existsGroup(groupId);
+        return ChoreListMonthResponse.of(choreRepository.findByChoreGroupAndDateMonth(groupId));
     }
 
     private User getUser(long userId){

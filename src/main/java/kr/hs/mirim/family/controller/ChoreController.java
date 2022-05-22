@@ -2,6 +2,7 @@ package kr.hs.mirim.family.controller;
 
 import kr.hs.mirim.family.dto.request.ChoreListOneDayRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
+import kr.hs.mirim.family.dto.response.ChoreListMonthResponse;
 import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
 import kr.hs.mirim.family.service.ChoreService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,10 @@ public class ChoreController {
     @GetMapping("/one-day")
     public ChoreListOneDayResponse choreListOneDay(@PathVariable long groupId, @RequestBody ChoreListOneDayRequest choreListOneDayRequest){
         return choreService.choreListOneDay(groupId, choreListOneDayRequest);
+    }
+
+    @GetMapping()
+    public ChoreListMonthResponse choreListMonth(@PathVariable long groupId){
+        return choreService.choreListMonth(groupId);
     }
 }

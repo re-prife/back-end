@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoreListOneDayDataResponse {
+public class ChoreListDataResponse {
     @NotNull
     @JsonProperty(value = "chore_id")
     private Long choreId;

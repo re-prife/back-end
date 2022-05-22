@@ -11,11 +11,11 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoreListOneDayResponse {
+public class ChoreListMonthResponse {
     private List<ChoreListDataResponse> data;
 
-    public static ChoreListOneDayResponse of(List<ChoreListDataResponse> data){
-        return ChoreListOneDayResponse.builder()
+    public static ChoreListMonthResponse of(List<ChoreListDataResponse> data){
+        return ChoreListMonthResponse.builder()
                 .data(data)
                 .build();
     }
