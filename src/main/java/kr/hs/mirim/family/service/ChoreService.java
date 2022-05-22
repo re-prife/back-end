@@ -8,6 +8,7 @@ import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
+import kr.hs.mirim.family.exception.AlreadyExistsException;
 import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +42,19 @@ public class ChoreService {
         Group group = getGroup(groupId);
         User user = getUser(createChoreRequest.getChoreUserId());
         userInGroup(user.getGroup().getGroupId(), group.getGroupId());
+
+        ChoreCategory choreCategory = enumValid(createChoreRequest.getChoreCategory());
+
+        if(choreRepository.existsByChoreDateAndChoreCategoryAndUser_UserId(createChoreRequest.getChoreDate(), choreCategory, createChoreRequest.getChoreUserId())){
+            throw new AlreadyExistsException("이미 존재하는 집안일입니다.");
+        }
+
         formValidate(bindingResult);
         
         Chore chore = Chore.builder()
                 .choreTitle(createChoreRequest.getChoreTitle())
                 .choreCheck(BEFORE)
-                .choreCategory(enumValid(createChoreRequest.getChoreCategory()))
+                .choreCategory(choreCategory)
                 .choreDate(createChoreRequest.getChoreDate())
                 .user(user)
                 .group(group)
