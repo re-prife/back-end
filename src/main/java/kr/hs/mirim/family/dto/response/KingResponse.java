@@ -20,5 +20,5 @@ public class KingResponse {
     private long userId;
 
     @NotNull
-    private Long countCategory;
+    private Long questCount;
 }
