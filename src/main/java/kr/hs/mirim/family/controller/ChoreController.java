@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.controller;
 
+import kr.hs.mirim.family.dto.request.ChoreCertifyReactionRequest;
 import kr.hs.mirim.family.dto.request.ChoreListOneDayRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.response.ChoreListMonthResponse;
@@ -35,5 +36,10 @@ public class ChoreController {
     @PostMapping("/{choreId}/certify")
     public void choreCertify(@PathVariable long groupId, @PathVariable long choreId){
         choreService.choreCertify(groupId, choreId);
+    }
+
+    @PostMapping("/{choreId}/reaction")
+    public void choreCertifyReaction(@PathVariable long groupId, @PathVariable long choreId, @Valid @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest, BindingResult bindingResult){
+        choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest, bindingResult);
     }
 }
