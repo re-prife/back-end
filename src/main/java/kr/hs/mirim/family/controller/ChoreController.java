@@ -22,7 +22,7 @@ public class ChoreController {
     }
 
     @GetMapping("/one-day")
-    public ChoreListOneDayResponse choreListOneDay(@PathVariable long groupId, @RequestBody ChoreListOneDayRequest choreListOneDayRequest){
-        return choreService.choreListOneDay(groupId, choreListOneDayRequest);
+    public ChoreListOneDayResponse choreListOneDay(@PathVariable long groupId, @RequestParam String date){
+        return choreService.choreListOneDay(groupId, date);
     }
 }

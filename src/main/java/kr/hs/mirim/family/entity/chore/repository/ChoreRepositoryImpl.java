@@ -7,6 +7,7 @@ import kr.hs.mirim.family.entity.chore.Chore;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import static kr.hs.mirim.family.entity.chore.QChore.chore;

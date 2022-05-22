@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.REQUEST;
 
 @Service
@@ -56,9 +60,11 @@ public class ChoreService {
     }
 
     @Transactional
-    public ChoreListOneDayResponse choreListOneDay(long groupId, ChoreListOneDayRequest choreListOneDayRequest){
+    public ChoreListOneDayResponse choreListOneDay(long groupId, String date){
         existsGroup(groupId);
-        return ChoreListOneDayResponse.of(choreRepository.findByChoreGroupAndDate(groupId, choreListOneDayRequest.getDate()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return ChoreListOneDayResponse.of(choreRepository.findByChoreGroupAndDate(groupId, localDate));
     }
 
     private User getUser(long userId){
