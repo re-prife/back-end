@@ -99,6 +99,7 @@ public class ChoreService {
         return ChoreListMonthResponse.of(choreRepository.findByChoreGroupAndDateMonth(groupId, localDate));
     }
 
+
     private User getUser(long userId){
         return userRepository.findById(userId).orElseThrow(()-> {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
@@ -110,6 +111,7 @@ public class ChoreService {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         }
     }
+
 
     private Group getGroup(long groupId){
         return groupRepository.findById(groupId).orElseThrow(()->{
@@ -133,7 +135,7 @@ public class ChoreService {
         try {
             return ChoreCategory.valueOf(category);
         } catch (Exception e) {
-            throw new DataNotFoundException("존재하지 않는 목록의 형식입니다.");
+            throw new DataNotFoundException("존재하지 않는 집안일 카테고리입니다.");
         }
     }
 }
