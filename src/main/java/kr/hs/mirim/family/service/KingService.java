@@ -29,27 +29,20 @@ public class KingService {
         YearMonth yearMonth = YearMonth.parse(date, formatter);
 
         List<KingResponse> list = choreRepository.monthKing(groupId, yearMonth);
-        List<KingResponse> returnList = new ArrayList<>();
+        HashMap<ChoreCategory, KingResponse> hashMap = new HashMap<>();
 
-        ChoreCategory[] categories = new ChoreCategory[]{ChoreCategory.SHOPPING, ChoreCategory.DISH_WASHING, ChoreCategory.COOK};
-
-
-        for(ChoreCategory category : categories){
-            KingResponse res = categoryList(list, category);
-            if(res!=null)
-                returnList.add(res);
+        for (KingResponse kingResponse : list) {
+            if (hashMap.containsKey(kingResponse.getCategory())) {
+                if (hashMap.get(kingResponse.getCategory()).getQuestCount() < kingResponse.getQuestCount())
+                    hashMap.put(kingResponse.getCategory(), kingResponse);
+            } else {
+                hashMap.put(kingResponse.getCategory(), kingResponse);
+            }
+            if(hashMap.size() == 3) break;
         }
 
         return KingDataResponse.builder()
-                .data(returnList)
+                .data(new ArrayList(hashMap.values()))
                 .build();
-    }
-
-    private KingResponse categoryList(List<KingResponse> list, ChoreCategory category){
-        for (KingResponse kingResponse : list) {
-            if (kingResponse.getCategory() == category)
-                return new KingResponse(category, kingResponse.getUserId(), kingResponse.getQuestCount());
-        }
-        return null;
     }
 }
