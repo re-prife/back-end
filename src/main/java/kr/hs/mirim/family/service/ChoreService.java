@@ -67,7 +67,9 @@ public class ChoreService {
         }catch (Exception e){
             throw new BadRequestException("잘못된 형식입니다.");
         }
-        return ChoreListOneDayResponse.of(choreRepository.findByChoreGroup_GroupIdAndDate(groupId, localDate));
+        return ChoreListOneDayResponse.builder()
+                .data(choreRepository.findByChoreGroup_GroupIdAndDate(groupId, localDate))
+                .build();
     }
 
     private User getUser(long userId){
