@@ -5,6 +5,8 @@ import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDate;
-public interface ChoreRepository extends CrudRepository<Chore, Long> {
+
+public interface ChoreRepository extends CrudRepository<Chore, Long>, ChoreRepositoryExtension {
     boolean existsByChoreDateAndChoreCategoryAndUser_UserId(LocalDate date, ChoreCategory choreCategory, Long userId);
 }
+

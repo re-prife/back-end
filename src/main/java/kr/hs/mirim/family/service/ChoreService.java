@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
+import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.repository.ChoreRepository;
@@ -15,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.BEFORE;
 
@@ -63,11 +67,34 @@ public class ChoreService {
         choreRepository.save(chore);
     }
 
+    @Transactional
+    public ChoreListOneDayResponse choreListOneDay(long groupId, String date){
+        existsGroup(groupId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate;
+        try{
+            localDate = LocalDate.parse(date, formatter);
+        }catch (Exception e){
+            throw new BadRequestException("잘못된 형식입니다.");
+        }
+        return ChoreListOneDayResponse.builder()
+                .data(choreRepository.findByChoreGroup_GroupIdAndDate(groupId, localDate))
+                .build();
+    }
+
+
     private User getUser(long userId){
         return userRepository.findById(userId).orElseThrow(()-> {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         });
     }
+
+    private void existsGroup(long groupId){
+        if (!groupRepository.existsById(groupId)) {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        }
+    }
+
 
     private Group getGroup(long groupId){
         return groupRepository.findById(groupId).orElseThrow(()->{
