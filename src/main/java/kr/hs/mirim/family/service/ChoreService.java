@@ -91,7 +91,7 @@ public class ChoreService {
         try {
             return ChoreCategory.valueOf(category);
         } catch (Exception e) {
-            throw new DataNotFoundException("존재하지 않는 목록의 형식입니다.");
+            throw new DataNotFoundException("존재하지 않는 집안일 카테고리입니다.");
         }
     }
 }
