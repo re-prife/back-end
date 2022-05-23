@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.hs.mirim.family.dto.response.KingResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
+import kr.hs.mirim.family.entity.chore.ChoreCheck;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.time.YearMonth;
@@ -29,7 +30,7 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
                         chore.choreCategory.count().as("questCount")
                 ))
                 .from(chore)
-                .where(chore.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()))
+                .where(chore.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()), chore.choreCheck.eq(ChoreCheck.SUCCESS))
                 .groupBy(chore.choreCategory, chore.user.userId)
                 .orderBy(chore.choreCategory.asc())
                 .orderBy(chore.choreCategory.count().desc())
