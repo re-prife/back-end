@@ -108,18 +108,21 @@ public class ChoreService {
 
         ChoreCheck choreCheck = enumCheckValid(choreCertifyReactionRequest.getReaction());
 
-        if(chore.getChoreCheck()==REQUEST||chore.getChoreCheck()==SUCCESS){
-            if(chore.getChoreCheck()!=choreCheck){
-                if(choreCheck==SUCCESS){
-                    choreRepository.updateChoreCheck(choreId, choreCheck);
-                }else if(choreCheck==FAIL){
-                    choreRepository.updateChoreCheck(choreId, REQUEST);
-                }else{
-                    throw new BadRequestException("이미 인증 요청이 끝난 집안일을 다시 인증요청할 수 없습니다.");
-                }
-            }
-        }else{
+        if(chore.getChoreCheck().equals(BEFORE)){
             throw new BadRequestException("인증 요청 되지 않은 집안일 입니다.");
+        }
+        if(choreCheck.equals(BEFORE)){
+            throw new BadRequestException("이미 인증 요청된 집안일 입니다.");
+        }
+
+        if(!chore.getChoreCheck().equals(choreCheck)){
+            if(choreCheck.equals(SUCCESS)){
+                choreRepository.updateChoreCheck(choreId, SUCCESS);
+            }else if(choreCheck.equals(FAIL)){
+                choreRepository.updateChoreCheck(choreId, REQUEST);
+            }else{
+                throw new BadRequestException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
+            }
         }
     }
 
