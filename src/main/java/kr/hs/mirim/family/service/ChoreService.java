@@ -69,7 +69,13 @@ public class ChoreService {
     public ChoreListMonthResponse choreListMonth(long groupId, String date){
         existsGroup(groupId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        YearMonth localDate = YearMonth.parse(date, formatter);
+        YearMonth localDate;
+
+        try{
+            localDate = YearMonth.parse(date, formatter);
+        }catch(Exception e){
+            throw new BadRequestException("잘못된 형식입니다.");
+        }
 
         return ChoreListMonthResponse.of(choreRepository.findByChoreGroupAndDateMonth(groupId, localDate));
     }
