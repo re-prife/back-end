@@ -19,7 +19,7 @@ public class ChoreController {
     public void createChore(@PathVariable long groupId, @Valid @RequestBody CreateChoreRequest createChoreRequest, BindingResult bindingResult){
         choreService.createChore(groupId, createChoreRequest, bindingResult);
     }
-
+  
     @GetMapping("/one-day")
     public ChoreListOneDayResponse choreListOneDay(@PathVariable long groupId, @RequestParam String date){
         return choreService.choreListOneDay(groupId, date);

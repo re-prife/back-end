@@ -9,3 +9,4 @@ import java.time.LocalDate;
 public interface ChoreRepository extends CrudRepository<Chore, Long>, ChoreRepositoryExtension {
     boolean existsByChoreDateAndChoreCategoryAndUser_UserId(LocalDate date, ChoreCategory choreCategory, Long userId);
 }
+
