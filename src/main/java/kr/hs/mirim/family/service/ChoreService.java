@@ -19,10 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import java.time.YearMonth;
+import java.time.LocalDate;
+
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.BEFORE;
+
 
 @Service
 @RequiredArgsConstructor
@@ -100,7 +103,33 @@ public class ChoreService {
                 .build();
     }
 
+    @Transactional
+    public ChoreListMonthResponse choreListMonth(long groupId, String date){
+        existsGroup(groupId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        YearMonth localDate;
+        try{
+            localDate = YearMonth.parse(date, formatter);
+        }catch(Exception e){
+            throw new BadRequestException("잘못된 형식입니다.");
+        }
 
+        return ChoreListMonthResponse.builder()
+                .data(choreRepository.findByChoreGroup_GroupIdAndDateMonth(groupId, localDate))
+                .build();
+    }
+
+    @Transactional
+    public void choreCertify(long groupId, long choreId){
+        existsGroup(groupId);
+        Chore chore = getChore(choreId);
+        if(chore.getGroup().getGroupId()!=groupId){
+            throw new DataNotFoundException("해당 그룹내에 존재하지 않는 집안일 입니다.");
+        }
+        choreRepository.updateChoreCheck(choreId, REQUEST);
+    }
+
+    /* 예외 처리 */
     private User getUser(long userId){
         return userRepository.findById(userId).orElseThrow(()-> {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
@@ -117,6 +146,12 @@ public class ChoreService {
     private Group getGroup(long groupId){
         return groupRepository.findById(groupId).orElseThrow(()->{
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
+    }
+
+    private Chore getChore(long choreId){
+        return choreRepository.findById(choreId).orElseThrow(()->{
+            throw new DataNotFoundException("존재하지 않는 집안일입니다.");
         });
     }
 

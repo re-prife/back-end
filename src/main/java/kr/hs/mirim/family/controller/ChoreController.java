@@ -30,4 +30,9 @@ public class ChoreController {
     public ChoreListMonthResponse choreListMonth(@PathVariable long groupId, @RequestParam String date){
         return choreService.choreListMonth(groupId, date);
     }
+
+    @PostMapping("/{choreId}/certify")
+    public void choreCertify(@PathVariable long groupId, @PathVariable long choreId){
+        choreService.choreCertify(groupId, choreId);
+    }
 }
