@@ -13,10 +13,4 @@ import java.util.List;
 @NoArgsConstructor
 public class ChoreListOneDayResponse {
     private List<ChoreListDataResponse> data;
-
-    public static ChoreListOneDayResponse of(List<ChoreListDataResponse> data){
-        return ChoreListOneDayResponse.builder()
-                .data(data)
-                .build();
-    }
 }

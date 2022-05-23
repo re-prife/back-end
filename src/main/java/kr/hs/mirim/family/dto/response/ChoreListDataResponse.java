@@ -14,19 +14,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ChoreListDataResponse {
     @NotNull
-    @JsonProperty(value = "chore_id")
     private Long choreId;
 
     @NotNull
-    @JsonProperty(value = "user_id")
     private Long userId;
 
     @NotNull
-    @JsonProperty(value = "chore_title")
     private String choreTitle;
 
     @NotNull
-    @JsonProperty(value = "chore_category")
     private ChoreCategory choreCategory;
 
     @NotNull
