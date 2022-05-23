@@ -61,8 +61,13 @@ public class ChoreService {
     public ChoreListOneDayResponse choreListOneDay(long groupId, String date){
         existsGroup(groupId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        return ChoreListOneDayResponse.of(choreRepository.findByChoreGroupAndDate(groupId, localDate));
+        LocalDate localDate;
+        try{
+            localDate = LocalDate.parse(date, formatter);
+        }catch (Exception e){
+            throw new BadRequestException("잘못된 형식입니다.");
+        }
+        return ChoreListOneDayResponse.of(choreRepository.findByChoreGroup_GroupIdAndDate(groupId, localDate));
     }
 
     private User getUser(long userId){
