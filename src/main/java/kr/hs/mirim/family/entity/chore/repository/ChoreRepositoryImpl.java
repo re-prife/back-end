@@ -22,7 +22,7 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
 
 
     @Override
-    public List<ChoreListOneDayDataResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date) {
+    public List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date) {
         return queryFactory
                 .select(Projections.constructor(
                         ChoreListDataResponse.class,

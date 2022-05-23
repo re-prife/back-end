@@ -10,8 +10,8 @@ import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
-import kr.hs.mirim.family.exception.AlreadyExistsException;
 import kr.hs.mirim.family.exception.BadRequestException;
+import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class ChoreService {
         ChoreCategory choreCategory = enumValid(createChoreRequest.getChoreCategory());
 
         if(choreRepository.existsByChoreDateAndChoreCategoryAndUser_UserId(createChoreRequest.getChoreDate(), choreCategory, createChoreRequest.getChoreUserId())){
-            throw new AlreadyExistsException("이미 존재하는 집안일입니다.");
+            throw new ConflictException("이미 존재하는 집안일입니다.");
         }
 
         formValidate(bindingResult);
@@ -89,14 +89,15 @@ public class ChoreService {
         existsGroup(groupId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         YearMonth localDate;
-
         try{
             localDate = YearMonth.parse(date, formatter);
         }catch(Exception e){
             throw new BadRequestException("잘못된 형식입니다.");
         }
 
-        return ChoreListMonthResponse.of(choreRepository.findByChoreGroupAndDateMonth(groupId, localDate));
+        return ChoreListMonthResponse.builder()
+                .data(choreRepository.findByChoreGroup_GroupIdAndDateMonth(groupId, localDate))
+                .build();
     }
 
 
