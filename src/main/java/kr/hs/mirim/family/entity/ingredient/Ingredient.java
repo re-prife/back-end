@@ -22,8 +22,8 @@ public class Ingredient extends BaseEntity {
     @Column(length = 30, nullable = false, name = "ingredient_name")
     private String ingredientName;
 
-    @Column(nullable = false, name="ingredient_count")
-    private int ingredientCount;
+    @Column(nullable = false, name="ingredient_count", length = 10)
+    private String ingredientCount;
 
     @Column(columnDefinition = "CHAR(10)", nullable = false, name = "ingredient_save_type")
     @Enumerated(value = EnumType.STRING)
@@ -50,7 +50,7 @@ public class Ingredient extends BaseEntity {
     private Group group;
 
     @Builder
-    public Ingredient(String ingredientName, int ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
+    public Ingredient(String ingredientName, String ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
                       LocalDate ingredientPurchaseDate, LocalDate ingredientExpirationDate, String ingredientMemo, String ingredientImageName, Group group) {
         this.ingredientName = ingredientName;
         this.ingredientCount = ingredientCount;

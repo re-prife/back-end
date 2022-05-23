@@ -7,7 +7,7 @@ import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
-import kr.hs.mirim.family.exception.AlreadyExistsException;
+import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import kr.hs.mirim.family.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +70,8 @@ public class GroupService {
      * API를 요청한 회원을 제외한 그룹에 속한 회원의 id, name, nickname, imageName을 list로 전달한다.
      * 그룹이 없을 경우 404 not found
      * 계정이 없을 경우 404 not found
+     *
+     * @author: m04j00
      * */
     public List<UserListResponse> userList(long groupId, long userId) {
         if (!groupRepository.existsById(groupId)) {
@@ -90,7 +92,7 @@ public class GroupService {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         });
         if (user.getGroup() != null) {
-            throw new AlreadyExistsException("이미 그룹에 가입된 회원입니다.");
+            throw new ConflictException("이미 그룹에 가입된 회원입니다.");
         }
     }
 

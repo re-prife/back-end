@@ -5,7 +5,7 @@ import kr.hs.mirim.family.dto.request.LoginUserRequest;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
-import kr.hs.mirim.family.exception.AlreadyExistsException;
+import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import kr.hs.mirim.family.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class UserService {
 
         //이미 가입된 이메일인지 확인
         if(userRepository.existsByUserEmail(createUserRequest.getUserEmail())){
-            throw new AlreadyExistsException("이미 가입된 회원입니다.");
+            throw new ConflictException("이미 가입된 회원입니다.");
         }
 
         String encodePassword = passwordEncoder.encode(createUserRequest.getUserPassword());

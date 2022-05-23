@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.entity.user.repository;
 
+import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.user.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,10 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
     boolean existsByUserEmail(String email);
 
+    boolean existsByUserIdAndGroup(long id, Group group);
+
     Optional<User> findByUserEmail(String email);
+    Optional<User> findById(long userId);
 
     @Modifying
     @Transactional

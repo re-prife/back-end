@@ -25,8 +25,8 @@ public class CreateIngredientRequest {
     @NotNull
     private IngredientCategory ingredientCategory;
 
-    @NotNull
-    private int ingredientCount;
+    @NotEmpty
+    private String ingredientCount;
 
     @NotNull
     private String ingredientMemo;
@@ -38,5 +38,4 @@ public class CreateIngredientRequest {
     @NotNull
     @JsonFormat(timezone = "Asia/Seoul", shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate ingredientExpirationDate;
-
 }
