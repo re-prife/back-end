@@ -1,6 +1,5 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.ChoreListOneDayRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.response.ChoreListMonthResponse;
 import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
@@ -21,10 +20,10 @@ public class ChoreController {
     public void createChore(@PathVariable long groupId, @Valid @RequestBody CreateChoreRequest createChoreRequest, BindingResult bindingResult){
         choreService.createChore(groupId, createChoreRequest, bindingResult);
     }
-
+  
     @GetMapping("/one-day")
-    public ChoreListOneDayResponse choreListOneDay(@PathVariable long groupId, @RequestBody ChoreListOneDayRequest choreListOneDayRequest){
-        return choreService.choreListOneDay(groupId, choreListOneDayRequest);
+    public ChoreListOneDayResponse choreListOneDay(@PathVariable long groupId, @RequestParam String date){
+        return choreService.choreListOneDay(groupId, date);
     }
 
     @GetMapping
