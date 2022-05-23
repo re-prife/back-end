@@ -42,7 +42,7 @@ public class KingService {
     private KingResponse categoryList(List<KingResponse> list, ChoreCategory category){
         for (KingResponse kingResponse : list) {
             if (kingResponse.getCategory() == category) {
-                return new KingResponse(category, kingResponse.getUserId(), kingResponse.getCountCategory());
+                return new KingResponse(category, kingResponse.getUserId(), kingResponse.getQuestCount());
             }
         }
         return null;
