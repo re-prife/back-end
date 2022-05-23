@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.service;
 
+import kr.hs.mirim.family.dto.response.KingDataResponse;
 import kr.hs.mirim.family.dto.response.KingResponse;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.repository.ChoreRepository;
@@ -19,7 +20,7 @@ public class KingService {
     private final ChoreRepository choreRepository;
     private final GroupRepository groupRepository;
 
-    public List<KingResponse> kingOfTheMonth(long groupId, String date){
+    public KingDataResponse kingOfTheMonth(long groupId, String date){
         if(!groupRepository.existsById(groupId)){
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         }
@@ -30,20 +31,24 @@ public class KingService {
         List<KingResponse> list = choreRepository.monthKing(groupId, yearMonth);
         List<KingResponse> returnList = new ArrayList<>();
 
-        ChoreCategory[] categories = new ChoreCategory[]{ChoreCategory.COOK, ChoreCategory.SHOPPING, ChoreCategory.DISH_WASHING};
+        ChoreCategory[] categories = new ChoreCategory[]{ChoreCategory.SHOPPING, ChoreCategory.DISH_WASHING, ChoreCategory.COOK};
+
 
         for(ChoreCategory category : categories){
-            returnList.add(categoryList(list, category));
+            KingResponse res = categoryList(list, category);
+            if(res!=null)
+                returnList.add(res);
         }
 
-        return returnList;
+        return KingDataResponse.builder()
+                .data(returnList)
+                .build();
     }
 
     private KingResponse categoryList(List<KingResponse> list, ChoreCategory category){
         for (KingResponse kingResponse : list) {
-            if (kingResponse.getCategory() == category) {
+            if (kingResponse.getCategory() == category)
                 return new KingResponse(category, kingResponse.getUserId(), kingResponse.getQuestCount());
-            }
         }
         return null;
     }

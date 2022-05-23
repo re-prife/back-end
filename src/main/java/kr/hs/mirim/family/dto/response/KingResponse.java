@@ -1,6 +1,6 @@
 package kr.hs.mirim.family.dto.response;
 
-import com.querydsl.core.annotations.QueryProjection;
+
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

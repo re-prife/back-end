@@ -2,6 +2,7 @@ package kr.hs.mirim.family.entity.chore.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.hs.mirim.family.dto.response.KingDataResponse;
 import kr.hs.mirim.family.dto.response.KingResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCheck;
