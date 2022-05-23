@@ -11,4 +11,5 @@ public enum IngredientSaveType {
     ROOM_TEMP("실온");
 
     private String saveType;
+
 }
