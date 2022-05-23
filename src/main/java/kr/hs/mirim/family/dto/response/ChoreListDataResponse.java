@@ -1,6 +1,5 @@
 package kr.hs.mirim.family.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import lombok.AllArgsConstructor;

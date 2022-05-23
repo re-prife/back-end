@@ -22,9 +22,9 @@ import java.time.YearMonth;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
 
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.BEFORE;
+import static kr.hs.mirim.family.entity.chore.ChoreCheck.REQUEST;
 
 
 @Service
@@ -84,22 +84,6 @@ public class ChoreService {
         }
         return ChoreListOneDayResponse.builder()
                 .data(choreRepository.findByChoreGroup_GroupIdAndDate(groupId, localDate))
-                .build();
-    }
-
-    @Transactional
-    public ChoreListMonthResponse choreListMonth(long groupId, String date){
-        existsGroup(groupId);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        YearMonth localDate;
-        try{
-            localDate = YearMonth.parse(date, formatter);
-        }catch(Exception e){
-            throw new BadRequestException("잘못된 형식입니다.");
-        }
-
-        return ChoreListMonthResponse.builder()
-                .data(choreRepository.findByChoreGroup_GroupIdAndDateMonth(groupId, localDate))
                 .build();
     }
 
