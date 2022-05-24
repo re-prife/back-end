@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateUserRequest;
+import kr.hs.mirim.family.dto.request.DeleteUserRequest;
 import kr.hs.mirim.family.dto.request.LoginUserRequest;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.entity.user.User;
@@ -50,6 +51,17 @@ public class UserService {
         }
 
         return new LoginUserResponse(user);
+    }
+
+    @Transactional
+    public void deleteUser(long userId, DeleteUserRequest deleteUserRequest){
+        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("존재하지 않는 회원입니다."));
+
+        if(!passwordEncoder.matches(deleteUserRequest.getUserPassword(), user.getUserPassword())){
+            throw new BadRequestException("회원 정보가 일치하지 않습니다.");
+        }
+
+        userRepository.deleteById(userId);
     }
 
     public void formValidateException(BindingResult bindingResult){
