@@ -5,10 +5,13 @@ import kr.hs.mirim.family.dto.response.KingResponse;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.repository.ChoreRepository;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
+import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -26,7 +29,13 @@ public class KingService {
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        YearMonth yearMonth = YearMonth.parse(date, formatter);
+        YearMonth yearMonth;
+
+        try{
+            yearMonth = YearMonth.parse(date, formatter);
+        }catch(Exception e){
+            throw new BadRequestException("잘못된 날짜 형식입니다.");
+        }
 
         List<KingResponse> list = choreRepository.monthKing(groupId, yearMonth);
         HashMap<ChoreCategory, KingResponse> hashMap = new HashMap<>();
