@@ -3,6 +3,7 @@ package kr.hs.mirim.family.entity.ingredient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+
 @Getter
 @AllArgsConstructor
 public enum IngredientCategory {
@@ -21,4 +22,5 @@ public enum IngredientCategory {
     ETC("기타");
 
     private String category;
+
 }
