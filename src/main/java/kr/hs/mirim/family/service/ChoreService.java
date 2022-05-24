@@ -109,7 +109,11 @@ public class ChoreService {
         existsGroup(groupId);
         Chore chore = getChore(choreId);
         existsChoreInGroup(groupId, chore.getGroup().getGroupId());
-        choreRepository.updateChoreCheck(choreId, REQUEST);
+        if(chore.getChoreCheck()==BEFORE){
+            choreRepository.updateChoreCheck(choreId, REQUEST);
+        }else{
+            throw new BadRequestException("이미 인증 요청된 집안일입니다.");
+        }
     }
 
     /*
