@@ -1,6 +1,3 @@
-package kr.hs.mirim.family.entity.chore.repository;
-
-import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.ChoreCheck;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,4 +13,3 @@ public interface ChoreRepository extends CrudRepository<Chore, Long>, ChoreRepos
     @Query("UPDATE Chore c SET c.choreCheck = :check WHERE c.choreId = :choreId")
     void updateChoreCheck(Long choreId, ChoreCheck check);
 }
-

@@ -9,4 +9,6 @@ import java.util.List;
 public interface ChoreRepositoryExtension {
     List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDateMonth(Long groupId, YearMonth date);
     List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date);
+  
+    List<KingResponse> monthKing(long groupId, YearMonth date);
 }
