@@ -11,6 +11,7 @@ import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
+import kr.hs.mirim.family.exception.MethodNotAllowedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -129,8 +130,38 @@ public class QuestService {
         if (quest.getAcceptUserId() == -1) {
             throw new ConflictException("심부름을 수락한 사람이 없습니다.");
         }
-
         questRepository.updateCompleteCheck(questId);
+    }
+
+    /*
+     * 심부름 삭제 기능 구현
+     * - 심부름을 요청한 사람만이 심부름 요청 전에 삭제할 수 있다.
+     *
+     * 404 not found
+     * - groupId가 존재하지 않을 경우
+     * - quest가 group에 속해있지 않을 경우
+     * - user가 group에 속해있지 않을 경우
+     *
+     * 409 conflict
+     * - quest를 생성한 user가 아닌 경우
+     *
+     * 405 methodNotAllowed
+     * - 완료된 심부름을 삭제하려는 경우
+     *
+     * @author : m04j00
+     * */
+    public void deleteQuest(long groupId, long questId, long userId) {
+        relationValidate(groupId, questId, userId);
+        Quest quest = getQuest(questId);
+
+        if (quest.getUser().getUserId() != userId) {
+            throw new ConflictException("심부름을 요청한 사람만 삭제할 수 있습니다.");
+        }
+        if (quest.isCompleteCheck()) {
+            throw new MethodNotAllowedException("완료된 심부름은 삭제할 수 없습니다.");
+        }
+
+        questRepository.deleteById(questId);
     }
 
     private void formValidate(BindingResult bindingResult) {
