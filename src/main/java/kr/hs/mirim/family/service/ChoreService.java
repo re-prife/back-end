@@ -109,7 +109,11 @@ public class ChoreService {
         existsGroup(groupId);
         Chore chore = getChore(choreId);
         existsChoreInGroup(groupId, chore.getGroup().getGroupId());
-        choreRepository.updateChoreCheck(choreId, REQUEST);
+        if(chore.getChoreCheck().equals(BEFORE)){
+            choreRepository.updateChoreCheck(choreId, REQUEST);
+        }else{
+            throw new ConflictException("이미 인증 요청된 집안일입니다.");
+        }
     }
 
     /*
@@ -140,7 +144,7 @@ public class ChoreService {
             throw new BadRequestException("인증 요청 되지 않은 집안일 입니다.");
         }
         if(choreCheck.equals(BEFORE)){
-            throw new BadRequestException("이미 인증 요청된 집안일 입니다.");
+            throw new ConflictException("이미 인증 요청된 집안일 입니다.");
         }
 
         if(!chore.getChoreCheck().equals(choreCheck)){
@@ -149,7 +153,7 @@ public class ChoreService {
             }else if(choreCheck.equals(FAIL)){
                 choreRepository.updateChoreCheck(choreId, REQUEST);
             }else{
-                throw new BadRequestException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
+                throw new ConflictException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
             }
         }
     }
