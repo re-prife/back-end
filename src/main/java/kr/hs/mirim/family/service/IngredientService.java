@@ -1,15 +1,17 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.request.CreateIngredientRequest;
+import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.ingredient.Ingredient;
 import kr.hs.mirim.family.entity.ingredient.repository.IngredientRepository;
 import kr.hs.mirim.family.exception.BadRequestException;
+import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
@@ -21,9 +23,14 @@ public class IngredientService {
     private final IngredientRepository ingredientRepository;
     private final GroupRepository groupRepository;
 
-    public void createIngredient(CreateIngredientRequest request, long groupId, BindingResult result){
+    @Transactional
+    public void createIngredient(IngredientRequest request, long groupId, BindingResult result){
         Group group = getGroup(groupId);
         formValidate(result);
+
+        if(checkIngredientCount(request.getIngredientCount())){
+            throw new ConflictException("식재료의 수가 0입니다.");
+        }
 
         Ingredient ingredient = Ingredient.builder()
                 .group(group)
@@ -41,10 +48,33 @@ public class IngredientService {
     }
 
     public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType){
-        if(!groupRepository.existsById(groupId)){
-            throw new DataNotFoundException("존재하지 않는 그룹입니다,");
-        }
+        exitsGroup(groupId);
+
         return ingredientRepository.ingredientSaveTypeList(groupId, saveType);
+    }
+
+    @Transactional
+    public void updateIngredient(long groupId, long ingredientId, IngredientRequest request){
+        exitsGroup(groupId);
+        exitsIngredient(ingredientId);
+
+        if(checkIngredientCount(request.getIngredientCount())){
+            ingredientRepository.deleteById(ingredientId);
+            return ;
+        }
+
+        Ingredient ingredient = getIngredient(ingredientId);
+        ingredientRepository.save(ingredient.updateIngredient(request));
+    }
+
+    private boolean checkIngredientCount(String ingredientCount){
+        char[] arr = ingredientCount.toCharArray();
+        int s = 0;
+        for(char c : arr){
+            if(Character.isDigit(c)) s+=Character.getNumericValue(c);
+        }
+
+        return s == 0;
     }
 
     private void formValidate(BindingResult result){
@@ -57,5 +87,23 @@ public class IngredientService {
         return groupRepository.findById(groupId).orElseThrow(()->{
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
+    }
+
+    private void exitsGroup(long groupId){
+        if(!groupRepository.existsById(groupId)){
+            throw new DataNotFoundException("존재하지 않는 그룹입니다,");
+        }
+    }
+
+    public Ingredient getIngredient(long ingredientId){
+        return ingredientRepository.findById(ingredientId).orElseThrow(()->{
+            throw new DataNotFoundException("존재하지 않는 식재료입니다.");
+        });
+    }
+
+    private void exitsIngredient(long ingredientId){
+        if(!ingredientRepository.existsById(ingredientId)){
+            throw new DataNotFoundException("존재하지 않는 식재료입니다.");
+        }
     }
 }

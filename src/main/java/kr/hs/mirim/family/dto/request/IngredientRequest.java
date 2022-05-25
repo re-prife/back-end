@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateIngredientRequest {
+public class IngredientRequest {
 
     @NotEmpty
     private String ingredientName;

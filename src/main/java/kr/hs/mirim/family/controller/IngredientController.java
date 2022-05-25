@@ -1,6 +1,6 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.CreateIngredientRequest;
+import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.service.IngredientService;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +14,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("groups/{groupId}/ingredients")
 public class IngredientController {
-    private final IngredientService service;
+    private final IngredientService ingredientService;
 
     @PostMapping
-    public void createIngredient(@PathVariable long groupId, @Valid @RequestBody CreateIngredientRequest request, BindingResult bindingResult){
-        service.createIngredient(request, groupId, bindingResult);
+    public void createIngredient(@PathVariable long groupId, @Valid @RequestBody IngredientRequest request, BindingResult bindingResult){
+        ingredientService.createIngredient(request, groupId, bindingResult);
     }
 
     @GetMapping
     public List<IngredientListResponse> ingredientList(@PathVariable long groupId, @RequestParam(required = false) String saveType){
-        return service.ingredientSaveTypeList(groupId, saveType);
+        return ingredientService.ingredientSaveTypeList(groupId, saveType);
+    }
+
+    @PutMapping("/{ingredientId}")
+    public void updateIngredient(@PathVariable long groupId, @PathVariable long ingredientId, @RequestBody IngredientRequest request){
+        ingredientService.updateIngredient(groupId, ingredientId, request);
     }
 }

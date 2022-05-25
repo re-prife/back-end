@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.entity.ingredient;
 
+import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.entity.BaseEntity;
 import kr.hs.mirim.family.entity.group.Group;
 import lombok.*;
@@ -61,5 +62,16 @@ public class Ingredient extends BaseEntity {
         this.ingredientMemo = ingredientMemo;
         this.ingredientImageName = ingredientImageName;
         this.group = group;
+    }
+
+    public Ingredient updateIngredient(IngredientRequest request){
+        this.ingredientName = request.getIngredientName();
+        this.ingredientCount = request.getIngredientCount();
+        this.ingredientSaveType = request.getIngredientSaveType();
+        this.ingredientCategory = request.getIngredientCategory();
+        this.ingredientPurchaseDate = request.getIngredientPurchaseDate();
+        this.ingredientExpirationDate = request.getIngredientExpirationDate();
+        this.ingredientMemo = request.getIngredientMemo();
+        return this;
     }
 }
