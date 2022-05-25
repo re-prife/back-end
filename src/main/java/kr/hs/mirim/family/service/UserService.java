@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateUserRequest;
+import kr.hs.mirim.family.dto.request.DeleteUserRequest;
 import kr.hs.mirim.family.dto.request.LoginUserRequest;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.entity.user.User;
@@ -8,6 +9,7 @@ import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import kr.hs.mirim.family.exception.BadRequestException;
+import kr.hs.mirim.family.exception.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,13 +48,24 @@ public class UserService {
 
         //이메일과 비밀번호가 맞지 않을때
         if(!passwordEncoder.matches(loginUserRequest.getUserPassword(), user.getUserPassword())){
-            throw new BadRequestException("회원 정보가 일치하지 않습니다.");
+            throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
         }
 
         return new LoginUserResponse(user);
     }
 
-    public void formValidateException(BindingResult bindingResult){
+    @Transactional
+    public void deleteUser(long userId, DeleteUserRequest deleteUserRequest){
+        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("존재하지 않는 회원입니다."));
+
+        if(!passwordEncoder.matches(deleteUserRequest.getUserPassword(), user.getUserPassword())){
+            throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
+        }
+
+        userRepository.deleteById(userId);
+    }
+
+    private void formValidateException(BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new BadRequestException("유효하지 않은 형식입니다.");
         }

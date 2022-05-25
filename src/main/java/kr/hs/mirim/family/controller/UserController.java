@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.controller;
 
 import kr.hs.mirim.family.dto.request.CreateUserRequest;
+import kr.hs.mirim.family.dto.request.DeleteUserRequest;
 import kr.hs.mirim.family.dto.request.LoginUserRequest;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.service.UserService;
@@ -26,5 +27,10 @@ public class UserController {
     @PostMapping("/login")
     public LoginUserResponse loginUser(@RequestBody @Valid LoginUserRequest loginUserRequest, BindingResult bindingResult){
         return userService.loginUser(loginUserRequest, bindingResult);
+    }
+
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable long userId, @RequestBody DeleteUserRequest deleteUserRequest){
+        userService.deleteUser(userId, deleteUserRequest);
     }
 }
