@@ -1,9 +1,6 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.request.CheckUserPasswordRequest;
-import kr.hs.mirim.family.dto.request.CreateUserRequest;
-import kr.hs.mirim.family.dto.request.DeleteUserRequest;
-import kr.hs.mirim.family.dto.request.LoginUserRequest;
+import kr.hs.mirim.family.dto.request.*;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
@@ -33,7 +30,7 @@ public class UserService {
             throw new ConflictException("이미 가입된 회원입니다.");
         }
 
-        String encodePassword = passwordEncoder.encode(createUserRequest.getUserPassword());
+        String encodePassword = createPassword(createUserRequest.getUserPassword());
         User user = new User(createUserRequest.getUserName(), createUserRequest.getUserNickname(), encodePassword, createUserRequest.getUserEmail(), "");
 
         userRepository.save(user);
@@ -67,6 +64,27 @@ public class UserService {
     public void checkUserPassword(long userId, CheckUserPasswordRequest checkUserPasswordRequest){
         User user = getUser(userId);
         passwordCheck(user, checkUserPasswordRequest.getUserPassword());
+    }
+
+    /*
+     * checkUserPassword 실행 후 회원 수정 진행
+     * 수정이 정상적으로 처리된 경우 200
+     * 존재하지 않는 ID일 경우 404
+     * 잘못된 형식의 값이 들어오는 경우 409
+     * 
+     * 비밀번호 암호화 후, update진행
+     * @author: SRin23
+     */
+    @Transactional
+    public void updateUser(long userId, UpdateUserRequest updateUserRequest, BindingResult bindingResult){
+        User user = getUser(userId);
+        formValidateException(bindingResult);
+        String encodePassword = createPassword(updateUserRequest.getUserPassword());
+        user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname(), encodePassword, updateUserRequest.getUserImageName());
+    }
+
+    private String createPassword(String userPassword){
+        return passwordEncoder.encode(userPassword);
     }
 
     private User getUser(long userId){
