@@ -1,7 +1,7 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.CreateQuestRequest;
-import kr.hs.mirim.family.dto.response.QuestListResponse;
+import kr.hs.mirim.family.dto.request.QuestRequest;
+import kr.hs.mirim.family.dto.response.QuestResponse;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -18,7 +18,7 @@ public class QuestController {
 
     @PostMapping("/{userId}")
     public void createQuest(
-            @Valid @RequestBody CreateQuestRequest request,
+            @Valid @RequestBody QuestRequest request,
             BindingResult bindingResult,
             @PathVariable long groupId,
             @PathVariable long userId
@@ -27,7 +27,7 @@ public class QuestController {
     }
 
     @GetMapping
-    public List<QuestListResponse> questList(@PathVariable long groupId) {
+    public List<QuestResponse> questList(@PathVariable long groupId) {
         return questService.questList(groupId);
     }
 
@@ -45,5 +45,15 @@ public class QuestController {
             @PathVariable long questId,
             @PathVariable long requesterId) {
         questService.questCompleteCheck(groupId, questId, requesterId);
+    }
+
+    @PutMapping("/{questId}")
+    public QuestResponse updateQuest(
+            @PathVariable long groupId,
+            @PathVariable long questId,
+            @Valid @RequestBody QuestRequest request,
+            @RequestParam long requesterId
+    ){
+        return questService.updateQuest(groupId, questId, request, requesterId);
     }
 }

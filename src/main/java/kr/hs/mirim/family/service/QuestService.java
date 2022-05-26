@@ -1,7 +1,7 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.request.CreateQuestRequest;
-import kr.hs.mirim.family.dto.response.QuestListResponse;
+import kr.hs.mirim.family.dto.request.QuestRequest;
+import kr.hs.mirim.family.dto.response.QuestResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.quest.Quest;
@@ -11,8 +11,10 @@ import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
+import kr.hs.mirim.family.exception.MethodNotAllowedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
@@ -39,7 +41,8 @@ public class QuestService {
      *
      * @author: m04j00
      * */
-    public void createQuest(long groupId, long userId, CreateQuestRequest request, BindingResult bindingResult) {
+    @Transactional
+    public void createQuest(long groupId, long userId, QuestRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
         existsGroup(groupId);
         User user = getUser(userId);
@@ -60,13 +63,14 @@ public class QuestService {
      *
      * @author : m04j00
      * */
-    public List<QuestListResponse> questList(long groupId) {
+    @Transactional
+    public List<QuestResponse> questList(long groupId) {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
         List<Quest> questList = questRepository.findAllByGroup(group);
         return questList.stream()
-                .map(QuestListResponse::of)
+                .map(QuestResponse::of)
                 .collect(Collectors.toList());
     }
 
@@ -86,6 +90,7 @@ public class QuestService {
      *
      * @author: m04j00
      * */
+    @Transactional
     public void questAcceptor(long groupId, long questId, long acceptorId) {
         relationValidate(groupId, questId, acceptorId);
         Quest quest = getQuest(questId);
@@ -119,6 +124,7 @@ public class QuestService {
      *
      * @author : m04j00
      * */
+    @Transactional
     public void questCompleteCheck(long groupId, long questId, long requesterId) {
         relationValidate(groupId, questId, requesterId);
         Quest quest = getQuest(questId);
@@ -131,6 +137,48 @@ public class QuestService {
         }
 
         questRepository.updateCompleteCheck(questId);
+    }
+
+    /*
+     * 심부름 수정 기능
+     * - 심부름 요청자만이 수락자가 없을 경우에만 수정 가능
+     *
+     * 404 not found
+     * - groupId가 존재하지 않을 시
+     * - questId가 존재하지 않거나 group에 속하지 않을 경우
+     * - requesterId가 존재하지 않거나 group에 속하지 않을 경우
+     *
+     * 409 conflict
+     * - requesterId가 quest의 심부름 요청자와 일치하지 않을 경우
+     *
+     * 405 method not allowed
+     * - quest의 수락자가 존재할 경우
+     *
+     * @author : m04j00
+     * */
+    @Transactional
+    public QuestResponse updateQuest(long groupId, long questId, QuestRequest request, long requesterId) {
+        relationValidate(groupId, questId, requesterId);
+        Quest quest = getQuest(questId);
+
+        if (quest.getUser().getUserId() != requesterId) {
+            throw new ConflictException("심부름 요청자가 아닙니다.");
+        }
+        if (quest.getAcceptUserId() != -1) {
+            throw new MethodNotAllowedException("심부름 수락자가 있으면 수정이 불가능합니다.");
+        }
+
+        quest.updateQuest(request.getQuestTitle(), request.getQuestContent());
+
+        return QuestResponse.builder()
+                .requestUserId(quest.getUser().getUserId())
+                .questTitle(quest.getQuestTitle())
+                .questContent(quest.getQuestContent())
+                .questCreatedDate(quest.getCreatedDate())
+                .questModifiedDate(quest.getModifiedDate())
+                .completeCheck(quest.isCompleteCheck())
+                .acceptUserId(quest.getAcceptUserId())
+                .build();
     }
 
     private void formValidate(BindingResult bindingResult) {
