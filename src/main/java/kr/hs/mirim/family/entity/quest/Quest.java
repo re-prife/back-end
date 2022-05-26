@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.entity.quest;
 
+import kr.hs.mirim.family.dto.request.QuestRequest;
 import kr.hs.mirim.family.entity.BaseEntity;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.user.User;
@@ -47,5 +48,10 @@ public class Quest extends BaseEntity {
         this.completeCheck = completeCheck;
         this.user = user;
         this.group = group;
+    }
+
+    public void updateQuest(String questTitle, String questContent){
+        this.questTitle = questTitle;
+        this.questContent = questContent;
     }
 }

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateQuestRequest {
+public class QuestRequest {
     @NotEmpty
     private String questTitle;
     @NotNull
