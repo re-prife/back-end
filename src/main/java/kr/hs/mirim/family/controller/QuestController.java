@@ -49,7 +49,7 @@ public class QuestController {
     }
 
 
-    @DeleteMapping("{questId}")
+    @DeleteMapping("/{questId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteQuest(
             @PathVariable long groupId,
