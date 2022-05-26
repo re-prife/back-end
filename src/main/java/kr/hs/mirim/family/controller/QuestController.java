@@ -4,6 +4,7 @@ import kr.hs.mirim.family.dto.request.QuestRequest;
 import kr.hs.mirim.family.dto.response.QuestResponse;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,17 +55,18 @@ public class QuestController {
             @PathVariable long groupId,
             @PathVariable long questId,
             @RequestParam long userId
-    ){
+    ) {
         questService.deleteQuest(groupId, questId, userId);
     }
 
     @PutMapping("/{questId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public QuestResponse updateQuest(
             @PathVariable long groupId,
             @PathVariable long questId,
             @Valid @RequestBody QuestRequest request,
             @RequestParam long requesterId
-    ){
+    ) {
         return questService.updateQuest(groupId, questId, request, requesterId);
     }
 }
