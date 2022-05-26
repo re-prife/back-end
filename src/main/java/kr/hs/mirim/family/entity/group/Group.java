@@ -49,4 +49,8 @@ public class Group {
         this.groupInviteCode = groupInviteCode;
         this.groupName = groupName;
     }
+
+    public void updateGroupReport(String groupReport){
+        this.groupReport = groupReport;
+    }
 }
