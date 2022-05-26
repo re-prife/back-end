@@ -62,7 +62,7 @@ public class User {
         this.userImageName = userImageName;
     }
 
-    public void updateUser(String userPassword){
+    public void updateUserPassword(String userPassword){
         this.userPassword = userPassword;
     }
 }

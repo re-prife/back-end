@@ -66,7 +66,7 @@ public class UserService {
         formValidateException(bindingResult);
         passwordCheck(user, updateUserPasswordRequest.getUserPassword());
         if(updateUserPasswordRequest.getUserNewPassword().equals(updateUserPasswordRequest.getUserNewPasswordCheck())){
-            user.updateUser(createPassword(updateUserPasswordRequest.getUserNewPassword()));
+            user.updateUserPassword(createPassword(updateUserPasswordRequest.getUserNewPassword()));
         }else{
             throw new ConflictException("확인 비밀번호가 새비밀번호와 일치하지 않습니다.");
         }
