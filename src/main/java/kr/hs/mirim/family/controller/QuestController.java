@@ -60,6 +60,7 @@ public class QuestController {
     }
 
     @PutMapping("/{questId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public QuestResponse updateQuest(
             @PathVariable long groupId,
             @PathVariable long questId,
