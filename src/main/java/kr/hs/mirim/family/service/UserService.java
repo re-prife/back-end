@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.service;
 
+import kr.hs.mirim.family.dto.request.CheckUserPasswordRequest;
 import kr.hs.mirim.family.dto.request.CreateUserRequest;
 import kr.hs.mirim.family.dto.request.DeleteUserRequest;
 import kr.hs.mirim.family.dto.request.LoginUserRequest;
@@ -56,13 +57,26 @@ public class UserService {
 
     @Transactional
     public void deleteUser(long userId, DeleteUserRequest deleteUserRequest){
-        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("존재하지 않는 회원입니다."));
-
-        if(!passwordEncoder.matches(deleteUserRequest.getUserPassword(), user.getUserPassword())){
-            throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
-        }
+        User user = getUser(userId);
+        passwordCheck(user, deleteUserRequest.getUserPassword());
 
         userRepository.deleteById(userId);
+    }
+
+    @Transactional
+    public void checkUserPassword(long userId, CheckUserPasswordRequest checkUserPasswordRequest){
+        User user = getUser(userId);
+        passwordCheck(user, checkUserPasswordRequest.getUserPassword());
+    }
+
+    private User getUser(long userId){
+        return userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("존재하지 않는 회원입니다."));
+    }
+
+    private void passwordCheck(User user, String userPassword){
+        if(!passwordEncoder.matches(userPassword, user.getUserPassword())){
+            throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
+        }
     }
 
     private void formValidateException(BindingResult bindingResult){

@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.controller;
 
+import kr.hs.mirim.family.dto.request.CheckUserPasswordRequest;
 import kr.hs.mirim.family.dto.request.CreateUserRequest;
 import kr.hs.mirim.family.dto.request.DeleteUserRequest;
 import kr.hs.mirim.family.dto.request.LoginUserRequest;
@@ -32,5 +33,10 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable long userId, @RequestBody DeleteUserRequest deleteUserRequest){
         userService.deleteUser(userId, deleteUserRequest);
+    }
+
+    @PostMapping("/{userId}/password-check")
+    public void checkUserPassword(@PathVariable long userId, @RequestBody @Valid CheckUserPasswordRequest checkUserPasswordRequest){
+        userService.checkUserPassword(userId, checkUserPasswordRequest);
     }
 }
