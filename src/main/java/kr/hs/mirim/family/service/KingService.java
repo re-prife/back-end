@@ -1,6 +1,6 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.response.KingDataResponse;
+import kr.hs.mirim.family.dto.response.ChoreKingResponse;
 import kr.hs.mirim.family.dto.response.KingResponse;
 import kr.hs.mirim.family.dto.response.QuestKingResponse;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
@@ -12,8 +12,6 @@ import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -26,30 +24,26 @@ public class KingService {
     private final GroupRepository groupRepository;
     private final QuestRepository questRepository;
 
-    public KingDataResponse kingOfTheMonth(long groupId, String date){
-        existGroup(groupId);
+    public KingResponse kingOfTheMonth(long groupId, String date){
 
-        List<KingResponse> list = choreRepository.monthKing(groupId, setFormatDate(date));
-        HashMap<ChoreCategory, KingResponse> hashMap = new HashMap<>();
+        List<QuestKingResponse> questKing = questRepository.questKingMonth(groupId, setFormatDate(date));
+        List<ChoreKingResponse> choreList = choreRepository.monthKing(groupId, setFormatDate(date));
+        HashMap<ChoreCategory, ChoreKingResponse> hashMap = new HashMap<>();
 
-        for (KingResponse kingResponse : list) {
-            if (hashMap.containsKey(kingResponse.getCategory())) {
-                if (hashMap.get(kingResponse.getCategory()).getQuestCount() < kingResponse.getQuestCount())
-                    hashMap.put(kingResponse.getCategory(), kingResponse);
+        for (ChoreKingResponse choreKingResponse : choreList) {
+            if (hashMap.containsKey(choreKingResponse.getCategory())) {
+                if (hashMap.get(choreKingResponse.getCategory()).getCount() < choreKingResponse.getCount())
+                    hashMap.put(choreKingResponse.getCategory(), choreKingResponse);
             } else {
-                hashMap.put(kingResponse.getCategory(), kingResponse);
+                hashMap.put(choreKingResponse.getCategory(), choreKingResponse);
             }
             if(hashMap.size() == 3) break;
         }
 
-        return KingDataResponse.builder()
-                .data(new ArrayList(hashMap.values()))
+        return KingResponse.builder()
+                .choreKing(new ArrayList(hashMap.values()))
+                .questKing(questKing)
                 .build();
-    }
-
-    public QuestKingResponse monthQuestKing(long groupId, String date){
-        existGroup(groupId);
-        return questRepository.questKingMonth(groupId, setFormatDate(date));
     }
 
     private YearMonth setFormatDate(String date){

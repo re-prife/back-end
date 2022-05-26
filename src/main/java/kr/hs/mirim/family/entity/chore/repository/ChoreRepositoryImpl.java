@@ -2,6 +2,7 @@ package kr.hs.mirim.family.entity.chore.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.hs.mirim.family.dto.response.ChoreKingResponse;
 import kr.hs.mirim.family.dto.response.KingResponse;
 import kr.hs.mirim.family.dto.response.ChoreListDataResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
@@ -23,10 +24,10 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
     }
 
     @Override
-    public List<KingResponse> monthKing(long groupId, YearMonth date) {
+    public List<ChoreKingResponse> monthKing(long groupId, YearMonth date) {
         return queryFactory
                 .select(Projections.constructor(
-                        KingResponse.class,
+                        ChoreKingResponse.class,
                         chore.choreCategory,
                         chore.user.userId,
                         chore.choreCategory.count().as("questCount")

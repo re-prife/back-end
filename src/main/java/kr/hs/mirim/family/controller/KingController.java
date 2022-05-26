@@ -1,7 +1,6 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.response.KingDataResponse;
-import kr.hs.mirim.family.dto.response.QuestKingResponse;
+import kr.hs.mirim.family.dto.response.KingResponse;
 import kr.hs.mirim.family.service.KingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +13,7 @@ public class KingController {
     private final KingService kingService;
 
     @GetMapping("/kings")
-    public KingDataResponse getKingOfTheMonth(@PathVariable long groupId, @RequestParam String date){
+    public KingResponse getKingOfTheMonth(@PathVariable long groupId, @RequestParam String date){
         return kingService.kingOfTheMonth(groupId,date);
-    }
-
-    @GetMapping("/kings/quests")
-    public QuestKingResponse getQuestKingOfMonth(@PathVariable long groupId, @RequestParam String date){
-        return kingService.monthQuestKing(groupId, date);
     }
 }
