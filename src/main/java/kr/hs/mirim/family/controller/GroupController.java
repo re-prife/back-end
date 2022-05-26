@@ -36,9 +36,9 @@ public class GroupController {
         return groupService.userList(groupId, userId);
     }
 
-    @PostMapping("/{groupId}/report")
+    @PutMapping("/{groupId}/report")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void addReport(@PathVariable Long groupId, @Valid @RequestBody ReportRequest request, BindingResult bindingResult){
-        groupService.addReport(groupId, request, bindingResult);
+    public void updateGroupReport(@PathVariable Long groupId, @Valid @RequestBody ReportRequest request, BindingResult bindingResult){
+        groupService.updateGroupReport(groupId, request, bindingResult);
     }
 }
