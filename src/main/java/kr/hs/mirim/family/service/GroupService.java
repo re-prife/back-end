@@ -83,7 +83,7 @@ public class GroupService {
     }
 
     @Transactional
-    public void addReport(long groupId, ReportRequest request, BindingResult bindingResult) {
+    public void updateGroupReport(long groupId, ReportRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
         Group group = groupRepository.findById(groupId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
