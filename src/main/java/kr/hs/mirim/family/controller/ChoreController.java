@@ -6,6 +6,7 @@ import kr.hs.mirim.family.dto.response.ChoreListMonthResponse;
 import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
 import kr.hs.mirim.family.service.ChoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,13 @@ public class ChoreController {
     @PostMapping("/{choreId}/reaction")
     public void choreCertifyReaction(@PathVariable long groupId, @PathVariable long choreId, @Valid @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest, BindingResult bindingResult){
         choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest, bindingResult);
+    }
+
+    @DeleteMapping("/{choreId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deleteChore(
+            @PathVariable long groupId, @PathVariable long choreId
+    ){
+        choreService.deleteChore(groupId, choreId);
     }
 }
