@@ -54,17 +54,21 @@ public class IngredientService {
     }
 
     @Transactional
-    public void updateIngredient(long groupId, long ingredientId, IngredientRequest request){
+    public void updateIngredient(long groupId, long ingredientId, IngredientRequest request, BindingResult result){
+        formValidate(result);
         exitsGroup(groupId);
         exitsIngredient(ingredientId);
+
+        Ingredient ingredient = getIngredient(ingredientId);
+
+        existIngredientInGroup(groupId, ingredient);
 
         if(checkIngredientCount(request.getIngredientCount())){
             ingredientRepository.deleteById(ingredientId);
             return ;
         }
 
-        Ingredient ingredient = getIngredient(ingredientId);
-        ingredientRepository.save(ingredient.updateIngredient(request));
+        ingredient.updateIngredient(request);
     }
 
     private boolean checkIngredientCount(String ingredientCount){
@@ -104,6 +108,12 @@ public class IngredientService {
     private void exitsIngredient(long ingredientId){
         if(!ingredientRepository.existsById(ingredientId)){
             throw new DataNotFoundException("존재하지 않는 식재료입니다.");
+        }
+    }
+
+    private void existIngredientInGroup(long groupId, Ingredient ingredient){
+        if(!(ingredient.getGroup().getGroupId() == groupId)){
+            throw new DataNotFoundException("해당 그룹에 식재료가 없습니다.");
         }
     }
 }

@@ -64,7 +64,7 @@ public class Ingredient extends BaseEntity {
         this.group = group;
     }
 
-    public Ingredient updateIngredient(IngredientRequest request){
+    public void updateIngredient(IngredientRequest request){
         this.ingredientName = request.getIngredientName();
         this.ingredientCount = request.getIngredientCount();
         this.ingredientSaveType = request.getIngredientSaveType();
@@ -72,6 +72,5 @@ public class Ingredient extends BaseEntity {
         this.ingredientPurchaseDate = request.getIngredientPurchaseDate();
         this.ingredientExpirationDate = request.getIngredientExpirationDate();
         this.ingredientMemo = request.getIngredientMemo();
-        return this;
     }
 }

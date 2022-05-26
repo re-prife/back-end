@@ -27,7 +27,7 @@ public class IngredientController {
     }
 
     @PutMapping("/{ingredientId}")
-    public void updateIngredient(@PathVariable long groupId, @PathVariable long ingredientId, @RequestBody IngredientRequest request){
-        ingredientService.updateIngredient(groupId, ingredientId, request);
+    public void updateIngredient(@PathVariable long groupId, @PathVariable long ingredientId, @RequestBody @Valid IngredientRequest request, BindingResult result){
+        ingredientService.updateIngredient(groupId, ingredientId, request, result);
     }
 }
