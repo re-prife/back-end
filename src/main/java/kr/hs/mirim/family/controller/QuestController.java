@@ -47,6 +47,17 @@ public class QuestController {
         questService.questCompleteCheck(groupId, questId, requesterId);
     }
 
+
+    @DeleteMapping("/{questId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deleteQuest(
+            @PathVariable long groupId,
+            @PathVariable long questId,
+            @RequestParam long userId
+    ){
+        questService.deleteQuest(groupId, questId, userId);
+    }
+
     @PutMapping("/{questId}")
     public QuestResponse updateQuest(
             @PathVariable long groupId,
