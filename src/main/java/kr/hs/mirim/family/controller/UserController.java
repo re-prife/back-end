@@ -35,7 +35,7 @@ public class UserController {
         userService.deleteUser(userId, deleteUserRequest);
     }
 
-    @PostMapping("/{userId}/check")
+    @PostMapping("/{userId}/password-check")
     public void checkUserPassword(@PathVariable long userId, @RequestBody @Valid CheckUserPasswordRequest checkUserPasswordRequest){
         userService.checkUserPassword(userId, checkUserPasswordRequest);
     }
