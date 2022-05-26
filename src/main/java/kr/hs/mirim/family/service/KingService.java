@@ -26,6 +26,7 @@ public class KingService {
 
     public KingResponse kingOfTheMonth(long groupId, String date){
 
+        existGroup(groupId);
         List<QuestKingResponse> questKing = questRepository.questKingMonth(groupId, setFormatDate(date));
         List<ChoreKingResponse> choreList = choreRepository.monthKing(groupId, setFormatDate(date));
         HashMap<ChoreCategory, ChoreKingResponse> hashMap = new HashMap<>();
