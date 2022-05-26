@@ -48,7 +48,7 @@ public class IngredientService {
     }
 
     public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType){
-        exitsGroup(groupId);
+        existGroup(groupId);
 
         return ingredientRepository.ingredientSaveTypeList(groupId, saveType);
     }
@@ -56,8 +56,8 @@ public class IngredientService {
     @Transactional
     public void updateIngredient(long groupId, long ingredientId, IngredientRequest request, BindingResult result){
         formValidate(result);
-        exitsGroup(groupId);
-        exitsIngredient(ingredientId);
+        existGroup(groupId);
+        existIngredient(ingredientId);
 
         Ingredient ingredient = getIngredient(ingredientId);
 
@@ -93,7 +93,7 @@ public class IngredientService {
         });
     }
 
-    private void exitsGroup(long groupId){
+    private void existGroup(long groupId){
         if(!groupRepository.existsById(groupId)){
             throw new DataNotFoundException("존재하지 않는 그룹입니다,");
         }
@@ -105,7 +105,7 @@ public class IngredientService {
         });
     }
 
-    private void exitsIngredient(long ingredientId){
+    private void existIngredient(long ingredientId){
         if(!ingredientRepository.existsById(ingredientId)){
             throw new DataNotFoundException("존재하지 않는 식재료입니다.");
         }
