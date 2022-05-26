@@ -32,9 +32,9 @@ public class UserController {
         userService.deleteUser(userId, deleteUserRequest);
     }
 
-    @PostMapping("/{userId}/password-check")
-    public void checkUserPassword(@PathVariable long userId, @RequestBody CheckUserPasswordRequest checkUserPasswordRequest){
-        userService.checkUserPassword(userId, checkUserPasswordRequest);
+    @PutMapping("/{userId}/password")
+    public void updateUserPassword(@PathVariable long userId, @RequestBody @Valid UpdateUserPasswordRequest updateUserPasswordRequest, BindingResult bindingResult){
+        userService.updateUserPassword(userId, updateUserPasswordRequest, bindingResult);
     }
 
     @PutMapping("/{userId}")

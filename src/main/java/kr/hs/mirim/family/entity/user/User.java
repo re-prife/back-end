@@ -56,10 +56,13 @@ public class User {
         this.userImageName = userImageName;
     }
 
-    public void updateUser(String userName, String userNickname, String userPassword, String userImageName){
+    public void updateUser(String userName, String userNickname, String userImageName){
         this.userName = userName;
         this.userNickname = userNickname;
-        this.userPassword = userPassword;
         this.userImageName = userImageName;
+    }
+
+    public void updateUser(String userPassword){
+        this.userPassword = userPassword;
     }
 }
