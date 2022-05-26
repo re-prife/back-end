@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.controller;
 
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
+import kr.hs.mirim.family.dto.request.ReportRequest;
 import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.service.GroupService;
@@ -30,8 +31,14 @@ public class GroupController {
         groupService.joinGroup(request, userId, bindingResult);
     }
 
-    @GetMapping("{groupId}/{userId}")
+    @GetMapping("/{groupId}/{userId}")
     public List<UserListResponse> userList(@PathVariable Long groupId, @PathVariable Long userId) {
         return groupService.userList(groupId, userId);
+    }
+
+    @PostMapping("/{groupId}/report")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void addReport(@PathVariable Long groupId, @Valid @RequestBody ReportRequest request, BindingResult bindingResult){
+        groupService.addReport(groupId, request, bindingResult);
     }
 }
