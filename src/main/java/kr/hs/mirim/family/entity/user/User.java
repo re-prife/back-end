@@ -55,4 +55,11 @@ public class User {
         this.userPassword = userPassword;
         this.userImageName = userImageName;
     }
+
+    public void updateUser(String userName, String userNickname, String userPassword, String userImageName){
+        this.userName = userName;
+        this.userNickname = userNickname;
+        this.userPassword = userPassword;
+        this.userImageName = userImageName;
+    }
 }

@@ -1,9 +1,6 @@
 package kr.hs.mirim.family.controller;
 
-import kr.hs.mirim.family.dto.request.CheckUserPasswordRequest;
-import kr.hs.mirim.family.dto.request.CreateUserRequest;
-import kr.hs.mirim.family.dto.request.DeleteUserRequest;
-import kr.hs.mirim.family.dto.request.LoginUserRequest;
+import kr.hs.mirim.family.dto.request.*;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/password-check")
-    public void checkUserPassword(@PathVariable long userId, @RequestBody @Valid CheckUserPasswordRequest checkUserPasswordRequest){
+    public void checkUserPassword(@PathVariable long userId, @RequestBody CheckUserPasswordRequest checkUserPasswordRequest){
         userService.checkUserPassword(userId, checkUserPasswordRequest);
+    }
+
+    @PutMapping("/{userId}")
+    public void updateUser(@PathVariable long userId, @RequestBody @Valid UpdateUserRequest updateUserRequest, BindingResult bindingResult){
+        userService.updateUser(userId, updateUserRequest, bindingResult);
     }
 }
