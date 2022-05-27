@@ -160,12 +160,7 @@ public class QuestService {
         relationValidate(groupId, questId, userId);
         Quest quest = getQuest(questId);
 
-        if (quest.getUser().getUserId() != userId) {
-            throw new ConflictException("심부름을 요청한 사람만 삭제할 수 있습니다.");
-        }
-        if (quest.getAcceptUserId() != -1) {
-            throw new MethodNotAllowedException("심부름 수락자가 있으면 삭제가 불가능합니다.");
-        }
+        questUserAndAcceptorCheck(quest, userId);
 
         questRepository.deleteById(questId);
     }
@@ -192,12 +187,7 @@ public class QuestService {
         relationValidate(groupId, questId, requesterId);
         Quest quest = getQuest(questId);
 
-        if (quest.getUser().getUserId() != requesterId) {
-            throw new ConflictException("심부름을 요청한 사람만 수정할 수 있습니다.");
-        }
-        if (quest.getAcceptUserId() != -1) {
-            throw new MethodNotAllowedException("심부름 수락자가 있으면 수정이 불가능합니다.");
-        }
+        questUserAndAcceptorCheck(quest, requesterId);
 
         quest.updateQuest(request.getQuestTitle(), request.getQuestContent());
 
@@ -243,6 +233,15 @@ public class QuestService {
         }
         if (!userRepository.existsByUserIdAndGroup(userId, group)) {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
+        }
+    }
+
+    private void questUserAndAcceptorCheck(Quest quest, long userId) {
+        if (quest.getUser().getUserId() != userId) {
+            throw new ConflictException("심부름 요청자가 아닙니다.");
+        }
+        if (quest.getAcceptUserId() != -1) {
+            throw new MethodNotAllowedException("심부름 수락자가 존재합니다.");
         }
     }
 }
