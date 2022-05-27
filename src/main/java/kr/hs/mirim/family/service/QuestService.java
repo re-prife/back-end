@@ -68,7 +68,7 @@ public class QuestService {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
-        List<Quest> questList = questRepository.findAllByGroup(group);
+        List<Quest> questList = questRepository.findAllByGroupOrderByModifiedDateDesc(group);
         return questList.stream()
                 .map(QuestResponse::of)
                 .collect(Collectors.toList());

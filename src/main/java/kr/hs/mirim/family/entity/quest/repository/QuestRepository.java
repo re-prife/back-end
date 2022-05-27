@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface QuestRepository extends JpaRepository<Quest, Long> {
-    List<Quest> findAllByGroup(Group group);
+    List<Quest> findAllByGroupOrderByModifiedDateDesc(Group group);
     @Modifying
     @Transactional
     @Query(value = "UPDATE quest_tb q set q.accept_user_id = :userId where q.quest_id = :questId", nativeQuery = true)
