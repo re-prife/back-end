@@ -48,7 +48,7 @@ public class IngredientRepositoryImpl extends QuerydslRepositorySupport implemen
         UpdateClause<JPAUpdateClause> updateBuilder = update(ingredient);
         updateBuilder.set(ingredient.ingredientCount, ingredientCount);
 
-        updateBuilder.where(ingredient.ingredientId.eq(ingredientId)).execute();
+        updateBuilder.where(ingredient.ingredientId.eq(ingredientId), ingredient.group.groupId.eq(groupId)).execute();
     }
 
     private BooleanExpression eqSaveType(String saveType){
