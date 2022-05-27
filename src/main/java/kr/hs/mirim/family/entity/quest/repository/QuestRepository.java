@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface QuestRepository extends JpaRepository<Quest, Long> {
+public interface QuestRepository extends JpaRepository<Quest, Long>, QuestRepositoryExtension {
     List<Quest> findAllByGroup(Group group);
     @Modifying
     @Transactional
