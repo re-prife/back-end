@@ -19,7 +19,7 @@ public class QuestRepositoryImpl extends QuerydslRepositorySupport implements Qu
         this.queryFactory = jpaQueryFactory;
     }
 
-    public List<QuestKingResponse> questKingMonth(long groupId, YearMonth date){
+    public QuestKingResponse questKingMonth(long groupId, YearMonth date){
 
         return queryFactory
                 .select(Projections.constructor(
@@ -30,6 +30,6 @@ public class QuestRepositoryImpl extends QuerydslRepositorySupport implements Qu
                 .from(quest)
                 .groupBy(quest.acceptUserId)
                 .where(quest.group.groupId.eq(groupId), quest.completeCheck.eq(true), quest.createdDate.month().eq(date.getMonthValue()), quest.modifiedDate.year().eq(date.getYear()))
-                .fetch();
+                .fetchFirst();
     }
 }

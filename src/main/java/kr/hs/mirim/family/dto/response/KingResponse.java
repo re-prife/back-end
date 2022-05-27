@@ -15,5 +15,5 @@ import java.util.*;
 public class KingResponse {
 
     private List<ChoreKingResponse> choreKing;
-    private List<QuestKingResponse> questKing;
+    private QuestKingResponse questKing;
 }

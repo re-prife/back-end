@@ -6,5 +6,5 @@ import java.util.*;
 import java.time.YearMonth;
 
 public interface QuestRepositoryExtension{
-    List<QuestKingResponse> questKingMonth(long groupId, YearMonth date);
+    QuestKingResponse questKingMonth(long groupId, YearMonth date);
 }
