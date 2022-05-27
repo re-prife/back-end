@@ -141,7 +141,7 @@ public class QuestService {
 
     /*
      * 심부름 삭제 기능 구현
-     * - 심부름을 요청한 사람만이 심부름 요청 전에 삭제할 수 있다.
+     * - 심부름을 요청한 사람만이 심부름이 수락되기 전까지 삭제할 수 있다.
      *
      * 404 not found
      * - groupId가 존재하지 않을 경우
@@ -163,8 +163,8 @@ public class QuestService {
         if (quest.getUser().getUserId() != userId) {
             throw new ConflictException("심부름을 요청한 사람만 삭제할 수 있습니다.");
         }
-        if (quest.isCompleteCheck()) {
-            throw new MethodNotAllowedException("완료된 심부름은 삭제할 수 없습니다.");
+        if (quest.getAcceptUserId() != -1) {
+            throw new MethodNotAllowedException("심부름 수락자가 있으면 수정이 불가능합니다.");
         }
 
         questRepository.deleteById(questId);
