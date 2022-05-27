@@ -2,6 +2,7 @@ package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.DeleteIngredientRequest;
 import kr.hs.mirim.family.dto.request.IngredientRequest;
+import kr.hs.mirim.family.dto.request.UpdateIngredientCountRequest;
 import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
@@ -82,6 +83,27 @@ public class IngredientService {
             existIngredientInGroup(groupId, ingredient);
 
             ingredientRepository.deleteById(ingredient.getIngredientId());
+        }
+    }
+
+    @Transactional
+    public void updateIngredientCount(long groupId, UpdateIngredientCountRequest request, BindingResult result){
+        formValidate(result);
+        existGroup(groupId);
+
+        for(int i=0; i<request.getData().size(); i++){
+            Ingredient ingredient = getIngredient(request.getData().get(i).getIngredientId());
+            existIngredientInGroup(groupId, ingredient);
+
+            String requestCount = request.getData().get(i).getIngredientCount();
+            long requestIngredientId = request.getData().get(i).getIngredientId();
+
+            if(checkIngredientCount(requestCount)){
+                ingredientRepository.deleteById(requestIngredientId);
+            }
+            else {
+                ingredientRepository.ingredientCountUpdate(groupId, requestIngredientId, requestCount);
+            }
         }
     }
 
