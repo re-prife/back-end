@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.service;
 
+import kr.hs.mirim.family.dto.request.DeleteIngredientRequest;
 import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.entity.group.Group;
@@ -71,6 +72,19 @@ public class IngredientService {
         ingredient.updateIngredient(request);
     }
 
+    @Transactional
+    public void deleteIngredient(long groupId, DeleteIngredientRequest request, BindingResult result){
+        formValidate(result);
+        existGroup(groupId);
+
+        for(int i=0; i<request.getData().size(); i++){
+            Ingredient ingredient = getIngredient(request.getData().get(i).getIngredientId());
+            existIngredientInGroup(groupId, ingredient);
+
+            ingredientRepository.deleteById(ingredient.getIngredientId());
+        }
+    }
+
     private boolean checkIngredientCount(String ingredientCount){
         char[] arr = ingredientCount.toCharArray();
         int s = 0;
@@ -95,7 +109,7 @@ public class IngredientService {
 
     private void existGroup(long groupId){
         if(!groupRepository.existsById(groupId)){
-            throw new DataNotFoundException("존재하지 않는 그룹입니다,");
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         }
     }
 

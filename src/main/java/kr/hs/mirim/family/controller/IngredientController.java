@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.controller;
 
+import kr.hs.mirim.family.dto.request.DeleteIngredientRequest;
 import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.service.IngredientService;
@@ -27,7 +28,15 @@ public class IngredientController {
     }
 
     @PutMapping("/{ingredientId}")
-    public void updateIngredient(@PathVariable long groupId, @PathVariable long ingredientId, @RequestBody @Valid IngredientRequest request, BindingResult result){
+    public void updateIngredient(@PathVariable long groupId,
+                                 @PathVariable long ingredientId,
+                                 @RequestBody @Valid IngredientRequest request,
+                                 BindingResult result){
         ingredientService.updateIngredient(groupId, ingredientId, request, result);
+    }
+
+    @DeleteMapping
+    public void deleteIngredient(@PathVariable long groupId, @RequestBody @Valid DeleteIngredientRequest request, BindingResult result){
+        ingredientService.deleteIngredient(groupId, request, result);
     }
 }
