@@ -77,9 +77,6 @@ public class IngredientService {
         formValidate(result);
         existGroup(groupId);
 
-        if(request.getData().size() == 0) {
-            throw new DataNotFoundException("삭제할 식재료가 없습니다.");
-        }
         for(int i=0; i<request.getData().size(); i++){
             Ingredient ingredient = getIngredient(request.getData().get(i).getIngredientId());
             existIngredientInGroup(groupId, ingredient);
