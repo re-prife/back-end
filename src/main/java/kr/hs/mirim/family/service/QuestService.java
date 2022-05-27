@@ -202,11 +202,9 @@ public class QuestService {
         quest.updateQuest(request.getQuestTitle(), request.getQuestContent());
 
         return QuestResponse.builder()
+                .questId(quest.getQuestId())
                 .requestUserId(quest.getUser().getUserId())
                 .questTitle(quest.getQuestTitle())
-                .questContent(quest.getQuestContent())
-                .questCreatedDate(quest.getCreatedDate())
-                .questModifiedDate(quest.getModifiedDate())
                 .completeCheck(quest.isCompleteCheck())
                 .acceptUserId(quest.getAcceptUserId())
                 .build();
