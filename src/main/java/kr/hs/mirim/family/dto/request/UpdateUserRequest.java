@@ -18,9 +18,6 @@ public class UpdateUserRequest {
     @NotEmpty
     private String userNickname;
 
-    @NotEmpty
-    private String userPassword;
-
     @NotNull
     private String userImageName;
 }

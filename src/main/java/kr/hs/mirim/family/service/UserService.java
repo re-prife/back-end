@@ -61,9 +61,15 @@ public class UserService {
     }
 
     @Transactional
-    public void checkUserPassword(long userId, CheckUserPasswordRequest checkUserPasswordRequest){
+    public void updateUserPassword(long userId, UpdateUserPasswordRequest updateUserPasswordRequest, BindingResult bindingResult){
         User user = getUser(userId);
-        passwordCheck(user, checkUserPasswordRequest.getUserPassword());
+        formValidateException(bindingResult);
+        passwordCheck(user, updateUserPasswordRequest.getUserPassword());
+        if(updateUserPasswordRequest.getUserNewPassword().equals(updateUserPasswordRequest.getUserNewPasswordCheck())){
+            user.updateUserPassword(createPassword(updateUserPasswordRequest.getUserNewPassword()));
+        }else{
+            throw new ConflictException("확인 비밀번호가 새비밀번호와 일치하지 않습니다.");
+        }
     }
 
     /*
@@ -71,16 +77,14 @@ public class UserService {
      * 수정이 정상적으로 처리된 경우 200
      * 존재하지 않는 ID일 경우 404
      * 잘못된 형식의 값이 들어오는 경우 409
-     * 
-     * 비밀번호 암호화 후, update진행
+     *
      * @author: SRin23
      */
     @Transactional
     public void updateUser(long userId, UpdateUserRequest updateUserRequest, BindingResult bindingResult){
         User user = getUser(userId);
         formValidateException(bindingResult);
-        String encodePassword = createPassword(updateUserRequest.getUserPassword());
-        user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname(), encodePassword, updateUserRequest.getUserImageName());
+        user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname(), updateUserRequest.getUserImageName());
     }
 
     private String createPassword(String userPassword){
