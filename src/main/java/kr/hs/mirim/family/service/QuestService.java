@@ -68,7 +68,7 @@ public class QuestService {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
-        List<Quest> questList = questRepository.findAllByGroup(group);
+        List<Quest> questList = questRepository.findAllByGroupOrderByModifiedDateDesc(group);
         return questList.stream()
                 .map(QuestResponse::of)
                 .collect(Collectors.toList());
@@ -141,7 +141,7 @@ public class QuestService {
 
     /*
      * 심부름 삭제 기능 구현
-     * - 심부름을 요청한 사람만이 심부름 요청 전에 삭제할 수 있다.
+     * - 심부름을 요청한 사람만이 심부름이 수락되기 전까지 삭제할 수 있다.
      *
      * 404 not found
      * - groupId가 존재하지 않을 경우
@@ -160,12 +160,7 @@ public class QuestService {
         relationValidate(groupId, questId, userId);
         Quest quest = getQuest(questId);
 
-        if (quest.getUser().getUserId() != userId) {
-            throw new ConflictException("심부름을 요청한 사람만 삭제할 수 있습니다.");
-        }
-        if (quest.isCompleteCheck()) {
-            throw new MethodNotAllowedException("완료된 심부름은 삭제할 수 없습니다.");
-        }
+        questUserAndAcceptorCheck(quest, userId);
 
         questRepository.deleteById(questId);
     }
@@ -192,21 +187,14 @@ public class QuestService {
         relationValidate(groupId, questId, requesterId);
         Quest quest = getQuest(questId);
 
-        if (quest.getUser().getUserId() != requesterId) {
-            throw new ConflictException("심부름 요청자가 아닙니다.");
-        }
-        if (quest.getAcceptUserId() != -1) {
-            throw new MethodNotAllowedException("심부름 수락자가 있으면 수정이 불가능합니다.");
-        }
+        questUserAndAcceptorCheck(quest, requesterId);
 
         quest.updateQuest(request.getQuestTitle(), request.getQuestContent());
 
         return QuestResponse.builder()
+                .questId(quest.getQuestId())
                 .requestUserId(quest.getUser().getUserId())
                 .questTitle(quest.getQuestTitle())
-                .questContent(quest.getQuestContent())
-                .questCreatedDate(quest.getCreatedDate())
-                .questModifiedDate(quest.getModifiedDate())
                 .completeCheck(quest.isCompleteCheck())
                 .acceptUserId(quest.getAcceptUserId())
                 .build();
@@ -245,6 +233,15 @@ public class QuestService {
         }
         if (!userRepository.existsByUserIdAndGroup(userId, group)) {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
+        }
+    }
+
+    private void questUserAndAcceptorCheck(Quest quest, long userId) {
+        if (quest.getUser().getUserId() != userId) {
+            throw new ConflictException("심부름 요청자가 아닙니다.");
+        }
+        if (quest.getAcceptUserId() != -1) {
+            throw new MethodNotAllowedException("심부름 수락자가 존재합니다.");
         }
     }
 }

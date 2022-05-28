@@ -15,15 +15,11 @@ import java.time.LocalDateTime;
 @Builder
 public class QuestResponse {
     @NonNull
+    private long questId;
+    @NonNull
     private long requestUserId;
     @NonNull
     private String questTitle;
-    @NonNull
-    private String questContent;
-    @NonNull
-    private LocalDateTime questCreatedDate;
-    @NonNull
-    private LocalDateTime questModifiedDate;
     @NonNull
     private boolean completeCheck;
     @NonNull
@@ -31,11 +27,9 @@ public class QuestResponse {
 
     public static QuestResponse of(Quest quest) {
         QuestResponse questListResponse = new QuestResponse();
+        questListResponse.questId = quest.getQuestId();
         questListResponse.requestUserId = quest.getUser().getUserId();
         questListResponse.questTitle = quest.getQuestTitle();
-        questListResponse.questContent = quest.getQuestContent();
-        questListResponse.questCreatedDate = quest.getCreatedDate();
-        questListResponse.questModifiedDate = quest.getModifiedDate();
         questListResponse.completeCheck = quest.isCompleteCheck();
         questListResponse.acceptUserId = quest.getAcceptUserId();
         return questListResponse;
