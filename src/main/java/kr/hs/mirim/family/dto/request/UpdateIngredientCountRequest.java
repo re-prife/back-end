@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import java.util.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CheckUserPasswordRequest {
-    @NotNull
-    private String userPassword;
+public class UpdateIngredientCountRequest {
+    List<UpdateIngredientCountDataRequest> data;
 }

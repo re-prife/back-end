@@ -1,6 +1,6 @@
-package kr.hs.mirim.family.dto.request;
+package kr.hs.mirim.family.dto.response;
 
-
+import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,13 +11,14 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserRequest {
-    @NotEmpty
-    private String userName;
+public class ChoreKingResponse {
 
     @NotEmpty
-    private String userNickname;
+    private ChoreCategory category;
 
     @NotNull
-    private String userImageName;
+    private long userId;
+
+    @NotNull
+    private long count;
 }

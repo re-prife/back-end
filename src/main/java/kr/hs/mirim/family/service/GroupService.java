@@ -2,6 +2,7 @@ package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
+import kr.hs.mirim.family.dto.request.ReportRequest;
 import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
@@ -79,6 +80,15 @@ public class GroupService {
         }
         existsUser(userId);
         return userRepository.userList(groupId, userId);
+    }
+
+    @Transactional
+    public void updateGroupReport(long groupId, ReportRequest request, BindingResult bindingResult) {
+        formValidate(bindingResult);
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
+        group.updateGroupReport(request.getGroupReport());
     }
 
     private void formValidate(BindingResult bindingResult) {
