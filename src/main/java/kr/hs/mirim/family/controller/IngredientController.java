@@ -43,7 +43,7 @@ public class IngredientController {
         ingredientService.deleteIngredient(groupId, request, result);
     }
 
-    @PutMapping()
+    @PutMapping
     public void updateIngredientCount(@PathVariable long groupId,
                                       @RequestBody @Valid UpdateIngredientCountRequest request,
                                       BindingResult result){
