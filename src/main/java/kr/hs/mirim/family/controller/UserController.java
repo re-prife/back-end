@@ -2,6 +2,7 @@ package kr.hs.mirim.family.controller;
 
 import kr.hs.mirim.family.dto.request.*;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
+import kr.hs.mirim.family.dto.response.UserFindResponse;
 import kr.hs.mirim.family.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,10 @@ public class UserController {
     @PutMapping("/{userId}")
     public void updateUser(@PathVariable long userId, @RequestBody @Valid UpdateUserRequest updateUserRequest, BindingResult bindingResult){
         userService.updateUser(userId, updateUserRequest, bindingResult);
+    }
+
+    @GetMapping("/{userId}")
+    public UserFindResponse getKingOfTheMonth(@PathVariable long userId, @RequestParam String date){
+        return userService.findKingOfTheMonthById(userId,date);
     }
 }
