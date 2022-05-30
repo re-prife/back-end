@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://family-db.clb1xa1lzrvw.us-east-1.rds.amazonaws.com:3306/family-db?serverTimezone=UTC&characterEncoding=UTF-8
-    username: admin
-    password: mirim123
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   h2:
     console:
