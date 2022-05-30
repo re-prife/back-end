@@ -33,14 +33,14 @@ public class ChoreController {
         return choreService.choreListMonth(groupId, date);
     }
 
-    @PostMapping("/{choreId}/certify")
+    @PutMapping("/{choreId}/certify")
     public void choreCertify(@PathVariable long groupId, @PathVariable long choreId){
         choreService.choreCertify(groupId, choreId);
     }
 
-    @PostMapping("/{choreId}/reaction")
-    public void choreCertifyReaction(@PathVariable long groupId, @PathVariable long choreId, @Valid @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest, BindingResult bindingResult){
-        choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest, bindingResult);
+    @PutMapping("/{choreId}/reaction")
+    public void choreCertifyReaction(@PathVariable long groupId, @PathVariable long choreId, @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest){
+        choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest);
     }
 
     @DeleteMapping("/{choreId}")
