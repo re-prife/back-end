@@ -99,7 +99,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserFindResponse findKingOfTheMonthById(long userId, String date) {
+    public UserFindResponse findUserInfo(long userId, String date) {
         User user = getUser(userId);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
