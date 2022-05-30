@@ -70,7 +70,7 @@ public class ChoreController {
             @ApiResponse(responseCode = "409", description = "이미 인증 요청된 집안일일 경우")
     })
     @Operation(tags = "CHORE", summary = "집안일 인증 요청", description = "집안일 상태를 REQUEST로 갱신하는 API")
-    @PostMapping("/{choreId}/certify")
+    @PutMapping("/{choreId}/certify")
     public void choreCertify(@ApiParam(value = "집안일이 속한 그룹의 ID") @PathVariable long groupId,
                              @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId) {
         choreService.choreCertify(groupId, choreId);
@@ -83,7 +83,7 @@ public class ChoreController {
             @ApiResponse(responseCode = "409", description = "집안일 상태가 이미 SUCCESS인데 REQUEST로 변경하려는 경우\n\n집안일 상태가 REQUEST가 아닐 경우")
     })
     @Operation(tags = "CHORE", summary = "집안일 인증 요청 응답", description = "인증 요청에 대한 응답을 갱신하는 API")
-    @PostMapping("/{choreId}/reaction")
+    @PutMapping("/{choreId}/reaction")
     public void choreCertifyReaction(@ApiParam(value = "집안일이 속한 그룹의 ID") @PathVariable long groupId,
                                      @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId,
                                      @Valid @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest,
