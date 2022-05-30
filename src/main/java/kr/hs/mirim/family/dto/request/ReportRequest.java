@@ -15,6 +15,6 @@ import javax.validation.constraints.NotEmpty;
 public class ReportRequest {
     @Schema(description = "갱신할 공지사항 내용", example = "이번주 청소 담당 확인")
     @NotEmpty
-    @Length(max=50)
+    @Length(max = 50)
     private String groupReport;
 }
