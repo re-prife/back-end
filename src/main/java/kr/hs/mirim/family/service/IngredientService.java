@@ -62,7 +62,6 @@ public class IngredientService {
         existIngredient(ingredientId);
 
         Ingredient ingredient = getIngredient(ingredientId);
-
         existIngredientInGroup(groupId, ingredient);
 
         if(checkIngredientCount(request.getIngredientCount())){
@@ -113,7 +112,6 @@ public class IngredientService {
         for(char c : arr){
             if(Character.isDigit(c)) s+=Character.getNumericValue(c);
         }
-
         return s == 0;
     }
 

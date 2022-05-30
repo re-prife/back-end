@@ -1,7 +1,10 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.*;
-import kr.hs.mirim.family.dto.response.LoginUserResponse;
+import kr.hs.mirim.family.dto.response.*;
+import kr.hs.mirim.family.entity.chore.ChoreCategory;
+import kr.hs.mirim.family.entity.chore.repository.ChoreRepository;
+import kr.hs.mirim.family.entity.quest.repository.QuestRepository;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.ConflictException;
@@ -14,10 +17,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final ChoreRepository choreRepository;
+    private final QuestRepository questRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -85,6 +96,61 @@ public class UserService {
         User user = getUser(userId);
         formValidateException(bindingResult);
         user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname(), updateUserRequest.getUserImageName());
+    }
+
+    @Transactional
+    public UserFindResponse findUserInfo(long userId, String date) {
+        User user = getUser(userId);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        YearMonth localDate;
+        try{
+            localDate = YearMonth.parse(date, formatter);
+        }catch(Exception e){
+            throw new BadRequestException("잘못된 형식입니다.");
+        }
+
+        QuestKingResponse questKing = questRepository.questKingMonth(user.getGroup().getGroupId(), localDate);
+        if(questKing!=null){
+            if(questKing.getUserId()!=userId){
+                questKing = null;
+            }
+        }
+
+        List<ChoreKingResponse> choreList = choreRepository.monthKing(user.getGroup().getGroupId(), localDate);
+        HashMap<ChoreCategory, ChoreKingResponse> choreMap = new HashMap<>();
+        for (ChoreKingResponse choreKingResponse : choreList) {
+            if (choreMap.containsKey(choreKingResponse.getCategory())) {
+                if (choreMap.get(choreKingResponse.getCategory()).getCount() < choreKingResponse.getCount())
+                    choreMap.put(choreKingResponse.getCategory(), choreKingResponse);
+            } else {
+                choreMap.put(choreKingResponse.getCategory(), choreKingResponse);
+            }
+            if(choreMap.size() == 3) break;
+        }
+
+        List<ChoreKingResponse> choreKingResult = new ArrayList();
+
+        if(!choreMap.isEmpty()){
+            for(ChoreKingResponse item : choreMap.values()){
+                if(item.getUserId()==userId){
+                    choreKingResult.add(item);
+                }
+            }
+        }
+
+        return UserFindResponse.builder()
+                .userName(user.getUserName())
+                .userNickname(user.getUserNickname())
+                .userEmail(user.getUserEmail())
+                .userImageName(user.getUserImageName())
+                .king(
+                        UserFindKingResponse.builder()
+                                .choreKing(choreKingResult)
+                                .questKing(questKing)
+                                .build()
+                )
+                .build();
     }
 
     private String createPassword(String userPassword){
