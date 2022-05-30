@@ -30,7 +30,7 @@ public class Chore extends BaseEntity {
     @Column(name = "chore_date", nullable = false)
     private LocalDate choreDate;
 
-    @Column(name = "chore_category", nullable = false)
+    @Column(name = "chore_category", nullable = false, columnDefinition = "CHAR(20)")
     @Enumerated(EnumType.STRING)
     private ChoreCategory choreCategory;
 
