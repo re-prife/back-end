@@ -12,10 +12,7 @@ import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
-import kr.hs.mirim.family.exception.BadRequestException;
-import kr.hs.mirim.family.exception.ConflictException;
-import kr.hs.mirim.family.exception.DataNotFoundException;
-import kr.hs.mirim.family.exception.MethodNotAllowedException;
+import kr.hs.mirim.family.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +50,10 @@ public class ChoreService {
         Group group = getGroup(groupId);
         User user = getUser(createChoreRequest.getChoreUserId());
         userInGroup(user.getGroup().getGroupId(), group.getGroupId());
+
+        if (createChoreRequest.getChoreDate().isBefore(LocalDate.now())) {
+            throw new DateOverException("이미 지난 날짜는 당번을 생성할 수 없습니다.");
+        }
 
         ChoreCategory choreCategory = enumCategoryValid(createChoreRequest.getChoreCategory());
 
@@ -105,15 +106,18 @@ public class ChoreService {
                 .build();
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = DateOverException.class)
     public void choreCertify(long groupId, long choreId) {
         existsGroup(groupId);
-        Chore chore = getChore(choreId);
+        choreCheckFail(getChore(choreId));
+        Chore chore = choreRepository.getById(choreId);
         existsChoreInGroup(groupId, chore.getGroup().getGroupId());
         if (chore.getChoreCheck().equals(BEFORE)) {
             choreRepository.updateChoreCheck(choreId, REQUEST);
+        } else if (chore.getChoreCheck().equals(FAIL)) {
+            throw new DateOverException("이미 당번 활동에 대해 인증받지 못하고 종료된 집안일 입니다.");
         } else {
-            throw new ConflictException("이미 인증 요청된 집안일입니다.");
+            throw new ConflictException("이미 인증 요청이 끝난 집안일입니다.");
         }
     }
 
@@ -132,51 +136,56 @@ public class ChoreService {
      *
      * @author : SRin23
      */
-    @Transactional
-    public void choreCertifyReaction(long groupId, long choreId, ChoreCertifyReactionRequest choreCertifyReactionRequest, BindingResult bindingResult) {
-        formValidate(bindingResult);
+    @Transactional(noRollbackFor = DateOverException.class)
+    public void choreCertifyReaction(long groupId, long choreId, ChoreCertifyReactionRequest choreCertifyReactionRequest) {
         existsGroup(groupId);
-        Chore chore = getChore(choreId);
+        choreCheckFail(getChore(choreId));
+        Chore chore = choreRepository.getById(choreId);
 
         existsChoreInGroup(groupId, chore.getGroup().getGroupId());
 
-        ChoreCheck choreCheck = enumCheckValid(choreCertifyReactionRequest.getReaction());
+        ChoreCheck choreCheck = enumCheckValid(choreCertifyReactionRequest.getReaction(), chore.getChoreCheck());
 
         if (chore.getChoreCheck().equals(BEFORE)) {
             throw new BadRequestException("인증 요청 되지 않은 집안일 입니다.");
+        } else if (chore.getChoreCheck().equals(FAIL)) {
+            throw new DateOverException("이미 당번 활동에 대해 인증받지 못하고 종료된 집안일 입니다.");
         }
+
         if (choreCheck.equals(BEFORE)) {
             throw new ConflictException("이미 인증 요청된 집안일 입니다.");
+        } else if (choreCheck.equals(FAIL)) {
+            throw new ForbiddenException("사용자가 접근할 수 없습니다.");
         }
 
         if (!chore.getChoreCheck().equals(choreCheck)) {
-            if (choreCheck.equals(SUCCESS)) {
-                choreRepository.updateChoreCheck(choreId, SUCCESS);
-            } else if (choreCheck.equals(FAIL)) {
-                choreRepository.updateChoreCheck(choreId, REQUEST);
-            } else {
-                throw new ConflictException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
+            if (!choreCheck.toString().isEmpty()) {
+                if (choreCheck.equals(SUCCESS)) {
+                    choreRepository.updateChoreCheck(choreId, SUCCESS);
+                } else {
+                    throw new ConflictException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
+                }
             }
         }
     }
 
 
     /*
-    * 집안일 삭제 기능
-    * - 인증이 완료(SUCCESS, FAIL)되지 않은 집안일을 삭제하는 기능
-    *
-    * 404 not found
-    * - groupId가 존재하지 않을 경우
-    * - choreId가 존재하지 않을 경우
-    *
-    * 409 conflict
-    * - 집안일이 해당 그룹에 속하지 않을 경우
-    *
-    * 405 method not allowed
-    * - 인증이 완료된 집안일을 삭제하려는 경우
-    *
-    * @author : m04j00
-    * */
+     * 집안일 삭제 기능
+     * - 인증이 완료(SUCCESS, FAIL)되지 않은 집안일을 삭제하는 기능
+     *
+     * 404 not found
+     * - groupId가 존재하지 않을 경우
+     * - choreId가 존재하지 않을 경우
+     *
+     * 409 conflict
+     * - 집안일이 해당 그룹에 속하지 않을 경우
+     *
+     * 405 method not allowed
+     * - 인증이 완료된 집안일을 삭제하려는 경우
+     *
+     * @author : m04j00
+     * */
     @Transactional
     public void deleteChore(long groupId, long choreId) {
         existsGroup(groupId);
@@ -188,6 +197,14 @@ public class ChoreService {
         }
 
         choreRepository.deleteById(choreId);
+    }
+
+    protected void choreCheckFail(Chore chore) {
+        if (chore.getChoreDate().isBefore(LocalDate.now())) {
+            if (chore.getChoreCheck().equals(REQUEST) || chore.getChoreCheck().equals(BEFORE)) {
+                choreRepository.updateChoreCheck(chore.getChoreId(), FAIL);
+            }
+        }
     }
 
     /* 예외 처리 */
@@ -242,11 +259,14 @@ public class ChoreService {
         }
     }
 
-    public ChoreCheck enumCheckValid(String check) {
-        try {
-            return ChoreCheck.valueOf(check);
-        } catch (Exception e) {
-            throw new DataNotFoundException("존재하지 않는 형식의 값입니다.");
+    public ChoreCheck enumCheckValid(String check, ChoreCheck choreCheck) {
+        if (!check.isEmpty()) {
+            try {
+                return ChoreCheck.valueOf(check);
+            } catch (Exception e) {
+                throw new DataNotFoundException("존재하지 않는 형식의 값입니다.");
+            }
         }
+        return choreCheck;
     }
 }

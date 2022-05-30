@@ -4,12 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChoreCertifyReactionRequest {
-    @NotEmpty
     String reaction;
 }
