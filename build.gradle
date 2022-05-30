@@ -30,6 +30,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    /* MySQL */
+    runtimeOnly 'mysql:mysql-connector-java'
+
     /* 보안 */
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
