@@ -1,22 +1,18 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://family-db.clb1xa1lzrvw.us-east-1.rds.amazonaws.com:3306/family-db?serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: mirim123
+    driver-class-name: com.mysql.cj.jdbc.Driver
   h2:
     console:
       enabled: true
   profiles:
     active: local
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    database: h2
+    database: mysql
     hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: update
     open-in-view: false
     defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:data.sql
