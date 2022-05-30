@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserFindResponse getKingOfTheMonth(@PathVariable long userId, @RequestParam String date){
-        return userService.findKingOfTheMonthById(userId,date);
+    public UserFindResponse findUserInfo(@PathVariable long userId, @RequestParam String date){
+        return userService.findUserInfo(userId,date);
     }
 }
