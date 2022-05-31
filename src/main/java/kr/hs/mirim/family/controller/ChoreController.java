@@ -86,9 +86,8 @@ public class ChoreController {
     @PutMapping("/{choreId}/reaction")
     public void choreCertifyReaction(@ApiParam(value = "집안일이 속한 그룹의 ID") @PathVariable long groupId,
                                      @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId,
-                                     @Valid @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest,
-                                     BindingResult bindingResult) {
-        choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest, bindingResult);
+                                     @Valid @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest) {
+        choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest);
     }
 
     @ApiResponses(value = {
