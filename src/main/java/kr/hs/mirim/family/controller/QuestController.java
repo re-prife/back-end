@@ -117,7 +117,7 @@ public class QuestController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "심부름 조회 성공"),
+            @ApiResponse(responseCode = "200", description = "심부름 조회 성공"),
             @ApiResponse(responseCode = "404", description = "groupId가 존재하지 않을 경우\n\nquestId가 존재하지 않거나 그룹에 속하지 않을 경우")
     })
     @Operation(tags = "QUEST", summary = "심부름 상세 조회", description = "심부름 상세 조회 API")
