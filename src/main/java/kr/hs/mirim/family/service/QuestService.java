@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.QuestRequest;
+import kr.hs.mirim.family.dto.response.QuestFindOneResponse;
 import kr.hs.mirim.family.dto.response.QuestResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
@@ -197,6 +198,34 @@ public class QuestService {
                 .questTitle(quest.getQuestTitle())
                 .completeCheck(quest.isCompleteCheck())
                 .acceptUserId(quest.getAcceptUserId())
+                .build();
+    }
+
+    /*
+     * 심부름 상세 조회 기능
+     * - 심부름의 id 값을 받아 해당하는 심부름의 정보를 반환
+     *
+     * 404 not found
+     * - groupId가 존재하지 않을 시
+     * - questId가 존재하지 않거나 group에 속하지 않을 경우
+     *
+     * @author : yeonwoo1125
+     * */
+    public QuestFindOneResponse findOneQuest(long groupId, long questId){
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
+        if (!questRepository.existsByQuestIdAndGroup(questId, group)) {
+            throw new DataNotFoundException("해당 그룹에 심부름이 존재하지 않습니다.");
+        }
+
+        Quest quest = getQuest(questId);
+        return QuestFindOneResponse.builder()
+                .questCreatedDate(quest.getCreatedDate())
+                .questTitle(quest.getQuestTitle())
+                .requestUserId(quest.getUser().getUserId())
+                .acceptUserId(quest.getAcceptUserId())
+                .completeCheck(quest.isCompleteCheck())
                 .build();
     }
 
