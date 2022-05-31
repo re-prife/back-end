@@ -34,6 +34,10 @@ public class IngredientService {
             throw new ConflictException("식재료의 수가 0입니다.");
         }
 
+        if(request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())){
+            throw new ConflictException("유통 기한이 구매 날짜보다 먼저입니다.");
+        }
+
         Ingredient ingredient = Ingredient.builder()
                 .group(group)
                 .ingredientName(request.getIngredientName())
