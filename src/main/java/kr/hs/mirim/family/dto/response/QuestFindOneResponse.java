@@ -15,11 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Schema(description = "심부름 상세 조회 Response")
 public class QuestFindOneResponse {
-
-    @Schema(description = "심부름 ID", example = "1")
-    @NonNull
-    private long questId;
 
     @Schema(description = "심부름 요청자 ID", example = "1")
     @NonNull
