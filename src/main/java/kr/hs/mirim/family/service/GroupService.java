@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Random;
 
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class GroupService {
