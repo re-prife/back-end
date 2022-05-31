@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.QuestRequest;
+import kr.hs.mirim.family.dto.response.QuestFindOneResponse;
 import kr.hs.mirim.family.dto.response.QuestResponse;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
@@ -113,5 +114,17 @@ public class QuestController {
             @ApiParam(value = "심부름 요청자 ID") @RequestParam long requesterId
     ) {
         return questService.updateQuest(groupId, questId, request, requesterId);
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "심부름 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "groupId가 존재하지 않을 경우\n\nquestId가 존재하지 않거나 그룹에 속하지 않을 경우")
+    })
+    @Operation(tags = "QUEST", summary = "심부름 상세 조회", description = "심부름 상세 조회 API")
+    @GetMapping("/{questId}")
+    public QuestFindOneResponse findOneQuest(@ApiParam(value = "심부름이 속한 그룹 ID") @PathVariable long groupId,
+                                             @ApiParam(value = "조회할 심부름 ID") @PathVariable long questId){
+
+        return questService.findOneQuest(groupId, questId);
     }
 }
