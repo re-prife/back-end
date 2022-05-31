@@ -86,7 +86,7 @@ public class ChoreController {
     @PutMapping("/{choreId}/reaction")
     public void choreCertifyReaction(@ApiParam(value = "집안일이 속한 그룹의 ID") @PathVariable long groupId,
                                      @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId,
-                                     @Valid @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest) {
+                                     @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest) {
         choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest);
     }
 
@@ -96,7 +96,7 @@ public class ChoreController {
             @ApiResponse(responseCode = "409", description = "집안일이 그룹에 속하지 않을 경우"),
             @ApiResponse(responseCode = "405", description = "인증이 안료된 집안일을 삭제하려는 경우")
     })
-    @Operation(tags = "CHORE", summary = "집안일 인증 요청", description = "집안일 상태를 REQUEST로 갱신하는 API")
+    @Operation(tags = "CHORE", summary = "집안일 삭제", description = "집안일을 삭제하는 API")
     @DeleteMapping("/{choreId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteChore(
