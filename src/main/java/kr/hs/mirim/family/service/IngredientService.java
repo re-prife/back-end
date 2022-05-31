@@ -68,6 +68,10 @@ public class IngredientService {
         Ingredient ingredient = getIngredient(ingredientId);
         existIngredientInGroup(groupId, ingredient);
 
+        if(request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())){
+            throw new ConflictException("유통 기한이 구매 날짜보다 먼저입니다.");
+        }
+
         if(checkIngredientCount(request.getIngredientCount())){
             ingredientRepository.deleteById(ingredientId);
             return ;
