@@ -8,6 +8,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.7'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'jacoco'
 }
 
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
@@ -77,4 +78,14 @@ compileQuerydsl {
 
 configurations {
     querydsl.extendsFrom compileClasspath
+}
+
+jacoco{
+    toolVersion = "0.8.5"
+}
+jacocoTestReport{
+    reports{
+        xml.enabled = true
+        html.enabled = true
+    }
 }
