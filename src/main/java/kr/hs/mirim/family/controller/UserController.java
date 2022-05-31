@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "회원 로그인인 성공"),
+            @ApiResponse(responseCode = "200", description = "회원 로그인 성공"),
             @ApiResponse(responseCode = "400", description = "Request 형식이 유효하지 않을 경우"),
             @ApiResponse(responseCode = "403", description = "회원 정보가 일치하지 않을 경우"),
             @ApiResponse(responseCode = "404", description = "Email이 존재하지 않을 경우")
