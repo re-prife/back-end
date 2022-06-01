@@ -8,5 +8,4 @@
 - MySQL 8
 - SpringFox Swagger UI 3.0.0
 - AWS ec2
-- AWS s3
 - AWS RDS
