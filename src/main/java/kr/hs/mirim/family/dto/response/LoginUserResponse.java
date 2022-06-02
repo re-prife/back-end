@@ -38,7 +38,7 @@ public class LoginUserResponse {
         this.userName = user.getUserName();
         this.userNickname = user.getUserNickname();
         this.userEmail = user.getUserEmail();
-        this.userImageName = user.getUserImageName();
+        this.userImageName = user.getUserImagePath();
         this.groupId = user.getGroup().getGroupId();
     }
 }

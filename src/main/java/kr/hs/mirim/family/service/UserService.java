@@ -143,7 +143,7 @@ public class UserService {
                 .userName(user.getUserName())
                 .userNickname(user.getUserNickname())
                 .userEmail(user.getUserEmail())
-                .userImageName(user.getUserImageName())
+                .userImageName(user.getUserImagePath())
                 .king(
                         UserFindKingResponse.builder()
                                 .choreKing(choreKingResult)
