@@ -43,8 +43,8 @@ public class Ingredient extends BaseEntity {
     @Column(length = 100, nullable = false, name = "ingredient_memo")
     private String ingredientMemo;
 
-    @Column(length = 10, name = "ingredient_image_name", nullable = false)
-    private String ingredientImageName;
+    @Column(length = 10, name = "ingredient_image_path", nullable = false)
+    private String ingredientImagePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = false)
@@ -52,7 +52,7 @@ public class Ingredient extends BaseEntity {
 
     @Builder
     public Ingredient(String ingredientName, String ingredientCount, IngredientSaveType ingredientSaveType, IngredientCategory ingredientCategory,
-                      LocalDate ingredientPurchaseDate, LocalDate ingredientExpirationDate, String ingredientMemo, String ingredientImageName, Group group) {
+                      LocalDate ingredientPurchaseDate, LocalDate ingredientExpirationDate, String ingredientMemo, String ingredientImagePath, Group group) {
         this.ingredientName = ingredientName;
         this.ingredientCount = ingredientCount;
         this.ingredientSaveType = ingredientSaveType;
@@ -60,7 +60,7 @@ public class Ingredient extends BaseEntity {
         this.ingredientPurchaseDate = ingredientPurchaseDate;
         this.ingredientExpirationDate = ingredientExpirationDate;
         this.ingredientMemo = ingredientMemo;
-        this.ingredientImageName = ingredientImageName;
+        this.ingredientImagePath = ingredientImagePath;
         this.group = group;
     }
 
