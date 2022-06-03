@@ -21,8 +21,8 @@ public class MultipartConfig {
         multipartResolver.setMaxUploadSize(FILE_MAX_UPLOAD_SIZE);
 
         try{
-            multipartResolver.setUploadTempDir(new FileSystemResource("d:/temp/upload/users"));
-            multipartResolver.setUploadTempDir(new FileSystemResource("d:/temp/upload/ingredients"));
+            multipartResolver.setUploadTempDir(new FileSystemResource("c:/temp/upload/users"));
+            multipartResolver.setUploadTempDir(new FileSystemResource("c:/temp/upload/ingredients"));
         }catch (IOException e){
             e.printStackTrace();
         }
