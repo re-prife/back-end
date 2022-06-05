@@ -22,13 +22,12 @@ public class ImageService {
     private String filepath;
 
     public void userImageUpdate(long userId, MultipartFile file){
-        User user = userRepository.findById(userId).orElseThrow(()->{
+        if(!userRepository.existsById(userId)){
             throw new DataNotFoundException("해당하는 유저가 없습니다.");
-        });
-        filepath = filepath+"user_"+userId;
-        imageUpload(file, filepath);
+        }
 
-        userRepository.updateUserImage(userId, filepath.substring(7)+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
+        imageUpload(file, filepath+"user_"+userId);
+        userRepository.updateUserImage(userId, filepath.substring(7)+"user_"+userId+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
     }
 
     public void ingredientImageUpdate(long ingredientId, MultipartFile file){
@@ -36,8 +35,9 @@ public class ImageService {
             throw new DataNotFoundException("해당하는 식재료가 없습니다.");
         }
 
-        filepath = filepath+"ingre_"+ingredientId;
-        imageUpload(file, filepath);
+        imageUpload(file, filepath+"ingre_"+ingredientId);
+        ingredientRepository.updateIngredientImage(ingredientId,
+                filepath.substring(7)+"ingre_"+ingredientId+"."+FilenameUtils.getExtension(file.getOriginalFilename()) );
     }
 
     private void imageUpload(MultipartFile file, String filePath) {
