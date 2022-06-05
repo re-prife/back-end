@@ -1,7 +1,6 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.entity.ingredient.repository.IngredientRepository;
-import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +40,7 @@ public class ImageService {
     }
 
     private void imageUpload(MultipartFile file, String filePath) {
+
         try (
                 FileOutputStream fos = new FileOutputStream(filePath +"."+ FilenameUtils.getExtension(file.getOriginalFilename()));
                 InputStream is = file.getInputStream()) {

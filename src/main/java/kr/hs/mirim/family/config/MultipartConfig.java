@@ -19,9 +19,9 @@ public class MultipartConfig {
         multipartResolver.setMaxUploadSize(FILE_MAX_UPLOAD_SIZE);
 
         try{
-            multipartResolver.setUploadTempDir(new FileSystemResource("c:/temp/upload"));
+            multipartResolver.setUploadTempDir(new FileSystemResource("/home/ubuntu/family/upload"));
         }catch (IOException e){
-            e.printStackTrace();
+            e.getCause().getMessage();
         }
         return multipartResolver;
     }
