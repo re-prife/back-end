@@ -56,10 +56,9 @@ public class User {
         this.userImagePath = userImagePath;
     }
 
-    public void updateUser(String userName, String userNickname, String userImagePath){
+    public void updateUser(String userName, String userNickname){
         this.userName = userName;
         this.userNickname = userNickname;
-        this.userImagePath = userImagePath;
     }
 
     public void updateUserPassword(String userPassword){
