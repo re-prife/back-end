@@ -1,6 +1,5 @@
 package kr.hs.mirim.family.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -10,7 +9,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import java.io.IOException;
 
 
-@Slf4j
 @Configuration
 public class MultipartConfig {
     private final int FILE_MAX_UPLOAD_SIZE = 10485760;
@@ -21,8 +19,7 @@ public class MultipartConfig {
         multipartResolver.setMaxUploadSize(FILE_MAX_UPLOAD_SIZE);
 
         try{
-            multipartResolver.setUploadTempDir(new FileSystemResource("c:/temp/upload/users"));
-            multipartResolver.setUploadTempDir(new FileSystemResource("c:/temp/upload/ingredients"));
+            multipartResolver.setUploadTempDir(new FileSystemResource("c:/temp/upload"));
         }catch (IOException e){
             e.printStackTrace();
         }

@@ -16,3 +16,6 @@ spring:
       ddl-auto: update
     open-in-view: false
     defer-datasource-initialization: true
+
+image:
+  path: c:/temp/upload/
