@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private String resourcePath = "file:///c:/temp/upload/";
+    private String resourcePath = "file:///home/ubuntu/family/upload/";
 
     private String uploadPath = "/upload/**";
 
