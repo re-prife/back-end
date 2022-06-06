@@ -2,6 +2,7 @@ package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.entity.ingredient.repository.IngredientRepository;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
+import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -18,42 +19,45 @@ public class ImageService {
     private final IngredientRepository ingredientRepository;
 
     @Value("${image.path}")
-    private String filepath;
+    private String FILE_PATH;
 
     public void userImageUpdate(long userId, MultipartFile file){
+        fileValid(file);
         if(!userRepository.existsById(userId)){
             throw new DataNotFoundException("해당하는 유저가 없습니다.");
         }
-
-        imageUpload(file, filepath+"user_"+userId);
-        userRepository.updateUserImage(userId, filepath.substring(7)+"user_"+userId+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
+        String saveName = "user_"+userId+"."+FilenameUtils.getExtension(file.getOriginalFilename());
+        saveFile(file, FILE_PATH, saveName);
+        userRepository.updateUserImage(userId, "user_"+userId+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
     }
 
     public void ingredientImageUpdate(long ingredientId, MultipartFile file){
+        fileValid(file);
         if(!ingredientRepository.existsById(ingredientId)){
             throw new DataNotFoundException("해당하는 식재료가 없습니다.");
         }
 
-        imageUpload(file, filepath+"ingre_"+ingredientId);
-        ingredientRepository.updateIngredientImage(ingredientId,
-                filepath.substring(7)+"ingre_"+ingredientId+"."+FilenameUtils.getExtension(file.getOriginalFilename()) );
+        String saveName = "ingre_"+ingredientId+"."+FilenameUtils.getExtension(file.getOriginalFilename());
+        saveFile(file, FILE_PATH, saveName);
+        ingredientRepository.updateIngredientImage(ingredientId,saveName);
     }
 
-    private void imageUpload(MultipartFile file, String filePath) {
+    private void saveFile(MultipartFile file, String filePath, String saveName){
+        File saveFile = new File(filePath,saveName);
 
-        try (
-                FileOutputStream fos = new FileOutputStream(filePath +"."+ FilenameUtils.getExtension(file.getOriginalFilename()));
-                InputStream is = file.getInputStream()) {
+        try {
+            file.transferTo(saveFile);
+        } catch (IOException e) {
+            e.getCause();
+        }
 
-            int readCount = 0;
-            byte[] buffer = new byte[1024];
+        saveFile.setWritable(true);
+        saveFile.setReadable(true);
+    }
 
-            while ((readCount = is.read(buffer)) != -1) {
-
-                fos.write(buffer, 0, readCount);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    private void fileValid(MultipartFile file){
+        if(file.isEmpty()){
+            throw new BadRequestException("파일이 없습니다.");
         }
     }
 }
