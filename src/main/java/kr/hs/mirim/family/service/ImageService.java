@@ -27,8 +27,10 @@ public class ImageService {
             throw new DataNotFoundException("해당하는 유저가 없습니다.");
         }
         String saveName = "user_"+userId+"."+FilenameUtils.getExtension(file.getOriginalFilename());
+        String savePath = "/upload/"+saveName;
+
         saveFile(file, FILE_PATH, saveName);
-        userRepository.updateUserImage(userId, "user_"+userId+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
+        userRepository.updateUserImage(userId, savePath);
     }
 
     public void ingredientImageUpdate(long ingredientId, MultipartFile file){
@@ -38,8 +40,10 @@ public class ImageService {
         }
 
         String saveName = "ingre_"+ingredientId+"."+FilenameUtils.getExtension(file.getOriginalFilename());
+        String savePath = "/upload/"+saveName;
+
         saveFile(file, FILE_PATH, saveName);
-        ingredientRepository.updateIngredientImage(ingredientId,saveName);
+        ingredientRepository.updateIngredientImage(ingredientId,savePath);
     }
 
     private void saveFile(MultipartFile file, String filePath, String saveName){
