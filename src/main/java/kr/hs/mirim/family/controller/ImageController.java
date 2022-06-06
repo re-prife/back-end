@@ -8,16 +8,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/uploads")
 public class ImageController {
 
     private final ImageService imageService;
 
-    @PostMapping("/uploads/users/{userId}")
+    @PostMapping("/users/{userId}")
     public void userImageUpdate(@PathVariable long userId, @RequestParam("file") MultipartFile file) {
         imageService.userImageUpdate(userId, file);
     }
 
-    @PostMapping("/uploads/ingredients/{ingredientId}")
+    @PostMapping("/ingredients/{ingredientId}")
     public void ingredientImageUpdate(@PathVariable long ingredientId, @RequestParam("file") MultipartFile file){
         imageService.ingredientImageUpdate(ingredientId, file);
     }
