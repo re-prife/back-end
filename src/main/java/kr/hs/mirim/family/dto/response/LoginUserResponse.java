@@ -26,9 +26,9 @@ public class LoginUserResponse {
     @NonNull
     private String userEmail;
 
-    @Schema(description = "회원 이미지 주소", example = "76se4ccedf14")
+    @Schema(description = "회원 이미지 주소", example = "/upload/user_1.png")
     @NonNull
-    private String userImageName;
+    private String userImagePath;
 
     @Schema(description = "그룹 ID", example = "1")
     private Long groupId;
@@ -38,7 +38,7 @@ public class LoginUserResponse {
         this.userName = user.getUserName();
         this.userNickname = user.getUserNickname();
         this.userEmail = user.getUserEmail();
-        this.userImageName = user.getUserImagePath();
+        this.userImagePath = user.getUserImagePath();
         this.groupId = user.getGroup().getGroupId();
     }
 }

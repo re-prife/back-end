@@ -37,7 +37,7 @@ public class IngredientListResponse {
     @NotEmpty
     private String ingredientCount;
 
-    @Schema(description = "식재료 이미지 주소", example = "6ce716eeb4")
+    @Schema(description = "식재료 이미지 주소", example = "/upload/ingredient_1.png")
     @NotEmpty
-    private String ingredientImageName;
+    private String ingredientImagePath;
 }
