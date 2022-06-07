@@ -54,6 +54,7 @@ public class UserService {
 
         //존재하는 이메일인지 확인
         User user = userRepository.findByUserEmail(loginUserRequest.getUserEmail()).orElseThrow(() -> new DataNotFoundException("존재하지 않는 회원입니다."));
+        groupCheck(user);
 
         //이메일과 비밀번호가 맞지 않을때
         if(!passwordEncoder.matches(loginUserRequest.getUserPassword(), user.getUserPassword())){
@@ -164,6 +165,13 @@ public class UserService {
     private void passwordCheck(User user, String userPassword){
         if(!passwordEncoder.matches(userPassword, user.getUserPassword())){
             throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
+        }
+    }
+
+    private void groupCheck(User user){
+        //회원이 그룹에 가입되어 있는지 확인
+        if(user.getGroup()==null){
+            throw new DataNotFoundException("그룹에 가입되어 있지 않은 회원입니다.");
         }
     }
 
