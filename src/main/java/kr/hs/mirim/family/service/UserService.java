@@ -32,7 +32,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void createUser (CreateUserRequest createUserRequest, BindingResult bindingResult){
+    public CreateUserResponse createUser (CreateUserRequest createUserRequest, BindingResult bindingResult){
         //형식이 맞지 않을때(null, 공백, 이메일 형식)
         formValidateException(bindingResult);
 
@@ -45,6 +45,13 @@ public class UserService {
         User user = new User(createUserRequest.getUserName(), createUserRequest.getUserNickname(), encodePassword, createUserRequest.getUserEmail(), "");
 
         userRepository.save(user);
+
+        return CreateUserResponse.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userNickname(user.getUserNickname())
+                .userEmail(user.getUserEmail())
+                .build();
     }
 
     @Transactional
@@ -61,7 +68,13 @@ public class UserService {
             throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
         }
 
-        return new LoginUserResponse(user);
+        return LoginUserResponse.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userNickname(user.getUserNickname())
+                .userEmail(user.getUserEmail())
+                .groupId(user.getGroup().getGroupId())
+                .build();
     }
 
     @Transactional

@@ -3,12 +3,12 @@ package kr.hs.mirim.family.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-@Schema(description = "회원 로그인 Response")
+@Schema(description = "회원가입 Response")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginUserResponse {
+public class CreateUserResponse {
     @Schema(description = "회원 ID", example = "1")
     @NonNull
     private Long userId;
@@ -24,7 +24,4 @@ public class LoginUserResponse {
     @Schema(description = "회원 이메일", example = "m04j00@gmail.com")
     @NonNull
     private String userEmail;
-
-    @Schema(description = "그룹 ID", example = "1")
-    private Long groupId;
 }
