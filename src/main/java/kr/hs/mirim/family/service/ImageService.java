@@ -21,33 +21,33 @@ public class ImageService {
     @Value("${image.path}")
     private String FILE_PATH;
 
-    public void userImageUpdate(long userId, MultipartFile file){
+    public void userImageUpdate(long userId, MultipartFile file) {
         fileValid(file);
-        if(!userRepository.existsById(userId)){
+        if (!userRepository.existsById(userId)) {
             throw new DataNotFoundException("해당하는 유저가 없습니다.");
         }
-        String saveName = "user_"+userId+"."+FilenameUtils.getExtension(file.getOriginalFilename());
-        String savePath = "/upload/"+saveName;
+        String saveName = "user_" + userId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+        String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
         userRepository.updateUserImage(userId, savePath);
     }
 
-    public void ingredientImageUpdate(long ingredientId, MultipartFile file){
+    public void ingredientImageUpdate(long ingredientId, MultipartFile file) {
         fileValid(file);
-        if(!ingredientRepository.existsById(ingredientId)){
+        if (!ingredientRepository.existsById(ingredientId)) {
             throw new DataNotFoundException("해당하는 식재료가 없습니다.");
         }
 
-        String saveName = "ingre_"+ingredientId+"."+FilenameUtils.getExtension(file.getOriginalFilename());
-        String savePath = "/upload/"+saveName;
+        String saveName = "ingredient_" + ingredientId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+        String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
-        ingredientRepository.updateIngredientImage(ingredientId,savePath);
+        ingredientRepository.updateIngredientImage(ingredientId, savePath);
     }
 
-    private void saveFile(MultipartFile file, String filePath, String saveName){
-        File saveFile = new File(filePath,saveName);
+    private void saveFile(MultipartFile file, String filePath, String saveName) {
+        File saveFile = new File(filePath, saveName);
 
         try {
             file.transferTo(saveFile);
@@ -59,8 +59,8 @@ public class ImageService {
         saveFile.setReadable(true);
     }
 
-    private void fileValid(MultipartFile file){
-        if(file.isEmpty()){
+    private void fileValid(MultipartFile file) {
+        if (file.isEmpty()) {
             throw new BadRequestException("파일이 없습니다.");
         }
     }

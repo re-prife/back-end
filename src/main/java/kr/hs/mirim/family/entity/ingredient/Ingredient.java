@@ -43,7 +43,7 @@ public class Ingredient extends BaseEntity {
     @Column(length = 100, nullable = false, name = "ingredient_memo")
     private String ingredientMemo;
 
-    @Column(length = 10, name = "ingredient_image_path", nullable = false)
+    @Column(length = 30, name = "ingredient_image_path", nullable = false)
     private String ingredientImagePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
