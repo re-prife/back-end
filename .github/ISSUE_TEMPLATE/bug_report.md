@@ -7,23 +7,23 @@ assignees: ''
 
 ---
 
-# And가 BE에게
+## And가 BE에게
 **담당자와 버그가 발생된 기능의 라벨을 설정해주세요**
-## 문제 발생 부분
-### endpoint
+### 문제 발생 부분
+**endpoint**
 ```
 [Method] url
 ```
-### body
+**body**
 ```
 {
   
 }
 ```
-## Response 이미지
-
-## 상황 설명
-
+### Response 이미지
+  
+### 상황 설명 및 요구 사항
+  
 ## 참고
 - 그룹 담당 : @m04j00
 - 회원 담당 : @Srin23
