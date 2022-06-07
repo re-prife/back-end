@@ -4,10 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import kr.hs.mirim.family.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Schema(description = "회원 로그인 Response")
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class LoginUserResponse {
     @Schema(description = "회원 ID", example = "1")
