@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @Configuration
 public class MultipartConfig {
-    private final int FILE_MAX_UPLOAD_SIZE = 10485760;
+    private final int FILE_MAX_UPLOAD_SIZE = 1024*1024*10;
 
     @Bean
     public MultipartResolver multipartResolver() {
