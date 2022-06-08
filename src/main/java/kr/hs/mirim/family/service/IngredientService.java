@@ -47,7 +47,7 @@ public class IngredientService {
                 .ingredientExpirationDate(request.getIngredientExpirationDate())
                 .ingredientMemo(request.getIngredientMemo())
                 .ingredientSaveType(request.getIngredientSaveType())
-                .ingredientImageName("")
+                .ingredientImagePath("")
                 .build();
 
         ingredientRepository.save(ingredient);

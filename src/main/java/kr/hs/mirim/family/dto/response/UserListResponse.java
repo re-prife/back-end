@@ -20,7 +20,7 @@ public class UserListResponse {
     @Schema(description = "회원 닉네임", example = "취준생")
     @NonNull
     private String userNickname;
-    @Schema(description = "회원 이미지 주소", example = "867a9a2b394fac7ba104f9bf")
+    @Schema(description = "회원 이미지 주소", example = "/upload/user_1.png")
     @NonNull
-    private String userImageName;
+    private String userImagePath;
 }

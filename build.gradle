@@ -28,6 +28,8 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4' /* Apache Commons FileUpload */
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
@@ -80,12 +82,25 @@ configurations {
     querydsl.extendsFrom compileClasspath
 }
 
-jacoco{
-    toolVersion = "0.8.5"
+jacoco {
+    toolVersion = "0.8.7"
 }
-jacocoTestReport{
-    reports{
+jacocoTestReport {
+    reports {
         xml.enabled = true
-        html.enabled = true
+        html.enabled = false
+        csv.enabled false
+    }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it,
+                            include: [
+                                    '**/controller/**',
+                                    '**/service/**'
+                            ]
+                    )
+                })
+        )
     }
 }

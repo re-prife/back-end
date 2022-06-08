@@ -33,7 +33,7 @@ public class IngredientRepositoryImpl extends QuerydslRepositorySupport implemen
                         ingredient.ingredientExpirationDate,
                         ingredient.ingredientCategory,
                         ingredient.ingredientCount,
-                        ingredient.ingredientImageName
+                        ingredient.ingredientImagePath
                 )
         )
                 .from(ingredient)

@@ -21,8 +21,8 @@ public class UserFindResponse {
     @Schema(description = "회원 이메일", example = "m04j00@gmail.com")
     private String userEmail;
 
-    @Schema(description = "회원 이미지 주소", example = "42c64cf214a")
-    private String userImageName;
+    @Schema(description = "회원 이미지 주소", example = "/upload/user_1.png")
+    private String userImagePath;
 
     @Schema(description = "이전 달의 왕")
     private UserFindKingResponse king;
