@@ -22,4 +22,9 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     @Transactional
     @Query(value = "UPDATE user_tb u set u.group_id = :groupId where u.user_id = :userId", nativeQuery = true)
     void updateGroupId(long groupId, long userId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE user_tb u set u.user_image_path = :userImagePath where u.user_id = :userId", nativeQuery = true)
+    void updateUserImage(long userId, String userImagePath);
 }

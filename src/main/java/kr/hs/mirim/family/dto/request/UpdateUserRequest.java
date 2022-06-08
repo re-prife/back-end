@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Schema(description = "회원 정보 갱신 Request")
 @Getter
@@ -22,7 +21,4 @@ public class UpdateUserRequest {
     @NotEmpty
     private String userNickname;
 
-    @Schema(description = "회원 이미지 주소", example = "42cces7fd412")
-    @NotNull
-    private String userImageName;
 }

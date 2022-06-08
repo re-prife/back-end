@@ -34,8 +34,8 @@ public class User {
     @Column(length = 50, nullable = false, name = "user_email", unique = true)
     private String userEmail;
 
-    @Column(length = 10, nullable = false, name = "user_image_name")
-    private String userImageName;
+    @Column(length = 30, nullable = false, name = "user_image_path")
+    private String userImagePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
@@ -48,18 +48,17 @@ public class User {
     private List<Quest> questList = new ArrayList<>();
 
     @Builder
-    public User(String userName, String userNickname, String userPassword, String userEmail, String userImageName) {
+    public User(String userName, String userNickname, String userPassword, String userEmail, String userImagePath) {
         this.userName = userName;
         this.userNickname = userNickname;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-        this.userImageName = userImageName;
+        this.userImagePath = userImagePath;
     }
 
-    public void updateUser(String userName, String userNickname, String userImageName){
+    public void updateUser(String userName, String userNickname){
         this.userName = userName;
         this.userNickname = userNickname;
-        this.userImageName = userImageName;
     }
 
     public void updateUserPassword(String userPassword){

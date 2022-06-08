@@ -25,7 +25,7 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
                                 user.userId,
                                 user.userName,
                                 user.userNickname,
-                                user.userImageName
+                                user.userImagePath
                         )
                 )
                 .from(user)

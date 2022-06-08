@@ -25,6 +25,10 @@ public class LoginUserResponse {
     @NonNull
     private String userEmail;
 
+    @Schema(description = "회원 이미지 주소", example = "/upload/user_1.png")
+    @NonNull
+    private String userImagePath;
+
     @Schema(description = "그룹 ID", example = "1")
     private Long groupId;
 }
