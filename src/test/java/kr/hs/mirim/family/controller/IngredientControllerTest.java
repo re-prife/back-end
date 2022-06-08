@@ -241,6 +241,21 @@ class IngredientControllerTest {
                 .andExpect(status().is(404))
                 .andDo(print());
     }
+    @Test
+    void 식재료_업데이트_409_유효기간() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
+                "3개","냠냠",LocalDate.of(2022,4,11) ,LocalDate.of(2013,4,11));
+
+        mvc.perform(put("/groups/1/ingredients/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().is(409))
+                .andDo(print());
+    }
 
     @Test
     void 식재료_삭제_204() throws Exception {
