@@ -234,9 +234,8 @@ class UserControllerTest {
     void 회원수정_성공_204() throws Exception {
         String userName = "가족";
         String userNickname = "테스터";
-        String userImageName = "8.png";
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname, userImageName);
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname);
 
         mockMvc.perform(put("/users/7")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -249,9 +248,8 @@ class UserControllerTest {
     void 회원수정_값없음_400() throws Exception {
         String userName = "";
         String userNickname = "";
-        String userImageName = "";
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname, userImageName);
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname);
 
         mockMvc.perform(put("/users/7")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -264,9 +262,8 @@ class UserControllerTest {
     void 회원수정_존재하지않는회원_404() throws Exception {
         String userName = "가족";
         String userNickname = "테스터";
-        String userImageName = "7.png";
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname, userImageName);
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname);
 
         mockMvc.perform(put("/users/-1")
                         .contentType(MediaType.APPLICATION_JSON)
