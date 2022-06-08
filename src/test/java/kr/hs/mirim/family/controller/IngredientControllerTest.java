@@ -56,6 +56,21 @@ class IngredientControllerTest {
                 .andExpect(status().is(201))
                 .andDo(print());
     }
+    @Test
+    void 식재료_생성_400_request_형식() throws Exception{
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
+                "","냠냠",LocalDate.of(2022,4,11) ,LocalDate.of(2023,4,11));
+
+        mvc.perform(post("/groups/1/ingredients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().is(400))
+                .andDo(print());
+    }
 
     @Test
     void 식재료_생성_409_유효기간() throws Exception{
@@ -147,6 +162,21 @@ class IngredientControllerTest {
                 .andExpect(status().is(204))
                 .andDo(print());
     }
+    @Test
+    void 식재료_업데이트_204_식재료_0일_경우() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
+                "0개","냠냠",LocalDate.of(2022,4,11) ,LocalDate.of(2023,4,11));
+
+        mvc.perform(put("/groups/1/ingredients/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().is(204))
+                .andDo(print());
+    }
 
     @Test
     void 식재료_업데이트_404_그룹아이디_없음() throws Exception {
@@ -161,6 +191,21 @@ class IngredientControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(404))
+                .andDo(print());
+    }
+    @Test
+    void 식재료_업데이트_400_request_형식() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
+                "","냠냠",LocalDate.of(2022,4,11) ,LocalDate.of(2023,4,11));
+
+        mvc.perform(put("/groups/1000/ingredients/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().is(400))
                 .andDo(print());
     }
 
@@ -248,6 +293,22 @@ class IngredientControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().is(204))
+                .andDo(print());
+
+    }
+    @Test
+    void 식재료_수량_갱신_400_request_형식() throws Exception {
+        List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
+        data.add(new UpdateIngredientCountDataRequest(1,"2g"));
+        data.add(new UpdateIngredientCountDataRequest(2,""));
+
+        UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
+
+        mvc.perform(put("/groups/1/ingredients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().is(204))
                 .andDo(print());
 
