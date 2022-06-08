@@ -26,11 +26,13 @@ public class IngredientRepositoryImpl extends QuerydslRepositorySupport implemen
 
     @Override
     public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType) {
-        return queryFactory.select(Projections.constructor(
+        return queryFactory.select(Projections.fields(
                 IngredientListResponse.class,
+                        ingredient.ingredientId,
                         ingredient.ingredientName,
                         ingredient.ingredientSaveType,
                         ingredient.ingredientExpirationDate,
+                        ingredient.ingredientPurchaseDate,
                         ingredient.ingredientCategory,
                         ingredient.ingredientCount,
                         ingredient.ingredientImagePath

@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -55,8 +59,23 @@ public class IngredientService {
 
     public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType){
         existGroup(groupId);
+        List<IngredientListResponse> list = ingredientRepository.ingredientSaveTypeList(groupId, saveType);
 
-        return ingredientRepository.ingredientSaveTypeList(groupId, saveType);
+        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth());
+        for (IngredientListResponse response : list) {
+            long remainDays = ChronoUnit.DAYS.between(today, response.getIngredientExpirationDate());
+
+            if(remainDays < 0)
+                response.setIngredientColor("black");
+            else if(remainDays <= 3)
+                response.setIngredientColor("red");
+            else if(remainDays <= 7)
+                response.setIngredientColor("yellow");
+            else
+                response.setIngredientColor("green");
+
+        }
+        return list;
     }
 
     @Transactional
