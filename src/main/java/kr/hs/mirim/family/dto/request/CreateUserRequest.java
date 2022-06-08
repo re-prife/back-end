@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Schema(description = "회원 생성 Request")
 @Getter
@@ -28,5 +29,6 @@ public class CreateUserRequest {
 
     @Schema(description = "회원 비밀번호", example = "doremisol")
     @NotEmpty
+    @Size(min=8)
     private String userPassword;
 }

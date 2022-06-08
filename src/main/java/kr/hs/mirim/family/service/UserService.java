@@ -32,7 +32,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void createUser (CreateUserRequest createUserRequest, BindingResult bindingResult){
+    public CreateUserResponse createUser (CreateUserRequest createUserRequest, BindingResult bindingResult){
         //형식이 맞지 않을때(null, 공백, 이메일 형식)
         formValidateException(bindingResult);
 
@@ -45,6 +45,13 @@ public class UserService {
         User user = new User(createUserRequest.getUserName(), createUserRequest.getUserNickname(), encodePassword, createUserRequest.getUserEmail(), "");
 
         userRepository.save(user);
+
+        return CreateUserResponse.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userNickname(user.getUserNickname())
+                .userEmail(user.getUserEmail())
+                .build();
     }
 
     @Transactional
@@ -54,13 +61,21 @@ public class UserService {
 
         //존재하는 이메일인지 확인
         User user = userRepository.findByUserEmail(loginUserRequest.getUserEmail()).orElseThrow(() -> new DataNotFoundException("존재하지 않는 회원입니다."));
+        groupCheck(user);
 
         //이메일과 비밀번호가 맞지 않을때
         if(!passwordEncoder.matches(loginUserRequest.getUserPassword(), user.getUserPassword())){
             throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
         }
 
-        return new LoginUserResponse(user);
+        return LoginUserResponse.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userNickname(user.getUserNickname())
+                .userEmail(user.getUserEmail())
+                .userImagePath(user.getUserImagePath())
+                .groupId(user.getGroup().getGroupId())
+                .build();
     }
 
     @Transactional
@@ -95,7 +110,7 @@ public class UserService {
     public void updateUser(long userId, UpdateUserRequest updateUserRequest, BindingResult bindingResult){
         User user = getUser(userId);
         formValidateException(bindingResult);
-        user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname(), updateUserRequest.getUserImageName());
+        user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname());
     }
 
     @Transactional
@@ -143,7 +158,7 @@ public class UserService {
                 .userName(user.getUserName())
                 .userNickname(user.getUserNickname())
                 .userEmail(user.getUserEmail())
-                .userImageName(user.getUserImageName())
+                .userImagePath(user.getUserImagePath())
                 .king(
                         UserFindKingResponse.builder()
                                 .choreKing(choreKingResult)
@@ -164,6 +179,13 @@ public class UserService {
     private void passwordCheck(User user, String userPassword){
         if(!passwordEncoder.matches(userPassword, user.getUserPassword())){
             throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
+        }
+    }
+
+    private void groupCheck(User user){
+        //회원이 그룹에 가입되어 있는지 확인
+        if(user.getGroup()==null){
+            throw new DataNotFoundException("그룹에 가입되어 있지 않은 회원입니다.");
         }
     }
 

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.*;
+import kr.hs.mirim.family.dto.response.CreateUserResponse;
 import kr.hs.mirim.family.dto.response.LoginUserResponse;
 import kr.hs.mirim.family.dto.response.UserFindResponse;
 import kr.hs.mirim.family.service.UserService;
@@ -31,9 +32,9 @@ public class UserController {
     @Operation(tags = "USER", summary = "회원 생성", description = "회원을 생성하는 API")
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createUser(@RequestBody @Valid CreateUserRequest createUserRequest,
-                           BindingResult bindingResult) {
-        userService.createUser(createUserRequest, bindingResult);
+    public CreateUserResponse createUser(@RequestBody @Valid CreateUserRequest createUserRequest,
+                                         BindingResult bindingResult) {
+        return userService.createUser(createUserRequest, bindingResult);
     }
 
     @ApiResponses(value = {

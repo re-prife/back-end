@@ -1,13 +1,12 @@
 package kr.hs.mirim.family.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.hs.mirim.family.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
 @Schema(description = "회원 로그인 Response")
 @Getter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class LoginUserResponse {
     @Schema(description = "회원 ID", example = "1")
@@ -26,19 +25,10 @@ public class LoginUserResponse {
     @NonNull
     private String userEmail;
 
-    @Schema(description = "회원 이미지 주소", example = "76se4ccedf14")
+    @Schema(description = "회원 이미지 주소", example = "/upload/user_1.png")
     @NonNull
-    private String userImageName;
+    private String userImagePath;
 
     @Schema(description = "그룹 ID", example = "1")
     private Long groupId;
-
-    public LoginUserResponse(User user) {
-        this.userId = user.getUserId();
-        this.userName = user.getUserName();
-        this.userNickname = user.getUserNickname();
-        this.userEmail = user.getUserEmail();
-        this.userImageName = user.getUserImageName();
-        this.groupId = user.getGroup().getGroupId();
-    }
 }

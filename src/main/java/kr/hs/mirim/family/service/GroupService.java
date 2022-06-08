@@ -3,6 +3,7 @@ package kr.hs.mirim.family.service;
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.dto.request.ReportRequest;
+import kr.hs.mirim.family.dto.response.GroupResponse;
 import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
@@ -35,13 +36,14 @@ public class GroupService {
      *
      * @author: m04j00
      * */
-    public void createGroup(CreateGroupRequest request, long userId, BindingResult bindingResult) {
+    public GroupResponse createGroup(CreateGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
         validationUser(userId);
         String code = createInviteCode();
         Group group = new Group(code, request.getGroupName());
         groupRepository.save(group);
         userRepository.updateGroupId(group.getGroupId(), userId);
+        return new GroupResponse(group.getGroupId(), group.getGroupInviteCode());
     }
 
     /*
@@ -52,7 +54,7 @@ public class GroupService {
      *
      * @author: m04j00
      * */
-    public void joinGroup(JoinGroupRequest request, long userId, BindingResult bindingResult) {
+    public GroupResponse joinGroup(JoinGroupRequest request, long userId, BindingResult bindingResult) {
         formValidate(bindingResult);
         validationUser(userId);
 
@@ -61,6 +63,7 @@ public class GroupService {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
         userRepository.updateGroupId(group.getGroupId(), userId);
+        return new GroupResponse(group.getGroupId(), group.getGroupInviteCode());
     }
 
     /*

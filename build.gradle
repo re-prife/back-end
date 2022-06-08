@@ -28,6 +28,8 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4' /* Apache Commons FileUpload */
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
@@ -87,5 +89,11 @@ jacocoTestReport{
     reports{
         xml.enabled = true
         html.enabled = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, include: ['**/controller/**', '**/service/**'])
+                }))
     }
 }
