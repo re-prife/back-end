@@ -73,6 +73,7 @@ public class UserService {
                 .userName(user.getUserName())
                 .userNickname(user.getUserNickname())
                 .userEmail(user.getUserEmail())
+                .userImagePath(user.getUserImagePath())
                 .groupId(user.getGroup().getGroupId())
                 .build();
     }
