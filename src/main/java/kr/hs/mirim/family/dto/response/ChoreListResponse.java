@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoreListDataResponse {
+public class ChoreListResponse {
     @Schema(description = "집안일 ID", example = "1")
     @NotNull
     private Long choreId;

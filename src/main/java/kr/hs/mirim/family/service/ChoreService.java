@@ -2,7 +2,7 @@ package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.request.ChoreCertifyReactionRequest;
-import kr.hs.mirim.family.dto.response.ChoreListDataResponse;
+import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.ChoreCheck;
@@ -76,7 +76,7 @@ public class ChoreService {
     }
 
     @Transactional
-    public List<ChoreListDataResponse> choreListOneDay(long groupId, String date) {
+    public List<ChoreListResponse> choreListOneDay(long groupId, String date) {
         existsGroup(groupId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate;
@@ -89,7 +89,7 @@ public class ChoreService {
     }
 
     @Transactional
-    public List<ChoreListDataResponse> choreListMonth(long groupId, String date) {
+    public List<ChoreListResponse> choreListMonth(long groupId, String date) {
         existsGroup(groupId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         YearMonth localDate;
