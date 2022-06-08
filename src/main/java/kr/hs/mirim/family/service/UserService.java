@@ -73,6 +73,7 @@ public class UserService {
                 .userName(user.getUserName())
                 .userNickname(user.getUserNickname())
                 .userEmail(user.getUserEmail())
+                .userImagePath(user.getUserImagePath())
                 .groupId(user.getGroup().getGroupId())
                 .build();
     }
@@ -109,7 +110,7 @@ public class UserService {
     public void updateUser(long userId, UpdateUserRequest updateUserRequest, BindingResult bindingResult){
         User user = getUser(userId);
         formValidateException(bindingResult);
-        user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname(), updateUserRequest.getUserImageName());
+        user.updateUser(updateUserRequest.getUserName(), updateUserRequest.getUserNickname());
     }
 
     @Transactional
@@ -157,7 +158,7 @@ public class UserService {
                 .userName(user.getUserName())
                 .userNickname(user.getUserNickname())
                 .userEmail(user.getUserEmail())
-                .userImageName(user.getUserImageName())
+                .userImagePath(user.getUserImagePath())
                 .king(
                         UserFindKingResponse.builder()
                                 .choreKing(choreKingResult)
