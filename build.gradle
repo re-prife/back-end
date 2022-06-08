@@ -80,11 +80,11 @@ configurations {
     querydsl.extendsFrom compileClasspath
 }
 
-jacoco{
+jacoco {
     toolVersion = "0.8.5"
 }
-jacocoTestReport{
-    reports{
+jacocoTestReport {
+    reports {
         xml.enabled = true
         html.enabled = true
     }
@@ -92,6 +92,7 @@ jacocoTestReport{
         classDirectories.setFrom(
                 files(classDirectories.files.collect {
                     fileTree(dir: it, include: ['**/controller/**', '**/service/**'])
-                }))
+                })
+        )
     }
 }
