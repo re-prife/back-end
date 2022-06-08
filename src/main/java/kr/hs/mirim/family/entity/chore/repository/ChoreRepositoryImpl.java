@@ -39,18 +39,20 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
                 .orderBy(chore.choreCategory.count().desc())
                 .fetch();
     }
-  
-   @Override
+
+    @Override
     public List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date) {
         return queryFactory
-                .select(Projections.constructor(
+                .select(Projections.fields(
                         ChoreListDataResponse.class,
                         chore.choreId,
                         chore.user.userId,
                         chore.choreTitle,
                         chore.choreCategory,
-                        chore.choreDate
-                        ))
+                        chore.choreDate,
+                        chore.createdDate,
+                        chore.modifiedDate
+                ))
                 .from(chore)
                 .where(chore.choreDate.eq(date), chore.user.group.groupId.eq(groupId))
                 .fetch();
@@ -59,13 +61,15 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
     @Override
     public List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDateMonth(Long groupId, YearMonth date) {
         return queryFactory
-                .select(Projections.constructor(
+                .select(Projections.fields(
                         ChoreListDataResponse.class,
                         chore.choreId,
                         chore.user.userId,
                         chore.choreTitle,
                         chore.choreCategory,
-                        chore.choreDate
+                        chore.choreDate,
+                        chore.createdDate,
+                        chore.modifiedDate
                 ))
                 .from(chore)
                 .where(chore.user.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()))

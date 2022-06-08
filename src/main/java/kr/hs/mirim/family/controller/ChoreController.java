@@ -7,8 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.request.ChoreCertifyReactionRequest;
-import kr.hs.mirim.family.dto.response.ChoreListMonthResponse;
-import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
+import kr.hs.mirim.family.dto.response.ChoreListDataResponse;
 import kr.hs.mirim.family.service.ChoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Tag(name = "CHORE", description = "집안일 API")
@@ -47,8 +47,8 @@ public class ChoreController {
     })
     @Operation(tags = "CHORE", summary = "집안일 하루 목록 조회", description = "날짜에 해당하는 집안일을 조회하는 API")
     @GetMapping("/one-day")
-    public ChoreListOneDayResponse choreListOneDay(@ApiParam(value = "집안일을 조회할 그룹의 ID") @PathVariable long groupId,
-                                                   @ApiParam(value = "집안일을 조회할 날짜 (년-월-일)") @RequestParam String date) {
+    public List<ChoreListDataResponse> choreListOneDay(@ApiParam(value = "집안일을 조회할 그룹의 ID") @PathVariable long groupId,
+                                                       @ApiParam(value = "집안일을 조회할 날짜 (년-월-일)") @RequestParam String date) {
         return choreService.choreListOneDay(groupId, date);
     }
 
@@ -59,8 +59,8 @@ public class ChoreController {
     })
     @Operation(tags = "CHORE", summary = "집안일 달 목록 조회", description = "달에 해당하는 집안일을 조회하는 API")
     @GetMapping
-    public ChoreListMonthResponse choreListMonth(@ApiParam(value = "집안일을 생성할 그룹의 ID") @PathVariable long groupId,
-                                                 @ApiParam(value = "집안일을 조회할 날짜 (년-월)") @RequestParam String date) {
+    public List<ChoreListDataResponse> choreListMonth(@ApiParam(value = "집안일을 생성할 그룹의 ID") @PathVariable long groupId,
+                                                      @ApiParam(value = "집안일을 조회할 날짜 (년-월)") @RequestParam String date) {
         return choreService.choreListMonth(groupId, date);
     }
 
