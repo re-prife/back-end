@@ -350,7 +350,6 @@ class IngredientControllerTest {
     void 식재료_수량_갱신_404_그룹아이디_없음() throws Exception {
         List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
         data.add(new UpdateIngredientCountDataRequest(1,"2g"));
-        data.add(new UpdateIngredientCountDataRequest(2,"0개"));
 
         UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
 
@@ -366,7 +365,6 @@ class IngredientControllerTest {
     void 식재료_수량_갱신_404_그룹안에_식재료없음() throws Exception {
         List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
         data.add(new UpdateIngredientCountDataRequest(1,"1개"));
-        data.add(new UpdateIngredientCountDataRequest(2,"0개"));
 
         UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
 
