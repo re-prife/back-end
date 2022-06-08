@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.ReportRequest;
+import kr.hs.mirim.family.dto.response.GroupResponse;
 import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.service.GroupService;
@@ -34,11 +35,11 @@ public class GroupController {
     @Operation(tags = "GROUP", summary = "그룹 생성", description = "그룹을 생성하는 API")
     @PostMapping("/{userId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createGroup(@Valid @RequestBody CreateGroupRequest request,
-                            @ApiParam(value = "그룹을 생성할 user의 ID")
-                            @PathVariable long userId,
-                            BindingResult bindingResult) {
-        groupService.createGroup(request, userId, bindingResult);
+    public GroupResponse createGroup(@Valid @RequestBody CreateGroupRequest request,
+                                     @ApiParam(value = "그룹을 생성할 user의 ID")
+                                     @PathVariable long userId,
+                                     BindingResult bindingResult) {
+        return groupService.createGroup(request, userId, bindingResult);
     }
 
     @ApiResponses(value = {
@@ -49,10 +50,10 @@ public class GroupController {
     })
     @Operation(tags = "GROUP", summary = "그룹 가입", description = "그룹에 가입하는 API")
     @PostMapping("/join/{userId}")
-    public void joinGroup(@Valid @RequestBody JoinGroupRequest request,
-                          @ApiParam(value = "그룹에 가입할 user의 ID") @PathVariable long userId,
-                          BindingResult bindingResult) {
-        groupService.joinGroup(request, userId, bindingResult);
+    public GroupResponse joinGroup(@Valid @RequestBody JoinGroupRequest request,
+                                   @ApiParam(value = "그룹에 가입할 user의 ID") @PathVariable long userId,
+                                   BindingResult bindingResult) {
+        return groupService.joinGroup(request, userId, bindingResult);
     }
 
     @ApiResponses(value = {
