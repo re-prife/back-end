@@ -3,8 +3,7 @@ package kr.hs.mirim.family.entity.chore.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.hs.mirim.family.dto.response.ChoreKingResponse;
-import kr.hs.mirim.family.dto.response.KingResponse;
-import kr.hs.mirim.family.dto.response.ChoreListDataResponse;
+import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCheck;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -41,10 +40,10 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
     }
 
     @Override
-    public List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date) {
+    public List<ChoreListResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date) {
         return queryFactory
                 .select(Projections.fields(
-                        ChoreListDataResponse.class,
+                        ChoreListResponse.class,
                         chore.choreId,
                         chore.user.userId,
                         chore.choreTitle,
@@ -59,10 +58,10 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
     }
 
     @Override
-    public List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDateMonth(Long groupId, YearMonth date) {
+    public List<ChoreListResponse> findByChoreGroup_GroupIdAndDateMonth(Long groupId, YearMonth date) {
         return queryFactory
                 .select(Projections.fields(
-                        ChoreListDataResponse.class,
+                        ChoreListResponse.class,
                         chore.choreId,
                         chore.user.userId,
                         chore.choreTitle,
