@@ -28,7 +28,7 @@ public class ImageController {
     @PostMapping("/users/{userId}")
     public void userImageUpdate(
             @ApiParam(value = "이미지를 추가, 갱신할 유저의 ID") @PathVariable long userId,
-            @ApiParam(value = "추가, 갱신할 이미지 파일") @RequestParam("file") MultipartFile file) {
+            @ApiParam(value = "추가, 갱신할 이미지 파일") @RequestPart("file") MultipartFile file) {
         imageService.userImageUpdate(userId, file);
     }
 
@@ -40,7 +40,7 @@ public class ImageController {
     @Operation(tags = "IMAGE", summary = "식재료 이미지 업데이트", description = "식재료 이미지를 추가, 갱신하는 API")
     @PostMapping("/ingredients/{ingredientId}")
     public void ingredientImageUpdate(@ApiParam(value = "이미지를 추가, 갱신할 식재료의 ID") @PathVariable long ingredientId,
-                                      @ApiParam(value = "추가, 갱신할 이미지 파일") @RequestParam("file") MultipartFile file){
+                                      @ApiParam(value = "추가, 갱신할 이미지 파일") @RequestPart("file") MultipartFile file){
         imageService.ingredientImageUpdate(ingredientId, file);
     }
 
