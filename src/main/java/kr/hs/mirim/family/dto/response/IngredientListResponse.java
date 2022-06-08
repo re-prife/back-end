@@ -52,6 +52,10 @@ public class IngredientListResponse {
     @NotEmpty
     private String ingredientImagePath;
 
+    @Schema(description = "식재료 메모", example = "맛있는 수박박박")
+    @NotEmpty
+    private String ingredientMemo;
+
     @Schema(description = "식재료 유통기한을 알려주는 색", example = "RED")
     @NonNull
     private String ingredientColor;
