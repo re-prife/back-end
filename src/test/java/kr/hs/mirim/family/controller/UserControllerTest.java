@@ -99,9 +99,9 @@ class UserControllerTest {
     //이미 존재하는 회원이 회원가입하는 경우 - 409
     @Test
     void 회원가입_회원중복_409() throws Exception {
-        String userName = "family";
-        String userNickname = "가족 공유 서비스";
-        String userEmail = "family@gmail.com";
+        String userName = "Min J";
+        String userNickname = "취준생";
+        String userEmail = "m04j00@gmail.com";
         String userPassword = "doremisol";
 
         CreateUserRequest createUserRequest1 = new CreateUserRequest(userName, userNickname, userEmail, userPassword);
@@ -115,7 +115,7 @@ class UserControllerTest {
     //로그인이 성공적으로 실행된 경우 - 200
     @Test
     void 로그인_성공_200() throws Exception {
-        String userEmail = "family@gmail.com";
+        String userEmail = "m04j00@gmail.com";
         String userPassword = "doremisol";
         LoginUserRequest loginUserRequest = new LoginUserRequest(userEmail, userPassword);
 
@@ -129,7 +129,7 @@ class UserControllerTest {
     @Test
     void 로그인_이메일형식_400() throws Exception {
         String userEmail = "Test";  //이메일 형식이 옳지 않음
-        String userPassword = "test0000";
+        String userPassword = "doremisol";
         LoginUserRequest loginUserRequest = new LoginUserRequest(userEmail, userPassword);
 
         mockMvc.perform(post("/users/login")
@@ -154,7 +154,7 @@ class UserControllerTest {
     //비밀번호와 이메일이 일치하지 않는 경우 - 403
     @Test
     void 로그인_일치하지않음_403() throws Exception {
-        String userEmail = "family@gmail.com";
+        String userEmail = "m04j00@gmail.com";
         String userPassword = "idontknow";
         LoginUserRequest loginUserRequest = new LoginUserRequest(userEmail, userPassword);
 
@@ -168,7 +168,7 @@ class UserControllerTest {
     @Test
     void 로그인_존재하지않는_회원_404() throws Exception {
         String userEmail = "none@gmail.com";
-        String userPassword = "test1234";
+        String userPassword = "doremisol";
         LoginUserRequest loginUserRequest = new LoginUserRequest(userEmail, userPassword);
 
         mockMvc.perform(post("/users/login")
@@ -197,7 +197,7 @@ class UserControllerTest {
 
         DeleteUserRequest deleteUserRequest = new DeleteUserRequest(userPassword);
 
-        mockMvc.perform(delete("/users/7")
+        mockMvc.perform(delete("/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(deleteUserRequest)))
                 .andExpect(status().isNoContent());
@@ -210,7 +210,7 @@ class UserControllerTest {
 
         DeleteUserRequest deleteUserRequest = new DeleteUserRequest(userPassword);
 
-        mockMvc.perform(delete("/users/7")
+        mockMvc.perform(delete("/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(deleteUserRequest)))
                 .andExpect(status().isForbidden());
@@ -232,12 +232,12 @@ class UserControllerTest {
     //회원 수정이 성공적으로 완료된 경우 - 204
     @Test
     void 회원수정_성공_204() throws Exception {
-        String userName = "가족";
-        String userNickname = "테스터";
+        String userName = "MJ";
+        String userNickname = "MJCEO";
 
         UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname);
 
-        mockMvc.perform(put("/users/7")
+        mockMvc.perform(put("/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updateUserRequest)))
                 .andExpect(status().isNoContent());
@@ -251,7 +251,7 @@ class UserControllerTest {
 
         UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname);
 
-        mockMvc.perform(put("/users/7")
+        mockMvc.perform(put("/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updateUserRequest)))
                 .andExpect(status().isBadRequest());
@@ -260,8 +260,8 @@ class UserControllerTest {
     //해당 아이디의 회원이 존재하지 않는 경우 - 404
     @Test
     void 회원수정_존재하지않는회원_404() throws Exception {
-        String userName = "가족";
-        String userNickname = "테스터";
+        String userName = "MJ";
+        String userNickname = "MJCEO";
 
         UpdateUserRequest updateUserRequest = new UpdateUserRequest(userName, userNickname);
 
@@ -280,7 +280,7 @@ class UserControllerTest {
 
         UpdateUserPasswordRequest updateUserPasswordRequest = new UpdateUserPasswordRequest(userPassword, userNewPassword, userNewPasswordCheck);
 
-        mockMvc.perform(put("/users/7/password")
+        mockMvc.perform(put("/users/1/password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updateUserPasswordRequest)))
                 .andExpect(status().isNoContent());
@@ -295,7 +295,7 @@ class UserControllerTest {
 
         UpdateUserPasswordRequest updateUserPasswordRequest = new UpdateUserPasswordRequest(userPassword, userNewPassword, userNewPasswordCheck);
 
-        mockMvc.perform(put("/users/7/password")
+        mockMvc.perform(put("/users/1/password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updateUserPasswordRequest)))
                 .andExpect(status().isForbidden());
@@ -325,7 +325,7 @@ class UserControllerTest {
 
         UpdateUserPasswordRequest updateUserPasswordRequest = new UpdateUserPasswordRequest(userPassword, userNewPassword, userNewPasswordCheck);
 
-        mockMvc.perform(put("/users/7/password")
+        mockMvc.perform(put("/users/1/password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(updateUserPasswordRequest)))
                 .andExpect(status().isConflict());
@@ -334,7 +334,7 @@ class UserControllerTest {
     //회원 조회가 성공적으로 완료된 경우 - 200
     @Test
     void 회원조회_200() throws Exception {
-        mockMvc.perform(get("/users/7?date=2022-06")
+        mockMvc.perform(get("/users/1?date=2022-06")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -342,7 +342,7 @@ class UserControllerTest {
     //조회시 날짜 형식이 틀릴 경우 - 400
     @Test
     void 회원조회_날짜형식_400() throws Exception {
-        mockMvc.perform(get("/users/7?date=2022-6")
+        mockMvc.perform(get("/users/1?date=2022-6")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
