@@ -1,6 +1,8 @@
 package kr.hs.mirim.family.service;
 
+import kr.hs.mirim.family.entity.ingredient.Ingredient;
 import kr.hs.mirim.family.entity.ingredient.repository.IngredientRepository;
+import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
@@ -23,27 +25,32 @@ public class ImageService {
 
     public void userImageUpdate(long userId, MultipartFile file) {
         fileValid(file);
-        if (!userRepository.existsById(userId)) {
+        User user = userRepository.findById(userId).orElseThrow(()->{
             throw new DataNotFoundException("해당하는 유저가 없습니다.");
-        }
+        });
+
         String saveName = "user_" + userId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
         String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
-        userRepository.updateUserImage(userId, savePath);
+        if(user.getUserImagePath() == null){
+            userRepository.updateUserImage(userId, savePath);
+        }
     }
 
     public void ingredientImageUpdate(long ingredientId, MultipartFile file) {
         fileValid(file);
-        if (!ingredientRepository.existsById(ingredientId)) {
-            throw new DataNotFoundException("해당하는 식재료가 없습니다.");
-        }
+        Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(()->{
+           throw new DataNotFoundException("해당하는 식재료가 없습니다.");
+        });
 
         String saveName = "ingredient_" + ingredientId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
         String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
-        ingredientRepository.updateIngredientImage(ingredientId, savePath);
+        if(ingredient.getIngredientImagePath() == null){
+            ingredientRepository.updateIngredientImage(ingredientId, savePath);
+        }
     }
 
     private void saveFile(MultipartFile file, String filePath, String saveName) {
