@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.hs.mirim.family.entity.ingredient.IngredientCategory;
 import kr.hs.mirim.family.entity.ingredient.IngredientSaveType;
@@ -17,6 +18,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class IngredientListResponse {
 
+    @Schema(description = "식재료 Id", example = "1")
+    @NotNull
+    private long ingredientId;
+
     @Schema(description = "식재료 이름", example = "햇감자")
     @NotEmpty
     private String ingredientName;
@@ -27,7 +32,13 @@ public class IngredientListResponse {
 
     @Schema(description = "식재료 유통기한", example = "2023-03-01")
     @NotNull
+    @JsonFormat(timezone = "Asia/Seoul", shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate ingredientExpirationDate;
+
+    @Schema(description = "식재료 구매날짜", example = "2023-03-01")
+    @NotNull
+    @JsonFormat(timezone = "Asia/Seoul", shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate ingredientPurchaseDate;
 
     @Schema(description = "식재료 카테고리", example = "VEGGIE")
     @NotNull
