@@ -193,6 +193,23 @@ class IngredientControllerTest {
                 .andExpect(status().is(404))
                 .andDo(print());
     }
+
+    @Test
+    void 식재료_업데이트_404_식재료_없음() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
+                "3개","냠냠",LocalDate.of(2022,4,11) ,LocalDate.of(2023,4,11));
+
+        mvc.perform(put("/groups/1/ingredients/23343434")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().is(404))
+                .andDo(print());
+    }
+
     @Test
     void 식재료_업데이트_400_request_형식() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -334,6 +351,22 @@ class IngredientControllerTest {
     void 식재료_수량_갱신_404_그룹안에_식재료없음() throws Exception {
         List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
         data.add(new UpdateIngredientCountDataRequest(1,"1개"));
+        data.add(new UpdateIngredientCountDataRequest(2,"0개"));
+
+        UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
+
+        mvc.perform(put("/groups/2/ingredients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().is(404))
+                .andDo(print());
+    }
+
+    @Test
+    void 식재료_수량_갱신_404_식재료없음() throws Exception {
+        List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
+        data.add(new UpdateIngredientCountDataRequest(3343,"1개"));
         data.add(new UpdateIngredientCountDataRequest(2,"0개"));
 
         UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
