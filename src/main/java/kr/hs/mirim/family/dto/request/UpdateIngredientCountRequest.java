@@ -5,12 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import javax.validation.constraints.NotNull;
 
-@Schema(description = "식재료 수량 갱신 Request")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateIngredientCountRequest {
-    List<UpdateIngredientCountDataRequest> data;
+
+    @Schema(description = "수량 변경할 식재료 ID", example = "1")
+    @NotNull
+    private long ingredientId;
+
+    @Schema(description = "변경할 수량", example = "1개")
+    @NotNull
+    private String ingredientCount;
 }
