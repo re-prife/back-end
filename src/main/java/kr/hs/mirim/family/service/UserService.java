@@ -144,7 +144,7 @@ public class UserService {
             if(choreMap.size() == 3) break;
         }
 
-        List<ChoreKingResponse> choreKingResult = new ArrayList();
+        List<ChoreKingResponse> choreKingResult = new ArrayList<>();
 
         if(!choreMap.isEmpty()){
             for(ChoreKingResponse item : choreMap.values()){
