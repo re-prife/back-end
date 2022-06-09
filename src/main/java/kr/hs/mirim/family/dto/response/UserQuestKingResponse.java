@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestKingResponse {
+public class UserQuestKingResponse {
 
     @Schema(description = "심부름 왕 ID", example = "2")
     @NotNull

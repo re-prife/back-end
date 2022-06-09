@@ -13,17 +13,27 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoreKingResponse {
-
-    @Schema(description = "집안일 카테고리", example = "COOK")
-    @NotEmpty
-    private ChoreCategory category;
+public class MonthChoreKingResponse {
 
     @Schema(description = "집안일 왕 ID", example = "4")
     @NotNull
     private long userId;
 
+    @Schema(description = "유저 닉네임", example = "늘하")
+    @NotEmpty
+    private String userNickname;
+
+    @Schema(description = "유저 이미지 경로", example = "/upload/user_4.png")
+    @NotEmpty
+    private String userImagePath;
+
+    @Schema(description = "집안일 카테고리", example = "COOK")
+    @NotEmpty
+    private ChoreCategory category;
+
     @Schema(description = "집안일 완료 횟수", example = "12")
     @NotNull
     private long count;
+
+
 }
