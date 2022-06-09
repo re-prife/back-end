@@ -120,7 +120,7 @@ public class UserService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         YearMonth localDate;
         try{
-            localDate = YearMonth.parse(date, formatter);
+            localDate = YearMonth.parse(date, formatter).minusMonths(1);
         }catch(Exception e){
             throw new BadRequestException("잘못된 형식입니다.");
         }
@@ -144,7 +144,7 @@ public class UserService {
             if(choreMap.size() == 3) break;
         }
 
-        List<UserChoreKingResponse> choreKingResult = new ArrayList();
+        List<UserChoreKingResponse> choreKingResult = new ArrayList<>();
 
         if(!choreMap.isEmpty()){
             for(UserChoreKingResponse item : choreMap.values()){
