@@ -30,7 +30,7 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
                         UserChoreKingResponse.class,
                         chore.choreCategory,
                         chore.user.userId,
-                        chore.choreCategory.count().as("questCount")
+                        chore.choreCategory.count().as("count")
                 ))
                 .from(chore)
                 .where(chore.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()), chore.choreCheck.eq(ChoreCheck.SUCCESS))
