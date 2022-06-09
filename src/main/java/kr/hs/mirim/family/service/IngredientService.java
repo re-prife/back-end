@@ -98,12 +98,12 @@ public class IngredientService {
     }
 
     @Transactional
-    public void deleteIngredient(long groupId, DeleteIngredientRequest request, BindingResult result){
+    public void deleteIngredient(long groupId, List<DeleteIngredientRequest> request, BindingResult result){
         formValidate(result);
         existGroup(groupId);
 
-        for(int i=0; i<request.getData().size(); i++){
-            Ingredient ingredient = getIngredient(request.getData().get(i).getIngredientId());
+        for (DeleteIngredientRequest ingredientRequest : request) {
+            Ingredient ingredient = getIngredient(ingredientRequest.getIngredientId());
             existIngredientInGroup(groupId, ingredient);
 
             ingredientRepository.deleteById(ingredient.getIngredientId());
