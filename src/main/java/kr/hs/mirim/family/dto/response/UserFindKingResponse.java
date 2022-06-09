@@ -15,8 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class UserFindKingResponse {
     @Schema(description = "집안일 왕")
-    private List<ChoreKingResponse> choreKing;
+    private List<UserChoreKingResponse> choreKing;
 
     @Schema(description = "심부름 왕")
-    private QuestKingResponse questKing;
+    private UserQuestKingResponse questKing;
 }

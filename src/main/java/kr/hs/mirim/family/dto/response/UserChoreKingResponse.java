@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoreKingResponse {
+public class UserChoreKingResponse {
 
     @Schema(description = "집안일 카테고리", example = "COOK")
     @NotEmpty

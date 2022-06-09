@@ -14,8 +14,8 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class KingResponse {
+public class UserKingResponse {
 
-    private List<ChoreKingResponse> choreKing;
-    private QuestKingResponse questKing;
+    private List<UserChoreKingResponse> choreKing;
+    private UserQuestKingResponse questKing;
 }
