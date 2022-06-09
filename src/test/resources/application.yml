@@ -20,3 +20,4 @@ spring:
     init:
       mode: always
       data-locations: classpath:data.sql
+      encoding: utf-8
