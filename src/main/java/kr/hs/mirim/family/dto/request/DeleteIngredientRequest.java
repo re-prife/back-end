@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.*;
+import javax.validation.constraints.NotNull;
 
-@Schema(description = "식재료 삭제 Request")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeleteIngredientRequest {
-    List<DeleteIngredientDataRequest> data;
+
+    @Schema(description = "삭제할 식재료 ID", example = "1")
+    @NotNull
+    private long ingredientId;
 }

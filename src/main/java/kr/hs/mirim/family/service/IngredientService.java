@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -100,12 +98,12 @@ public class IngredientService {
     }
 
     @Transactional
-    public void deleteIngredient(long groupId, DeleteIngredientRequest request, BindingResult result){
+    public void deleteIngredient(long groupId, List<DeleteIngredientRequest> request, BindingResult result){
         formValidate(result);
         existGroup(groupId);
 
-        for(int i=0; i<request.getData().size(); i++){
-            Ingredient ingredient = getIngredient(request.getData().get(i).getIngredientId());
+        for (DeleteIngredientRequest ingredientRequest : request) {
+            Ingredient ingredient = getIngredient(ingredientRequest.getIngredientId());
             existIngredientInGroup(groupId, ingredient);
 
             ingredientRepository.deleteById(ingredient.getIngredientId());
@@ -113,21 +111,20 @@ public class IngredientService {
     }
 
     @Transactional
-    public void updateIngredientCount(long groupId, UpdateIngredientCountRequest request, BindingResult result){
+    public void updateIngredientCount(long groupId, List<UpdateIngredientCountRequest> request, BindingResult result){
         formValidate(result);
         existGroup(groupId);
 
-        for(int i=0; i<request.getData().size(); i++){
-            Ingredient ingredient = getIngredient(request.getData().get(i).getIngredientId());
+        for (UpdateIngredientCountRequest ingredientRequest : request) {
+            Ingredient ingredient = getIngredient(ingredientRequest.getIngredientId());
             existIngredientInGroup(groupId, ingredient);
 
-            String requestCount = request.getData().get(i).getIngredientCount();
-            long requestIngredientId = request.getData().get(i).getIngredientId();
+            String requestCount = ingredientRequest.getIngredientCount();
+            long requestIngredientId = ingredientRequest.getIngredientId();
 
-            if(checkIngredientCount(requestCount)){
+            if (checkIngredientCount(requestCount)) {
                 ingredientRepository.deleteById(requestIngredientId);
-            }
-            else {
+            } else {
                 ingredientRepository.ingredientCountUpdate(groupId, requestIngredientId, requestCount);
             }
         }
