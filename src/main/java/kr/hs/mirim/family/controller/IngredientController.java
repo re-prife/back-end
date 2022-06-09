@@ -91,7 +91,7 @@ public class IngredientController {
     @PutMapping
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void updateIngredientCount(@ApiParam(value = "식재료가 속한 그룹의 ID") @PathVariable long groupId,
-                                      @RequestBody @Valid UpdateIngredientCountRequest request,
+                                      @RequestBody @Valid List<UpdateIngredientCountRequest> request,
                                       BindingResult result) {
         ingredientService.updateIngredientCount(groupId, request, result);
     }
