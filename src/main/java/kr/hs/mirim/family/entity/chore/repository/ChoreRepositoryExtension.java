@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.entity.chore.repository;
 
-import kr.hs.mirim.family.dto.response.ChoreKingResponse;
+import kr.hs.mirim.family.dto.response.MonthChoreKingResponse;
+import kr.hs.mirim.family.dto.response.UserChoreKingResponse;
 import kr.hs.mirim.family.dto.response.ChoreListResponse;
 
 import java.time.LocalDate;
@@ -11,5 +12,6 @@ public interface ChoreRepositoryExtension {
     List<ChoreListResponse> findByChoreGroup_GroupIdAndDateMonth(Long groupId, YearMonth date);
     List<ChoreListResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date);
   
-    List<ChoreKingResponse> monthKing(long groupId, YearMonth date);
+    List<UserChoreKingResponse> userChoreKing(long groupId, YearMonth date);
+    List<MonthChoreKingResponse> monthChoreKing(long groupId, YearMonth date);
 }
