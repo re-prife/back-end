@@ -108,7 +108,7 @@ public class GroupService {
      * */
     public GetGroupReportResponse getGroupReport(long groupId) {
         Group group = gretGroup(groupId);
-        if (group.getGroupReport().isEmpty()) {
+        if (group.getGroupReport() == null) {
             return new GetGroupReportResponse("");
         }
         return new GetGroupReportResponse(group.getGroupReport());
