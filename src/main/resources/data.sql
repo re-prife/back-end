@@ -46,3 +46,13 @@ INSERT INTO CHORE_TB
 VALUES (10, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 1);
 INSERT INTO CHORE_TB
 VALUES (11, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 1);
+
+
+INSERT INTO CHORE_TB
+VALUES (12, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '연우가 연어구이 하는날', 1, 5);
+INSERT INTO CHORE_TB
+VALUES (13, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '연우가 연어구이 하는날', 1, 5);
+INSERT INTO CHORE_TB
+VALUES (14, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '연우가 연어구이 하는날', 1, 5);
+INSERT INTO CHORE_TB
+VALUES (15, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '연우가 연어구이 하는날', 1, 5);

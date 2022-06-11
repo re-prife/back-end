@@ -339,6 +339,13 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void 회원조회_왕없음_200() throws Exception {
+        mockMvc.perform(get("/users/1?date=2022-05")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
     //조회시 날짜 형식이 틀릴 경우 - 400
     @Test
     void 회원조회_날짜형식_400() throws Exception {
