@@ -20,7 +20,7 @@ public class ImageService {
     private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
 
-    @Value("${image.path:/home/ubuntu/family/upload/}")
+    @Value("${image.path:./upload/}")
     private String FILE_PATH;
 
     public void userImageUpdate(long userId, MultipartFile file) {
