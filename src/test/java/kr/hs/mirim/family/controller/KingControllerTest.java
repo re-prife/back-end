@@ -34,11 +34,17 @@ class KingControllerTest {
                 .build();
     }
 
-
     @Test
     void userKingInfo_200() throws Exception {
         mvc.perform(get("/groups/1/kings")
                 .param("date","2022-06"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+    @Test
+    void userKingInfo_200_결과값_없음() throws Exception {
+        mvc.perform(get("/groups/1/kings")
+                        .param("date","2022-05"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
