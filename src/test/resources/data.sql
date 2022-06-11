@@ -62,3 +62,5 @@ INSERT INTO CHORE_TB
 VALUES (17, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
 INSERT INTO CHORE_TB
 VALUES (18, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (19, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
