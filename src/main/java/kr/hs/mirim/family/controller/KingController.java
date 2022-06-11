@@ -5,7 +5,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.hs.mirim.family.dto.response.KingResponse;
+import kr.hs.mirim.family.dto.response.MonthKingResponse;
+import kr.hs.mirim.family.dto.response.UserFindKingResponse;
 import kr.hs.mirim.family.service.KingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class KingController {
     })
     @Operation(tags = "KING", summary = "이달의 왕 조회", description = "이달의 왕을 조회하는 API")
     @GetMapping("/kings")
-    public KingResponse getKingOfTheMonth(@ApiParam(value = "이달의 왕을 조회할 그룹 ID") @PathVariable long groupId,
-                                          @ApiParam(value = "이달의 왕을 조회할 날짜 (년-월)") @RequestParam String date) {
-        return kingService.kingOfTheMonth(groupId, date);
+    public MonthKingResponse userKingInfo(@ApiParam(value = "이달의 왕을 조회할 그룹 ID") @PathVariable long groupId,
+                                                  @ApiParam(value = "이달의 왕을 조회할 날짜 (년-월)") @RequestParam String date) {
+        return kingService.userKing(groupId, date);
     }
 }

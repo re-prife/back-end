@@ -2,8 +2,7 @@ package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.request.ChoreCertifyReactionRequest;
-import kr.hs.mirim.family.dto.response.ChoreListMonthResponse;
-import kr.hs.mirim.family.dto.response.ChoreListOneDayResponse;
+import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.ChoreCheck;
@@ -22,6 +21,7 @@ import java.time.YearMonth;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static kr.hs.mirim.family.entity.chore.ChoreCheck.*;
 
@@ -76,7 +76,7 @@ public class ChoreService {
     }
 
     @Transactional
-    public ChoreListOneDayResponse choreListOneDay(long groupId, String date) {
+    public List<ChoreListResponse> choreListOneDay(long groupId, String date) {
         existsGroup(groupId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate;
@@ -85,13 +85,11 @@ public class ChoreService {
         } catch (Exception e) {
             throw new BadRequestException("잘못된 형식입니다.");
         }
-        return ChoreListOneDayResponse.builder()
-                .data(choreRepository.findByChoreGroup_GroupIdAndDate(groupId, localDate))
-                .build();
+        return choreRepository.findByChoreGroup_GroupIdAndDate(groupId, localDate);
     }
 
     @Transactional
-    public ChoreListMonthResponse choreListMonth(long groupId, String date) {
+    public List<ChoreListResponse> choreListMonth(long groupId, String date) {
         existsGroup(groupId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         YearMonth localDate;
@@ -101,9 +99,7 @@ public class ChoreService {
             throw new BadRequestException("잘못된 형식입니다.");
         }
 
-        return ChoreListMonthResponse.builder()
-                .data(choreRepository.findByChoreGroup_GroupIdAndDateMonth(groupId, localDate))
-                .build();
+        return choreRepository.findByChoreGroup_GroupIdAndDateMonth(groupId, localDate);
     }
 
     @Transactional(noRollbackFor = DateOverException.class)
