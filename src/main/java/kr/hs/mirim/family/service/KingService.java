@@ -33,7 +33,9 @@ public class KingService {
             if (hashMap.containsKey(response.getCategory())) {
                 if (hashMap.get(response.getCategory()).getCount() < response.getCount())
                     hashMap.put(response.getCategory(), response);
-            } else {
+                else continue;
+            }
+            else {
                 hashMap.put(response.getCategory(), response);
             }
             if(hashMap.size() == 3) break;
