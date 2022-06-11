@@ -27,7 +27,7 @@ public class QuestService {
     private final QuestRepository questRepository;
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
-
+    private final NotificationService notificationService;
     /* *
      * 심부름 추가 기능
      * 심부름 추가 완료 시 200 OK
@@ -56,6 +56,8 @@ public class QuestService {
                 .group(user.getGroup())
                 .build();
         questRepository.save(quest);
+
+        notificationService.send(user, quest.getQuestTitle());
         return quest;
     }
 
