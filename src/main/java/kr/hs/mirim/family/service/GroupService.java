@@ -95,7 +95,7 @@ public class GroupService {
     @Transactional
     public void updateGroupReport(long groupId, ReportRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
-        Group group = gretGroup(groupId);
+        Group group = getGroup(groupId);
         group.updateGroupReport(request.getGroupReport());
     }
 
@@ -107,7 +107,7 @@ public class GroupService {
      * @author: m04j00
      * */
     public GetGroupReportResponse getGroupReport(long groupId) {
-        Group group = gretGroup(groupId);
+        Group group = getGroup(groupId);
         if (group.getGroupReport() == null) {
             return new GetGroupReportResponse("");
         }
@@ -135,7 +135,7 @@ public class GroupService {
         }
     }
 
-    private Group gretGroup(long groupId) {
+    private Group getGroup(long groupId) {
         return groupRepository.findById(groupId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
