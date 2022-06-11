@@ -31,8 +31,10 @@ public class KingService {
 
         for (MonthChoreKingResponse response : choreKing) {
             if (hashMap.containsKey(response.getCategory())) {
-                if (hashMap.get(response.getCategory()).getCount() < response.getCount())
+                if (hashMap.get(response.getCategory()).getCount() < response.getCount()){
+                    System.out.println("put됨");
                     hashMap.put(response.getCategory(), response);
+                }
                 else continue;
             }
             else {
