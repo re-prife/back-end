@@ -11,18 +11,19 @@ import java.io.IOException;
 
 @Configuration
 public class MultipartConfig {
-    private final int FILE_MAX_UPLOAD_SIZE = 1024*1024*10;
 
     @Bean
     public MultipartResolver multipartResolver() {
+
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(FILE_MAX_UPLOAD_SIZE);
+        multipartResolver.setMaxUploadSize(1024*1024*10);
 
         try{
-            multipartResolver.setUploadTempDir(new FileSystemResource("/home/ubuntu/family/upload"));
+            multipartResolver.setUploadTempDir(new FileSystemResource("./upload"));
         }catch (IOException e){
-            e.getCause().getMessage();
+            e.getCause();
         }
         return multipartResolver;
     }
 }
+
