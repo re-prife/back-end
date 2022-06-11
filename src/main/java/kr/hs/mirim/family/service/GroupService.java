@@ -31,14 +31,13 @@ public class GroupService {
     /*
      * 그룹 생성
      * 성공 시 그룹 초대 코드 생성 후 201
-     * dto form이 일치하지 않으면 400 Bad request
+     * request body가 없을 경우 400 Bad request
      * 계정이 존재하지 않으면 404 Not found
      * 이미 그룹에 가입된 경우 409 conflict
      *
      * @author: m04j00
      * */
-    public GroupResponse createGroup(CreateGroupRequest request, long userId, BindingResult bindingResult) {
-        formValidate(bindingResult);
+    public GroupResponse createGroup(CreateGroupRequest request, long userId) {
         validationUser(userId);
         String code = createInviteCode();
         Group group = new Group(code, request.getGroupName());
@@ -49,14 +48,13 @@ public class GroupService {
 
     /*
      * 기존에 생성되어 있는 그룹 가입
-     * dto form이 일치하지 않으면 400 Bad request
+     * request body가 없을 경우 400 Bad request
      * 계정이 존재하지 않으면 404 Not found
      * 이미 그룹에 가입된 경우 409 conflict
      *
      * @author: m04j00
      * */
-    public GroupResponse joinGroup(JoinGroupRequest request, long userId, BindingResult bindingResult) {
-        formValidate(bindingResult);
+    public GroupResponse joinGroup(JoinGroupRequest request, long userId) {
         validationUser(userId);
 
         Group group = groupRepository.findByGroupInviteCode(request.getGroupInviteCode()).orElseThrow(() ->
