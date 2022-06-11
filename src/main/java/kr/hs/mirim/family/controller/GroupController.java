@@ -29,7 +29,7 @@ public class GroupController {
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "그룹 생성 성공"),
-            @ApiResponse(responseCode = "400", description = "Request body가 없을 경우"),
+            @ApiResponse(responseCode = "400", description = "Request body가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "404", description = "userId가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "409", description = "userId가 이미 그룹에 가입된 경우")
     })
@@ -44,7 +44,7 @@ public class GroupController {
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "그룹 가입 성공"),
-            @ApiResponse(responseCode = "400", description = "Request body가 않을 경우"),
+            @ApiResponse(responseCode = "400", description = "Request body가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "404", description = "userId가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "409", description = "userId가 이미 그룹에 가입된 경우")
     })
