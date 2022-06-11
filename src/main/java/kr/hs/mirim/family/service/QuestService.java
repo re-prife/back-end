@@ -57,8 +57,7 @@ public class QuestService {
                 .build();
         questRepository.save(quest);
 
-        notificationService.send(user, quest.getQuestTitle());
-        return quest;
+       return quest;
     }
 
     /* *

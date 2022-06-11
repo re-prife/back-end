@@ -42,6 +42,8 @@ public class QuestController {
             @ApiParam(value = "심부름을 생성할 회원 ID") @PathVariable long userId
     ) {
         Quest quest = questService.createQuest(groupId, userId, request, bindingResult);
+
+        notificationService.questNotification(quest);
     }
 
     @ApiResponses(value = {
