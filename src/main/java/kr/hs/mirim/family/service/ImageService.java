@@ -20,7 +20,7 @@ public class ImageService {
     private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
 
-    @Value("${image.path}")
+    @Value("${image.path:default}")
     private String FILE_PATH;
 
     public void userImageUpdate(long userId, MultipartFile file) {
