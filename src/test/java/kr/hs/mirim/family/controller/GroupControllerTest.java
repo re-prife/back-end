@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,19 +35,19 @@ class GroupControllerTest {
 
     @Transactional
     @Test
-    void 그룹_생성_200() throws Exception{
+    void 그룹_생성_200() throws Exception {
         CreateGroupRequest request = new CreateGroupRequest("그룹 이름");
 
         mockMvc.perform(post("/groups/6")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(request)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().isCreated());
     }
 
     // 그룹 초대 코드가 빈 값이 거나 request body가 없을 경우
     @Transactional
     @Test
-    void 그룹_생성_400() throws Exception{
+    void 그룹_생성_400() throws Exception {
         CreateGroupRequest request = new CreateGroupRequest();
 
         mockMvc.perform(post("/groups/6")
@@ -57,7 +58,7 @@ class GroupControllerTest {
 
     @Transactional
     @Test
-    void 그룹_생성_404() throws Exception{
+    void 그룹_생성_404() throws Exception {
         CreateGroupRequest request = new CreateGroupRequest("그룹 이름");
 
         mockMvc.perform(post("/groups/100")
@@ -68,7 +69,7 @@ class GroupControllerTest {
 
     @Transactional
     @Test
-    void 그룹_생성_409() throws Exception{
+    void 그룹_생성_409() throws Exception {
         CreateGroupRequest request = new CreateGroupRequest("그룹 이름");
 
         mockMvc.perform(post("/groups/1")
@@ -79,7 +80,7 @@ class GroupControllerTest {
 
     @Transactional
     @Test
-    void 그룹_가입_200() throws Exception{
+    void 그룹_가입_200() throws Exception {
         JoinGroupRequest request = new JoinGroupRequest("mon0516");
 
         mockMvc.perform(post("/groups/join/6")
@@ -91,7 +92,7 @@ class GroupControllerTest {
     // 그룹 초대 코드가 빈 값이 거나 request body가 없을 경우
     @Transactional
     @Test
-    void 그룹_가입_400() throws Exception{
+    void 그룹_가입_400() throws Exception {
         JoinGroupRequest request = new JoinGroupRequest("");
 
         mockMvc.perform(post("/groups/join/6")
@@ -102,7 +103,7 @@ class GroupControllerTest {
 
     @Transactional
     @Test
-    void 그룹_가입_404() throws Exception{
+    void 그룹_가입_404() throws Exception {
         JoinGroupRequest request = new JoinGroupRequest("mon0516");
 
         mockMvc.perform(post("/groups/join/100")
@@ -113,7 +114,7 @@ class GroupControllerTest {
 
     @Transactional
     @Test
-    void 그룹_가입_409() throws Exception{
+    void 그룹_가입_409() throws Exception {
         JoinGroupRequest request = new JoinGroupRequest("mon0516");
 
         mockMvc.perform(post("/groups/join/1")
@@ -122,6 +123,24 @@ class GroupControllerTest {
                 .andExpect(status().isConflict());
     }
 
+    @Test
+    void get_users_in_group_200() throws Exception {
+        mockMvc.perform(get("/groups/1/1"))
+                .andExpect(status().isOk());
+    }
 
+    // - groupId가 존재하지 않을 경우
+    @Test
+    void get_users_in_group_404_by_group() throws Exception {
+        mockMvc.perform(get("/groups/100/2"))
+                .andExpect(status().isNotFound());
+    }
+
+    // - userId가 존재하지 않을 경우
+    @Test
+    void get_users_in_group_404_by_user() throws Exception {
+        mockMvc.perform(get("/groups/2/100"))
+                .andExpect(status().isNotFound());
+    }
 
 }
