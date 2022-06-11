@@ -54,4 +54,4 @@ INSERT INTO USER_TB
 VALUES (7, 'family@gmail.com', '7.png', '가족', '가족공유', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);
 
 INSERT INTO GROUP_TB(group_id, group_invite_code, group_name)
-VALUES (2, 'mon0516', '민지네');
+VALUES (2, 'min7777', '민지네');
