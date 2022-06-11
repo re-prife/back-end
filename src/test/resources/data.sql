@@ -46,3 +46,11 @@ INSERT INTO CHORE_TB
 VALUES (10, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 1);
 INSERT INTO CHORE_TB
 VALUES (11, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 1);
+
+INSERT INTO GROUP_TB
+VALUES (2, 'fam1234', '가족네', 'Freemily는 가족간 공유 서비스입니다.');
+
+INSERT INTO CHORE_TB
+VALUES (12, NOW(), NOW(), 'SHOPPING', 'FAIL', NOW(), '계란 사오는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (13, NOW(), NOW(), 'SHOPPING', 'REQUEST', NOW(), '계란 사오는 날', 1, 1);
