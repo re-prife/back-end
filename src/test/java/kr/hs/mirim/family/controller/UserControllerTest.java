@@ -339,6 +339,15 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
+    //회원 조회에 심부름왕이 있고, 성공적으로 완료된 경우 - 200
+    @Test
+    void 회원조회_심부름왕_200() throws Exception {
+        mockMvc.perform(get("/users/3?date=2022-06")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    //왕이 없을때, 회원 조회가 성공적으로 완료된 경우 - 200
     @Test
     void 회원조회_왕없음_200() throws Exception {
         mockMvc.perform(get("/users/1?date=2022-05")
