@@ -2,6 +2,7 @@ package kr.hs.mirim.family.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
+import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ class GroupControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    // 그룹 초대 코드가 빈 값이 거나 request body가 없을 경우
     @Transactional
     @Test
     void 그룹_생성_400() throws Exception{
@@ -74,5 +76,52 @@ class GroupControllerTest {
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().isConflict());
     }
+
+    @Transactional
+    @Test
+    void 그룹_가입_200() throws Exception{
+        JoinGroupRequest request = new JoinGroupRequest("mon0516");
+
+        mockMvc.perform(post("/groups/join/6")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isOk());
+    }
+
+    // 그룹 초대 코드가 빈 값이 거나 request body가 없을 경우
+    @Transactional
+    @Test
+    void 그룹_가입_400() throws Exception{
+        JoinGroupRequest request = new JoinGroupRequest("");
+
+        mockMvc.perform(post("/groups/join/6")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Transactional
+    @Test
+    void 그룹_가입_404() throws Exception{
+        JoinGroupRequest request = new JoinGroupRequest("mon0516");
+
+        mockMvc.perform(post("/groups/join/100")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Transactional
+    @Test
+    void 그룹_가입_409() throws Exception{
+        JoinGroupRequest request = new JoinGroupRequest("mon0516");
+
+        mockMvc.perform(post("/groups/join/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isConflict());
+    }
+
+
 
 }
