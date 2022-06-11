@@ -20,7 +20,7 @@ public class IngredientListResponse {
 
     @Schema(description = "식재료 Id", example = "1")
     @NonNull
-    private long ingredientId;
+    private Long ingredientId;
 
     @Schema(description = "식재료 이름", example = "햇감자")
     @NotEmpty

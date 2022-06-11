@@ -40,7 +40,7 @@ public class KingService {
         }
 
         return MonthKingResponse.builder()
-                .choreKingResponse(new ArrayList(hashMap.values()))
+                .choreKingResponse(new ArrayList<>(hashMap.values()))
                 .questKingResponse(questKing)
                 .build();
     }
