@@ -101,12 +101,25 @@ class GroupControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    // - userId가 존재하지 않을 경우
     @Transactional
     @Test
-    void 그룹_가입_404() throws Exception {
+    void 그룹_가입_404_by_user() throws Exception {
         JoinGroupRequest request = new JoinGroupRequest("mon0516");
 
         mockMvc.perform(post("/groups/join/100")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(request)))
+                .andExpect(status().isNotFound());
+    }
+
+    // - group invite code가 존재하지 않을 경우
+    @Transactional
+    @Test
+    void 그룹_가입_404_by_group() throws Exception {
+        JoinGroupRequest request = new JoinGroupRequest("notfound");
+
+        mockMvc.perform(post("/groups/join/6")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request)))
                 .andExpect(status().isNotFound());
