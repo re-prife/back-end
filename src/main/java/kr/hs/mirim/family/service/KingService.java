@@ -1,8 +1,6 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.dto.response.ChoreKingResponse;
-import kr.hs.mirim.family.dto.response.KingResponse;
-import kr.hs.mirim.family.dto.response.QuestKingResponse;
+import kr.hs.mirim.family.dto.response.*;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
 import kr.hs.mirim.family.entity.chore.repository.ChoreRepository;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
@@ -24,26 +22,26 @@ public class KingService {
     private final GroupRepository groupRepository;
     private final QuestRepository questRepository;
 
-    public KingResponse kingOfTheMonth(long groupId, String date){
+    public MonthKingResponse userKing(long groupId, String date){
 
         existGroup(groupId);
-        QuestKingResponse questKing = questRepository.questKingMonth(groupId, setFormatDate(date));
-        List<ChoreKingResponse> choreList = choreRepository.monthKing(groupId, setFormatDate(date));
-        HashMap<ChoreCategory, ChoreKingResponse> hashMap = new HashMap<>();
+        MonthQuestKingResponse questKing = questRepository.monthQuestKing(groupId, setFormatDate(date));
+        List<MonthChoreKingResponse> choreKing = choreRepository.monthChoreKing(groupId, setFormatDate(date));
+        HashMap<ChoreCategory, MonthChoreKingResponse> hashMap = new HashMap<>();
 
-        for (ChoreKingResponse choreKingResponse : choreList) {
-            if (hashMap.containsKey(choreKingResponse.getCategory())) {
-                if (hashMap.get(choreKingResponse.getCategory()).getCount() < choreKingResponse.getCount())
-                    hashMap.put(choreKingResponse.getCategory(), choreKingResponse);
+        for (MonthChoreKingResponse response : choreKing) {
+            if (hashMap.containsKey(response.getCategory())) {
+                if (hashMap.get(response.getCategory()).getCount() < response.getCount())
+                    hashMap.put(response.getCategory(), response);
             } else {
-                hashMap.put(choreKingResponse.getCategory(), choreKingResponse);
+                hashMap.put(response.getCategory(), response);
             }
             if(hashMap.size() == 3) break;
         }
 
-        return KingResponse.builder()
-                .choreKing(new ArrayList(hashMap.values()))
-                .questKing(questKing)
+        return MonthKingResponse.builder()
+                .choreKingResponse(new ArrayList<>(hashMap.values()))
+                .questKingResponse(questKing)
                 .build();
     }
 

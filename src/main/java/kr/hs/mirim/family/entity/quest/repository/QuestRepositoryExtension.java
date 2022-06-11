@@ -1,10 +1,11 @@
 package kr.hs.mirim.family.entity.quest.repository;
 
-import kr.hs.mirim.family.dto.response.QuestKingResponse;
+import kr.hs.mirim.family.dto.response.MonthQuestKingResponse;
+import kr.hs.mirim.family.dto.response.UserQuestKingResponse;
 
-import java.util.*;
 import java.time.YearMonth;
 
 public interface QuestRepositoryExtension{
-    QuestKingResponse questKingMonth(long groupId, YearMonth date);
+    UserQuestKingResponse userQuestKing(long groupId, YearMonth date);
+    MonthQuestKingResponse monthQuestKing(long groupId, YearMonth date);
 }

@@ -1,14 +1,11 @@
 package kr.hs.mirim.family.service;
 
-import kr.hs.mirim.family.entity.ingredient.Ingredient;
 import kr.hs.mirim.family.entity.ingredient.repository.IngredientRepository;
-import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
 import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,37 +17,32 @@ public class ImageService {
     private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
 
-    @Value("${image.path:/home/ubuntu/family/upload/}")
-    private String FILE_PATH;
+    private String FILE_PATH = "/home/ubuntu/family/upload/";
 
     public void userImageUpdate(long userId, MultipartFile file) {
         fileValid(file);
-        User user = userRepository.findById(userId).orElseThrow(()->{
+        if(!userRepository.existsById(userId)){
             throw new DataNotFoundException("해당하는 유저가 없습니다.");
-        });
+        }
 
         String saveName = "user_" + userId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
         String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
-        if(user.getUserImagePath() == null){
-            userRepository.updateUserImage(userId, savePath);
-        }
+        userRepository.updateUserImage(userId, savePath);
     }
 
     public void ingredientImageUpdate(long ingredientId, MultipartFile file) {
         fileValid(file);
-        Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(()->{
-           throw new DataNotFoundException("해당하는 식재료가 없습니다.");
-        });
+        if(!ingredientRepository.existsById(ingredientId)){
+            throw new DataNotFoundException("해당하는 식재료가 없습니다.");
+        }
 
         String saveName = "ingredient_" + ingredientId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
         String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
-        if(ingredient.getIngredientImagePath() == null){
-            ingredientRepository.updateIngredientImage(ingredientId, savePath);
-        }
+        ingredientRepository.updateIngredientImage(ingredientId, savePath);
     }
 
     private void saveFile(MultipartFile file, String filePath, String saveName) {

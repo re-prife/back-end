@@ -2,9 +2,9 @@ package kr.hs.mirim.family.entity.chore.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.hs.mirim.family.dto.response.ChoreKingResponse;
-import kr.hs.mirim.family.dto.response.KingResponse;
-import kr.hs.mirim.family.dto.response.ChoreListDataResponse;
+import kr.hs.mirim.family.dto.response.MonthChoreKingResponse;
+import kr.hs.mirim.family.dto.response.UserChoreKingResponse;
+import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCheck;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -24,13 +24,13 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
     }
 
     @Override
-    public List<ChoreKingResponse> monthKing(long groupId, YearMonth date) {
+    public List<UserChoreKingResponse> userChoreKing(long groupId, YearMonth date) {
         return queryFactory
                 .select(Projections.constructor(
-                        ChoreKingResponse.class,
+                        UserChoreKingResponse.class,
                         chore.choreCategory,
                         chore.user.userId,
-                        chore.choreCategory.count().as("questCount")
+                        chore.choreCategory.count().as("count")
                 ))
                 .from(chore)
                 .where(chore.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()), chore.choreCheck.eq(ChoreCheck.SUCCESS))
@@ -39,33 +39,56 @@ public class ChoreRepositoryImpl extends QuerydslRepositorySupport implements Ch
                 .orderBy(chore.choreCategory.count().desc())
                 .fetch();
     }
-  
-   @Override
-    public List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date) {
+
+    @Override
+    public List<MonthChoreKingResponse> monthChoreKing(long groupId, YearMonth date) {
         return queryFactory
                 .select(Projections.constructor(
-                        ChoreListDataResponse.class,
+                        MonthChoreKingResponse.class,
+                        chore.user.userId,
+                        chore.user.userNickname,
+                        chore.user.userImagePath,
+                        chore.choreCategory,
+                        chore.choreCategory.count().as("count")
+                ))
+                .from(chore)
+                .where(chore.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()), chore.choreCheck.eq(ChoreCheck.SUCCESS))
+                .groupBy(chore.choreCategory, chore.user.userId)
+                .orderBy(chore.choreCategory.asc())
+                .orderBy(chore.choreCategory.count().desc())
+                .fetch();
+    }
+
+    @Override
+    public List<ChoreListResponse> findByChoreGroup_GroupIdAndDate(Long groupId, LocalDate date) {
+        return queryFactory
+                .select(Projections.fields(
+                        ChoreListResponse.class,
                         chore.choreId,
                         chore.user.userId,
                         chore.choreTitle,
                         chore.choreCategory,
-                        chore.choreDate
-                        ))
+                        chore.choreDate,
+                        chore.createdDate,
+                        chore.modifiedDate
+                ))
                 .from(chore)
                 .where(chore.choreDate.eq(date), chore.user.group.groupId.eq(groupId))
                 .fetch();
     }
 
     @Override
-    public List<ChoreListDataResponse> findByChoreGroup_GroupIdAndDateMonth(Long groupId, YearMonth date) {
+    public List<ChoreListResponse> findByChoreGroup_GroupIdAndDateMonth(Long groupId, YearMonth date) {
         return queryFactory
-                .select(Projections.constructor(
-                        ChoreListDataResponse.class,
+                .select(Projections.fields(
+                        ChoreListResponse.class,
                         chore.choreId,
                         chore.user.userId,
                         chore.choreTitle,
                         chore.choreCategory,
-                        chore.choreDate
+                        chore.choreDate,
+                        chore.createdDate,
+                        chore.modifiedDate
                 ))
                 .from(chore)
                 .where(chore.user.group.groupId.eq(groupId), chore.choreDate.year().eq(date.getYear()), chore.choreDate.month().eq(date.getMonthValue()))
