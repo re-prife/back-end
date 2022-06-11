@@ -139,7 +139,7 @@ class GroupControllerTest {
     // - userId가 존재하지 않을 경우
     @Test
     void get_users_in_group_404_by_user() throws Exception {
-        mockMvc.perform(get("/groups/2/100"))
+        mockMvc.perform(get("/groups/1/100"))
                 .andExpect(status().isNotFound());
     }
 
