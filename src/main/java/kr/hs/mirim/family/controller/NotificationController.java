@@ -14,7 +14,7 @@ public class NotificationController {
     public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 
     @CrossOrigin
-    @GetMapping(value = "/subscribe/{groupId}", consumes = MediaType.ALL_VALUE)
+    @GetMapping(value = "/subscribe/quest/{groupId}", consumes = MediaType.ALL_VALUE)
     public SseEmitter subscribe(@PathVariable Long groupId) {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
