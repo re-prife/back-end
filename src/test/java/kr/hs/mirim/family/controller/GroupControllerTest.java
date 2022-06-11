@@ -179,6 +179,13 @@ class GroupControllerTest {
                 .andExpect(status().isOk());
     }
 
+    // 그룹의 공지사항이 공백일 경우
+    @Test
+    void 그룹_공지사항_조회_200_by_blank() throws Exception {
+        mockMvc.perform(get("/groups/2/report"))
+                .andExpect(status().isOk());
+    }
+
     // - groupId가 존재하지 않을 경우
     @Test
     void 그룹_공지사항_조회_404() throws Exception {
