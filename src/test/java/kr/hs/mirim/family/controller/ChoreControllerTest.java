@@ -257,10 +257,18 @@ class ChoreControllerTest {
                 .andExpect(status().isConflict());
     }
 
-    //집안일 현재 상태가 REQUEST/BEFORE이면서, 지난집안일인 경우 - 409
+    //집안일 현재 상태가 REQUEST이면서, 지난집안일인 경우 - 409
     @Test
-    void 집안일_인증요청_지난날짜_FAIL_상태_409() throws Exception{
+    void 집안일_인증요청_REQUEST_지난날짜_FAIL_상태_409() throws Exception{
         mockMvc.perform(put("/groups/1/chores/14/certify"))
+                .andExpect(status().isConflict());
+
+    }
+
+    //집안일 현재 상태가 BEFORE이면서, 지난집안일인 경우 - 409
+    @Test
+    void 집안일_인증요청_BEFORE_지난날짜_FAIL_상태_409() throws Exception{
+        mockMvc.perform(put("/groups/1/chores/16/certify"))
                 .andExpect(status().isConflict());
 
     }
@@ -389,12 +397,24 @@ class ChoreControllerTest {
     }
 
     //집안일 인증에 대한 응답을 받는 집안일의 현 상태가 실패(FAIL)일 경우 - 409
-    //집안일 현재 상태가 REQUEST/BEFORE이면서, 지난집안일인 경우 - 409
+    //집안일 현재 상태가 REQUEST이면서, 지난집안일인 경우 - 409
     @Test
-    void 집안일_인증응답_지난날짜_FAIL_상태_409() throws Exception {
+    void 집안일_인증응답_REQUEST_지난날짜_FAIL_상태_409() throws Exception {
         String reaction = "SUCCESS";
         ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
         mockMvc.perform(put("/groups/1/chores/14/reaction")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+                .andExpect(status().isConflict());
+    }
+
+    //집안일 인증에 대한 응답을 받는 집안일의 현 상태가 실패(FAIL)일 경우 - 409
+    //집안일 현재 상태가 BEFORE이면서, 지난집안일인 경우 - 409
+    @Test
+    void 집안일_인증응답_BEFORE_지난날짜_FAIL_상태_409() throws Exception {
+        String reaction = "SUCCESS";
+        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
+        mockMvc.perform(put("/groups/1/chores/16/reaction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
                 .andExpect(status().isConflict());
