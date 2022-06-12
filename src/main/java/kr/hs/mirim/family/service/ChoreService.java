@@ -155,12 +155,10 @@ public class ChoreService {
         }
 
         if (!chore.getChoreCheck().equals(choreCheck)) {
-            if (!choreCheck.toString().isEmpty()) {
-                if (choreCheck.equals(SUCCESS)) {
-                    choreRepository.updateChoreCheck(choreId, SUCCESS);
-                } else {
-                    throw new ConflictException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
-                }
+            if (choreCheck.equals(SUCCESS)) {
+                choreRepository.updateChoreCheck(choreId, SUCCESS);
+            } else {
+                throw new ConflictException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
             }
         }
     }
