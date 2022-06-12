@@ -135,6 +135,21 @@ class ChoreControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void 집안일당번_이미존재_409() throws Exception {
+        String choreTitle = "하늘이 요리하는 날";
+        String choreCategory = "COOK";
+        LocalDate choreDate = LocalDate.now();
+        long choreUserId = 4;
+
+        CreateChoreRequest createUserRequest = new CreateChoreRequest(choreTitle, choreCategory, choreDate, choreUserId);
+
+        mockMvc.perform(post("/groups/1/chores")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(createUserRequest)))
+                .andExpect(status().isConflict());
+    }
+
     //지난날짜에 대하여 집안일을 생성하는 경우 - 409
     @Test
     void 집안일당번_생성_지난날짜_409() throws Exception {
@@ -228,17 +243,36 @@ class ChoreControllerTest {
                 .andExpect(status().isConflict());
     }
 
-    //집안일 인증 요청을 한 집안일이 이미 끝난 집안일(SUCCESS, REQUEST)인 경우
+    //집안일 인증 요청을 한 집안일이 이미 끝난 집안일(SUCCESS, REQUEST)인 경우 - 409
     @Test
     void 집안일_인증요청_요청끝남_409() throws Exception {
         mockMvc.perform(put("/groups/1/chores/2/certify"))
                 .andExpect(status().isConflict());
     }
 
+    //집안일 현재 상태가 REQUEST/BEFORE이면서, 지난집안일인 경우 - 409
+    @Test
+    void 집안일_인증요청_지난날짜_FAIL_상태_409() throws Exception{
+        mockMvc.perform(put("/groups/1/chores/14/certify"))
+                .andExpect(status().isConflict());
+
+    }
+
     //인증 요청한 집안일에 대한 응답이 성공적으로 수행된 경우 - 200
     @Test
     void 집안일_인증응답_SUCCESS_성공_200() throws Exception {
         String reaction = "SUCCESS";
+        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
+        mockMvc.perform(put("/groups/1/chores/13/reaction")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+                .andExpect(status().isOk());
+    }
+
+    //값이 아무것도 들어오지 않아 변경사항이 없고, 응답이 성공적으로 수행된 경우 - 200
+    @Test
+    void 집안일_인증응답_값없음_성공_200() throws Exception {
+        String reaction = "";
         ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
         mockMvc.perform(put("/groups/1/chores/13/reaction")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -323,6 +357,18 @@ class ChoreControllerTest {
                 .andExpect(status().isConflict());
     }
 
+    //집안일 인증에 대한 응답을 받는 집안일의 현 상태가 실패(FAIL)일 경우 - 409
+    //집안일 현재 상태가 REQUEST/BEFORE이면서, 지난집안일인 경우 - 409
+    @Test
+    void 집안일_인증응답_지난날짜_FAIL_상태_409() throws Exception {
+        String reaction = "SUCCESS";
+        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
+        mockMvc.perform(put("/groups/1/chores/14/reaction")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+                .andExpect(status().isConflict());
+    }
+
     //집안일 인증에 대한 응답을 받는 집안일의 현 상태가 인증요청전(BEFORE)일 경우 - 409
     @Test
     void 집안일_인증응답_BEFORE_상태반환_409() throws Exception {
@@ -373,10 +419,18 @@ class ChoreControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    //삭제하려는 집안일이 이미 끝난 집안일(SUCCESS, FAIL)일 경우 - 405
+    //삭제하려는 집안일이 이미 끝난 집안일(SUCCESS)일 경우 - 405
     @Test
-    void 집안일_삭제_이미끝난집안일_405() throws Exception {
+    void 집안일_삭제_이미끝난집안일_SUCCESS_405() throws Exception {
         mockMvc.perform(delete("/groups/1/chores/2"))
                 .andExpect(status().isMethodNotAllowed());
     }
+
+    //삭제하려는 집안일이 이미 끝난 집안일(FAIL)일 경우 - 405
+    @Test
+    void 집안일_삭제_이미끝난집안일_FAIL_405() throws Exception {
+        mockMvc.perform(delete("/groups/1/chores/12"))
+                .andExpect(status().isMethodNotAllowed());
+    }
+
 }
