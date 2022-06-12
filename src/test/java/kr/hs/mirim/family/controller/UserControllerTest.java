@@ -334,15 +334,23 @@ class UserControllerTest {
     //회원 조회가 성공적으로 완료된 경우 - 200
     @Test
     void 회원조회_200() throws Exception {
-        mockMvc.perform(get("/users/1?date=2022-06")
+        mockMvc.perform(get("/users/1?date=2022-07")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
     //회원 조회에 심부름왕이 있고, 성공적으로 완료된 경우 - 200
     @Test
-    void 회원조회_심부름왕_200() throws Exception {
-        mockMvc.perform(get("/users/3?date=2022-06")
+    void 회원조회_심부름왕맞음_200() throws Exception {
+        mockMvc.perform(get("/users/3?date=2022-07")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    //회원 조회에 심부름왕이 있지만, 해당 회원은 아니고 성공적으로 완료된 경우 - 200
+    @Test
+    void 회원조회_심부름왕아님_200() throws Exception {
+        mockMvc.perform(get("/users/1?date=2022-07")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -350,7 +358,7 @@ class UserControllerTest {
     //왕이 없을때, 회원 조회가 성공적으로 완료된 경우 - 200
     @Test
     void 회원조회_왕없음_200() throws Exception {
-        mockMvc.perform(get("/users/1?date=2022-05")
+        mockMvc.perform(get("/users/1?date=2022-06")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -358,7 +366,7 @@ class UserControllerTest {
     //조회시 날짜 형식이 틀릴 경우 - 400
     @Test
     void 회원조회_날짜형식_400() throws Exception {
-        mockMvc.perform(get("/users/1?date=2022-6")
+        mockMvc.perform(get("/users/1?date=2022-7")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
@@ -366,7 +374,7 @@ class UserControllerTest {
     //존재하지 않는 회원일 경우 - 404
     @Test
     void 회원조회_회원없음_404() throws Exception {
-        mockMvc.perform(get("/users/-1?date=2022-06")
+        mockMvc.perform(get("/users/-1?date=2022-07")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
