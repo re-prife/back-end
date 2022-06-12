@@ -2,6 +2,7 @@ package kr.hs.mirim.family.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.hs.mirim.family.exception.InternalServerException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -25,7 +26,7 @@ public class NotificationController {
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InternalServerException(e.getMessage());
         }
 
         sseEmitters.put(groupId, sseEmitter);
