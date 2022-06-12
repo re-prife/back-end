@@ -250,6 +250,13 @@ class ChoreControllerTest {
                 .andExpect(status().isConflict());
     }
 
+    //집안일 현재 상태가 SUCCESS이면서, 지난집안일인 경우 - 409
+    @Test
+    void 집안일_인증요청_지난날짜_SUCCESS_상태_409() throws Exception{
+        mockMvc.perform(put("/groups/1/chores/15/certify"))
+                .andExpect(status().isConflict());
+    }
+
     //집안일 현재 상태가 REQUEST/BEFORE이면서, 지난집안일인 경우 - 409
     @Test
     void 집안일_인증요청_지난날짜_FAIL_상태_409() throws Exception{
@@ -286,6 +293,19 @@ class ChoreControllerTest {
         String reaction = "SUCCESS";
         ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
         mockMvc.perform(put("/groups/1/chores/2/reaction")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+                .andExpect(status().isOk());
+    }
+
+
+    //집안일 현재 상태가 SUCCESS이면서, 지난집안일인 경우 - 200
+    @Test
+    void 집안일_인증응답_지난날짜_SUCCESS_상태_200() throws Exception {
+        String reaction = "SUCCESS";
+
+        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
+        mockMvc.perform(put("/groups/1/chores/15/reaction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
                 .andExpect(status().isOk());
