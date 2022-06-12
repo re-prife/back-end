@@ -58,3 +58,11 @@ INSERT INTO CHORE_TB
 VALUES (10, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 1);
 INSERT INTO CHORE_TB
 VALUES (11, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 1);
+
+
+INSERT INTO INGREDIENT_TB
+VALUES (4, NOW(), NOW(), 'VEGGIE', '3', '2022-01-02', '1.PNG', '햇감자 구워먹기', '햇감자', NOW(), 'ROOM_TEMP', 1);
+INSERT INTO INGREDIENT_TB
+VALUES (5, NOW(), NOW(), 'VEGGIE', '3', '2022-06-13', '1.PNG', '햇감자 구워먹기', '햇감자', NOW(), 'ROOM_TEMP', 1);
+INSERT INTO INGREDIENT_TB
+VALUES (6, NOW(), NOW(), 'VEGGIE', '3', '2022-06-18', '1.PNG', '햇감자 구워먹기', '햇감자', NOW(), 'ROOM_TEMP', 1);

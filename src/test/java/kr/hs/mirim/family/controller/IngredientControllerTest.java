@@ -333,6 +333,7 @@ class IngredientControllerTest {
     void 식재료_수량_갱신_204() throws Exception {
         List<UpdateIngredientCountRequest> data = new ArrayList<>();
         data.add(new UpdateIngredientCountRequest(1, "2g"));
+        data.add(new UpdateIngredientCountRequest(2, "0팩"));
 
         mvc.perform(put("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
