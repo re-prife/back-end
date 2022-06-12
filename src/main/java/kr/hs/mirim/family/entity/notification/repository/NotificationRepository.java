@@ -1,6 +1,6 @@
-package kr.hs.mirim.family.entity.Notification.repository;
+package kr.hs.mirim.family.entity.notification.repository;
 
-import kr.hs.mirim.family.entity.Notification.Notification;
+import kr.hs.mirim.family.entity.notification.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
