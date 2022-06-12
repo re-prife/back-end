@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -62,14 +63,15 @@ class IngredientControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
-        final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
-                "", "냠냠", LocalDate.of(2022, 4, 11), LocalDate.of(2023, 4, 11));
+        final IngredientRequest request = new IngredientRequest("", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
+                "1개", "냠냠", LocalDate.of(2022, 4, 11), LocalDate.of(2023, 4, 11));
 
         mvc.perform(post("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(400))
+                .andExpect(jsonPath("$.message").value("유효하지 않은 형식입니다."))
                 .andDo(print());
     }
 
@@ -86,6 +88,7 @@ class IngredientControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(409))
+                .andExpect(jsonPath("$.message").value("유통 기한이 구매 날짜보다 먼저입니다."))
                 .andDo(print());
     }
 
@@ -97,11 +100,12 @@ class IngredientControllerTest {
         final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
                 "3개", "냠냠", LocalDate.of(2022, 4, 11), LocalDate.of(2023, 4, 11));
 
-        mvc.perform(post("/groups/10000/ingredients")
+        mvc.perform(post("/groups/-1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 그룹입니다."))
                 .andDo(print());
     }
 
@@ -118,6 +122,7 @@ class IngredientControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(409))
+                .andExpect(jsonPath("$.message").value("식재료의 수가 0입니다."))
                 .andDo(print());
     }
 
@@ -144,8 +149,9 @@ class IngredientControllerTest {
 
     @Test
     void 식재료_전체조회_404_그룹아이디_없음() throws Exception {
-        mvc.perform(get("/groups/10000/ingredients"))
+        mvc.perform(get("/groups/-1/ingredients"))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 그룹입니다."))
                 .andDo(print());
     }
 
@@ -189,11 +195,12 @@ class IngredientControllerTest {
         final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
                 "3개", "냠냠", LocalDate.of(2022, 4, 11), LocalDate.of(2023, 4, 11));
 
-        mvc.perform(put("/groups/1000/ingredients/2")
+        mvc.perform(put("/groups/-1/ingredients/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 그룹입니다."))
                 .andDo(print());
     }
 
@@ -205,11 +212,12 @@ class IngredientControllerTest {
         final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
                 "3개", "냠냠", LocalDate.of(2022, 4, 11), LocalDate.of(2023, 4, 11));
 
-        mvc.perform(put("/groups/1/ingredients/23343434")
+        mvc.perform(put("/groups/1/ingredients/-1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 식재료입니다."))
                 .andDo(print());
     }
 
@@ -221,11 +229,12 @@ class IngredientControllerTest {
         final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
                 "", "냠냠", LocalDate.of(2022, 4, 11), LocalDate.of(2023, 4, 11));
 
-        mvc.perform(put("/groups/1000/ingredients/2")
+        mvc.perform(put("/groups/1/ingredients/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(400))
+                .andExpect(jsonPath("$.message").value("유효하지 않은 형식입니다."))
                 .andDo(print());
     }
 
@@ -242,6 +251,7 @@ class IngredientControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("해당 그룹에 식재료가 없습니다."))
                 .andDo(print());
     }
 
@@ -258,144 +268,134 @@ class IngredientControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().is(409))
+                .andExpect(jsonPath("$.message").value("유통 기한이 구매 날짜보다 먼저입니다."))
                 .andDo(print());
     }
 
     @Test
     void 식재료_삭제_204() throws Exception {
-        List<DeleteIngredientDataRequest> data = new ArrayList<>();
-        data.add(new DeleteIngredientDataRequest(1));
-        data.add(new DeleteIngredientDataRequest(2));
-        DeleteIngredientRequest request = new DeleteIngredientRequest(data);
+        List<DeleteIngredientRequest> data = new ArrayList<>();
+        data.add(new DeleteIngredientRequest(1));
+        data.add(new DeleteIngredientRequest(2));
 
         mvc.perform(delete("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(204))
                 .andDo(print());
     }
 
     @Test
     void 식재료_삭제_404_그룹아이디_없음() throws Exception {
-        List<DeleteIngredientDataRequest> data = new ArrayList<>();
-        data.add(new DeleteIngredientDataRequest(1));
-        DeleteIngredientRequest request = new DeleteIngredientRequest(data);
+        List<DeleteIngredientRequest> data = new ArrayList<>();
+        data.add(new DeleteIngredientRequest(1));
+        data.add(new DeleteIngredientRequest(2));
 
-        mvc.perform(delete("/groups/10/ingredients")
+        mvc.perform(delete("/groups/-1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 그룹입니다."))
                 .andDo(print());
     }
 
     @Test
     void 식재료_삭제_404_식재료아이디_없음() throws Exception {
-        List<DeleteIngredientDataRequest> data = new ArrayList<>();
-        data.add(new DeleteIngredientDataRequest(551));
-        DeleteIngredientRequest request = new DeleteIngredientRequest(data);
+        List<DeleteIngredientRequest> data = new ArrayList<>();
+        data.add(new DeleteIngredientRequest(-1));
 
         mvc.perform(delete("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 식재료입니다."))
                 .andDo(print());
     }
 
     @Test
     void 식재료_삭제_404_그룹안에_식재료없음() throws Exception {
-        List<DeleteIngredientDataRequest> data = new ArrayList<>();
-        data.add(new DeleteIngredientDataRequest(1));
-        DeleteIngredientRequest request = new DeleteIngredientRequest(data);
+        List<DeleteIngredientRequest> data = new ArrayList<>();
+        data.add(new DeleteIngredientRequest(1));
 
         mvc.perform(delete("/groups/2/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("해당 그룹에 식재료가 없습니다."))
                 .andDo(print());
     }
 
     @Test
     void 식재료_수량_갱신_204() throws Exception {
-        List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
-        data.add(new UpdateIngredientCountDataRequest(1, "2g"));
-        data.add(new UpdateIngredientCountDataRequest(2, "0개"));
-
-        UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
+        List<UpdateIngredientCountRequest> data = new ArrayList<>();
+        data.add(new UpdateIngredientCountRequest(1, "2g"));
 
         mvc.perform(put("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(204))
                 .andDo(print());
-
     }
 
     @Test
     void 식재료_수량_갱신_400_request_형식() throws Exception {
-        List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
-        data.add(new UpdateIngredientCountDataRequest(1, "2g"));
-        data.add(new UpdateIngredientCountDataRequest(2, ""));
-
-        UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
+        List<UpdateIngredientCountRequest> data = new ArrayList<>();
+        data.add(new UpdateIngredientCountRequest(1,""));
 
         mvc.perform(put("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
-                .andExpect(status().is(204))
+                        .content(new ObjectMapper().writeValueAsString(data)))
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$.message").value("유효하지 않은 형식입니다."))
                 .andDo(print());
-
     }
 
     @Test
     void 식재료_수량_갱신_404_그룹아이디_없음() throws Exception {
-        List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
-        data.add(new UpdateIngredientCountDataRequest(1, "2g"));
+        List<UpdateIngredientCountRequest> data = new ArrayList<>();
+        data.add(new UpdateIngredientCountRequest(1, "2g"));
+        data.add(new UpdateIngredientCountRequest(2, "0개"));
 
-        UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
-
-        mvc.perform(put("/groups/122222/ingredients")
+        mvc.perform(put("/groups/-1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 그룹입니다."))
                 .andDo(print());
-
     }
 
     @Test
     void 식재료_수량_갱신_404_그룹안에_식재료없음() throws Exception {
-        List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
-        data.add(new UpdateIngredientCountDataRequest(1, "1개"));
-
-        UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
+        List<UpdateIngredientCountRequest> data = new ArrayList<>();
+        data.add(new UpdateIngredientCountRequest(1, "2g"));
 
         mvc.perform(put("/groups/2/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("해당 그룹에 식재료가 없습니다."))
                 .andDo(print());
     }
 
     @Test
     void 식재료_수량_갱신_404_식재료없음() throws Exception {
-        List<UpdateIngredientCountDataRequest> data = new ArrayList<>();
-        data.add(new UpdateIngredientCountDataRequest(3343, "1개"));
-        data.add(new UpdateIngredientCountDataRequest(2, "0개"));
+        List<UpdateIngredientCountRequest> data = new ArrayList<>();
+        data.add(new UpdateIngredientCountRequest(-1, "2g"));
 
-        UpdateIngredientCountRequest request = new UpdateIngredientCountRequest(data);
-
-        mvc.perform(put("/groups/2/ingredients")
+        mvc.perform(put("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(request)))
+                        .content(new ObjectMapper().writeValueAsString(data)))
                 .andExpect(status().is(404))
+                .andExpect(jsonPath("$.message").value("존재하지 않는 식재료입니다."))
                 .andDo(print());
     }
 }
