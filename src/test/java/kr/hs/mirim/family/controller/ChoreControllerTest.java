@@ -271,10 +271,21 @@ class ChoreControllerTest {
 
     //값이 아무것도 들어오지 않아 변경사항이 없고, 응답이 성공적으로 수행된 경우 - 200
     @Test
-    void 집안일_인증응답_값없음_성공_200() throws Exception {
+    void 집안일_인증응답_REQUEST이면서_값없음_성공_200() throws Exception {
         String reaction = "";
         ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
         mockMvc.perform(put("/groups/1/chores/13/reaction")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+                .andExpect(status().isOk());
+    }
+
+    //현재 상태는 SUCCESS이고, 값이 아무것도 들어오지 않아 변경사항이 없고, 응답이 성공적으로 수행된 경우 - 200
+    @Test
+    void 집안일_인증응답_SUCCESS이면서_값없음_성공_200() throws Exception {
+        String reaction = "";
+        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
+        mockMvc.perform(put("/groups/1/chores/2/reaction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
                 .andExpect(status().isOk());
@@ -374,7 +385,7 @@ class ChoreControllerTest {
     void 집안일_인증응답_BEFORE_상태반환_409() throws Exception {
         String reaction = "BEFORE";
         ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/12/reaction")
+        mockMvc.perform(put("/groups/1/chores/13/reaction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
                 .andExpect(status().isConflict());
