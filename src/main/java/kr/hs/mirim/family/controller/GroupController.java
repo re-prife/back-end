@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.ReportRequest;
+import kr.hs.mirim.family.dto.response.GetGroupReportResponse;
 import kr.hs.mirim.family.dto.response.GroupResponse;
 import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
@@ -79,5 +80,15 @@ public class GroupController {
                                   @Valid @RequestBody ReportRequest request,
                                   BindingResult bindingResult) {
         groupService.updateGroupReport(groupId, request, bindingResult);
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "그룹의 공지사항 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "groupId가 존재하지 않을 경우")
+    })
+    @Operation(tags = "GROUP", summary = "그룹의 공지사항 조회", description = "그룹의 공지사항을 조회하는 API")
+    @GetMapping("/{groupId}/report")
+    public GetGroupReportResponse getGroupReport(@ApiParam(value = "공지사항을 조회할 group의 ID") @PathVariable Long groupId) {
+        return groupService.getGroupReport(groupId);
     }
 }

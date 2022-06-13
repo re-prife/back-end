@@ -30,17 +30,14 @@ public class KingService {
         HashMap<ChoreCategory, MonthChoreKingResponse> hashMap = new HashMap<>();
 
         for (MonthChoreKingResponse response : choreKing) {
-            if (hashMap.containsKey(response.getCategory())) {
-                if (hashMap.get(response.getCategory()).getCount() < response.getCount())
-                    hashMap.put(response.getCategory(), response);
-            } else {
+            if (!hashMap.containsKey(response.getCategory())) {
                 hashMap.put(response.getCategory(), response);
             }
             if(hashMap.size() == 3) break;
         }
 
         return MonthKingResponse.builder()
-                .choreKingResponse(new ArrayList(hashMap.values()))
+                .choreKingResponse(new ArrayList<>(hashMap.values()))
                 .questKingResponse(questKing)
                 .build();
     }
