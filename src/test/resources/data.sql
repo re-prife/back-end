@@ -60,3 +60,22 @@ INSERT INTO CHORE_TB
 VALUES (15, NOW(), NOW(), 'SHOPPING', 'SUCCESS', '2022-01-01', '계란 사오는 날', 1, 1);
 INSERT INTO CHORE_TB
 VALUES (16, NOW(), NOW(), 'SHOPPING', 'BEFORE', '2022-01-01', '계란 사오는 날', 1, 1);
+
+INSERT INTO CHORE_TB
+VALUES (17, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (18, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (19, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (20, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+
+INSERT INTO CHORE_TB
+VALUES (21, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (22, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (23, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (24, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+
