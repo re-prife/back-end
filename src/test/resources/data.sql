@@ -47,5 +47,24 @@ VALUES (10, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가
 INSERT INTO CHORE_TB
 VALUES (11, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 1);
 
+
 INSERT INTO USER_TB (user_id, user_email, user_image_path, user_name, user_nickname, user_password)
 VALUES (6, 'freemily@gmail.com', '6.png', '프리밀리', '아이티쇼', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne');
+
+INSERT INTO CHORE_TB
+VALUES (12, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (13, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (14, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (15, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+
+INSERT INTO CHORE_TB
+VALUES (16, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (17, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (18, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (19, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
