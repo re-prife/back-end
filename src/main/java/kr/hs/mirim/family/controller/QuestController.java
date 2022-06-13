@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.QuestRequest;
 import kr.hs.mirim.family.dto.response.QuestFindOneResponse;
 import kr.hs.mirim.family.dto.response.QuestResponse;
+import kr.hs.mirim.family.entity.quest.Quest;
+import kr.hs.mirim.family.service.NotificationService;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequestMapping(value = "/groups/{groupId}/quests")
 public class QuestController {
     private final QuestService questService;
+    private final NotificationService notificationService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "심부름 생성 성공"),
@@ -38,7 +41,9 @@ public class QuestController {
             @ApiParam(value = "심부름이 속한 그룹 ID") @PathVariable long groupId,
             @ApiParam(value = "심부름을 생성할 회원 ID") @PathVariable long userId
     ) {
-        questService.createQuest(groupId, userId, request, bindingResult);
+        Quest quest = questService.createQuest(groupId, userId, request, bindingResult);
+
+        notificationService.questNotification(quest);
     }
 
     @ApiResponses(value = {
@@ -123,7 +128,7 @@ public class QuestController {
     @Operation(tags = "QUEST", summary = "심부름 상세 조회", description = "심부름 상세 조회 API")
     @GetMapping("/{questId}")
     public QuestFindOneResponse findOneQuest(@ApiParam(value = "심부름이 속한 그룹 ID") @PathVariable long groupId,
-                                             @ApiParam(value = "조회할 심부름 ID") @PathVariable long questId){
+                                             @ApiParam(value = "조회할 심부름 ID") @PathVariable long questId) {
 
         return questService.findOneQuest(groupId, questId);
     }

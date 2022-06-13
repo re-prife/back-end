@@ -10,7 +10,7 @@ import lombok.*;
 public class GroupResponse {
     @Schema(description = "그룹 아이디", example = "1")
     @NonNull
-    private long groupId;
+    private Long groupId;
     @Schema(description = "그룹 초대 코드", example = "mon0514")
     @NonNull
     private String groupInviteCode;

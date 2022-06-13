@@ -3,6 +3,7 @@ package kr.hs.mirim.family.service;
 import kr.hs.mirim.family.dto.request.CreateGroupRequest;
 import kr.hs.mirim.family.dto.request.JoinGroupRequest;
 import kr.hs.mirim.family.dto.request.ReportRequest;
+import kr.hs.mirim.family.dto.response.GetGroupReportResponse;
 import kr.hs.mirim.family.dto.response.GroupResponse;
 import kr.hs.mirim.family.dto.response.UserListResponse;
 import kr.hs.mirim.family.entity.user.User;
@@ -84,13 +85,33 @@ public class GroupService {
         return userRepository.userList(groupId, userId);
     }
 
+    /*
+     * 그룹의 공지사항을 갱신하는 기능
+     *
+     * 그룹이 존재하지 않을 경우 404 not found
+     *
+     * @author: m04j00
+     * */
     @Transactional
     public void updateGroupReport(long groupId, ReportRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
-        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
-            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
-        });
+        Group group = getGroup(groupId);
         group.updateGroupReport(request.getGroupReport());
+    }
+
+    /*
+     * 그룹의 공지사항을 조회하는 기능
+     *
+     * 그룹이 존재하지 않을 경우 404 not found
+     *
+     * @author: m04j00
+     * */
+    public GetGroupReportResponse getGroupReport(long groupId) {
+        Group group = getGroup(groupId);
+        if (group.getGroupReport() == null) {
+            return new GetGroupReportResponse("");
+        }
+        return new GetGroupReportResponse(group.getGroupReport());
     }
 
     private void formValidate(BindingResult bindingResult) {
@@ -112,6 +133,12 @@ public class GroupService {
         if (!userRepository.existsById(userId)) {
             throw new DataNotFoundException("존재하지 않는 회원입니다.");
         }
+    }
+
+    private Group getGroup(long groupId) {
+        return groupRepository.findById(groupId).orElseThrow(() -> {
+            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
+        });
     }
 
     private String createInviteCode() {
