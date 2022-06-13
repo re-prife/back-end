@@ -23,7 +23,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Test with Gradle
-      run: ./gradlew test
+      run: ./gradlew test -info
       
     - name: codecov gradle
       run: ./gradlew jacocoTestReport
