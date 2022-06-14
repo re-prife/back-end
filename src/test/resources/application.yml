@@ -13,7 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     database: h2
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     open-in-view: false
     defer-datasource-initialization: true
   sql:

@@ -56,6 +56,12 @@ VALUES (7, 'family@gmail.com', '7.png', '가족', '가족공유', '$2a$10$YtRPNN
 INSERT INTO GROUP_TB(group_id, group_invite_code, group_name)
 VALUES (2, 'min7777', '민지네');
 
+INSERT INTO USER_TB
+VALUES (8, 'quest@gmail.com', '8.png', '심부름테스트', '심부름테스트', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 2);
+
+INSERT INTO QUEST_TB
+VALUES (3, NOW(), NOW(), 3, FALSE, '심부름 테스트', '심부르 테스트', 1, 1);
+
 INSERT INTO CHORE_TB
 VALUES (12, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
 INSERT INTO CHORE_TB
