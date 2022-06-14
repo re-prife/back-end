@@ -55,3 +55,21 @@ VALUES (7, 'family@gmail.com', '7.png', '가족', '가족공유', '$2a$10$YtRPNN
 
 INSERT INTO GROUP_TB(group_id, group_invite_code, group_name)
 VALUES (2, 'min7777', '민지네');
+
+INSERT INTO CHORE_TB
+VALUES (12, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (13, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (14, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+INSERT INTO CHORE_TB
+VALUES (15, NOW(), NOW(), 'DISH_WASHING', 'SUCCESS', NOW(), '취준생 민지가 설거지 하는 날', 1, 2);
+
+INSERT INTO CHORE_TB
+VALUES (16, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (17, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (18, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
+INSERT INTO CHORE_TB
+VALUES (19, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
