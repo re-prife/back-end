@@ -11,11 +11,13 @@ import kr.hs.mirim.family.entity.ingredient.repository.IngredientRepository;
 import kr.hs.mirim.family.exception.BadRequestException;
 import kr.hs.mirim.family.exception.ConflictException;
 import kr.hs.mirim.family.exception.DataNotFoundException;
+import kr.hs.mirim.family.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -76,7 +78,7 @@ public class IngredientService {
     }
 
     @Transactional
-    public void updateIngredient(long groupId, long ingredientId, IngredientRequest request, BindingResult result) {
+    public void updateIngredient(long groupId, long ingredientId, IngredientRequest request, BindingResult result){
         formValidate(result);
         existGroup(groupId);
         existIngredient(ingredientId);
@@ -84,13 +86,13 @@ public class IngredientService {
         Ingredient ingredient = getIngredient(ingredientId);
         existIngredientInGroup(groupId, ingredient);
 
-        if (request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())) {
+        if(request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())){
             throw new ConflictException("유통 기한이 구매 날짜보다 먼저입니다.");
         }
 
-        if (checkIngredientCount(request.getIngredientCount())) {
-            ingredientRepository.deleteById(ingredientId);
-            return;
+        if(checkIngredientCount(request.getIngredientCount())){
+            deleteImageFile(ingredientId);
+            return ;
         }
 
         ingredient.updateIngredient(request);
@@ -105,7 +107,7 @@ public class IngredientService {
             Ingredient ingredient = getIngredient(ingredientRequest.getIngredientId());
             existIngredientInGroup(groupId, ingredient);
 
-            ingredientRepository.deleteById(ingredient.getIngredientId());
+            deleteImageFile(ingredient.getIngredientId());
         }
     }
 
@@ -122,10 +124,20 @@ public class IngredientService {
             long requestIngredientId = ingredientRequest.getIngredientId();
 
             if (checkIngredientCount(requestCount)) {
-                ingredientRepository.deleteById(requestIngredientId);
+                deleteImageFile(requestIngredientId);
             } else {
                 ingredientRepository.ingredientCountUpdate(groupId, requestIngredientId, requestCount);
             }
+        }
+    }
+
+    private void deleteImageFile(long ingredientId){
+        File file = new File("/home/ubuntu/family/upload/ingredient_"+ingredientId+".jpg");
+        if(file.delete()){
+            ingredientRepository.deleteById(ingredientId);
+        }
+        else {
+            throw new InternalServerException("식재료를 삭제하지 못했습니다.");
         }
     }
 
