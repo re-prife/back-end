@@ -75,6 +75,7 @@ public class UserService {
                 .userEmail(user.getUserEmail())
                 .userImagePath(user.getUserImagePath())
                 .groupId(user.getGroup().getGroupId())
+                .groupInviteCode(user.getGroup().getGroupInviteCode())
                 .build();
     }
 
