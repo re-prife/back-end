@@ -52,6 +52,22 @@ VALUES (2, 'fam1234', '가족네', 'Freemily는 가족간 공유 서비스입니
 
 INSERT INTO CHORE_TB
 VALUES (12, NOW(), NOW(), 'SHOPPING', 'FAIL', NOW(), '계란 사오는 날', 1, 1);
+
+INSERT INTO USER_TB (user_id, user_email, user_image_path, user_name, user_nickname, user_password)
+VALUES (6, 'freemily@gmail.com', '6.png', '프리밀리', '아이티쇼', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne');
+
+INSERT INTO USER_TB
+VALUES (7, 'family@gmail.com', '7.png', '가족', '가족공유', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);
+
+INSERT INTO GROUP_TB(group_id, group_invite_code, group_name)
+VALUES (2, 'min7777', '민지네');
+
+INSERT INTO USER_TB
+VALUES (8, 'quest@gmail.com', '8.png', '심부름테스트', '심부름테스트', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 2);
+
+INSERT INTO QUEST_TB
+VALUES (3, NOW(), NOW(), 3, FALSE, '심부름 테스트', '심부르 테스트', 1, 1);
+
 INSERT INTO CHORE_TB
 VALUES (13, NOW(), NOW(), 'SHOPPING', 'REQUEST', NOW(), '계란 사오는 날', 1, 1);
 INSERT INTO CHORE_TB
