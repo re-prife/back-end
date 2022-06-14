@@ -31,4 +31,8 @@ public class LoginUserResponse {
 
     @Schema(description = "그룹 ID", example = "1")
     private Long groupId;
+
+    @Schema(description = "그룹 초대 코드", example = "fam1234")
+    private String groupInviteCode;
+
 }
