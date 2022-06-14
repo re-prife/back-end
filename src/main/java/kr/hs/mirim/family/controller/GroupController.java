@@ -29,7 +29,7 @@ public class GroupController {
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "그룹 생성 성공"),
-            @ApiResponse(responseCode = "400", description = "Request 형식이 유효하지 않을 경우"),
+            @ApiResponse(responseCode = "400", description = "Request body가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "404", description = "userId가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "409", description = "userId가 이미 그룹에 가입된 경우")
     })
@@ -38,23 +38,21 @@ public class GroupController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public GroupResponse createGroup(@Valid @RequestBody CreateGroupRequest request,
                                      @ApiParam(value = "그룹을 생성할 user의 ID")
-                                     @PathVariable long userId,
-                                     BindingResult bindingResult) {
-        return groupService.createGroup(request, userId, bindingResult);
+                                     @PathVariable long userId) {
+        return groupService.createGroup(request, userId);
     }
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "그룹 가입 성공"),
-            @ApiResponse(responseCode = "400", description = "Request 형식이 유효하지 않을 경우"),
+            @ApiResponse(responseCode = "400", description = "Request body가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "404", description = "userId가 존재하지 않을 경우"),
             @ApiResponse(responseCode = "409", description = "userId가 이미 그룹에 가입된 경우")
     })
     @Operation(tags = "GROUP", summary = "그룹 가입", description = "그룹에 가입하는 API")
     @PostMapping("/join/{userId}")
     public GroupResponse joinGroup(@Valid @RequestBody JoinGroupRequest request,
-                                   @ApiParam(value = "그룹에 가입할 user의 ID") @PathVariable long userId,
-                                   BindingResult bindingResult) {
-        return groupService.joinGroup(request, userId, bindingResult);
+                                   @ApiParam(value = "그룹에 가입할 user의 ID") @PathVariable long userId) {
+        return groupService.joinGroup(request, userId);
     }
 
     @ApiResponses(value = {
