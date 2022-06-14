@@ -1,5 +1,7 @@
 INSERT INTO GROUP_TB
 VALUES (1, 'mon0516', '민지네', '취준생 민지와 직딩 친구들과 함께 진행하는 프로젝트..^_^');
+INSERT INTO GROUP_TB
+VALUES (2, 'mon0512', '민지네2', '취준생 민지와 직딩 친구들과 함께 진행하는 프로젝트..^_^2');
 
 INSERT INTO USER_TB
 VALUES (1, 'm04j00@gmail.com', '1.png', 'Min J', '취준생', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);

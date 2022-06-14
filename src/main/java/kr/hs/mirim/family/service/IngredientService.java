@@ -28,15 +28,15 @@ public class IngredientService {
     private final GroupRepository groupRepository;
 
     @Transactional
-    public void createIngredient(IngredientRequest request, long groupId, BindingResult result){
+    public void createIngredient(IngredientRequest request, long groupId, BindingResult result) {
         Group group = getGroup(groupId);
         formValidate(result);
 
-        if(checkIngredientCount(request.getIngredientCount())){
+        if (checkIngredientCount(request.getIngredientCount())) {
             throw new ConflictException("식재료의 수가 0입니다.");
         }
 
-        if(request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())){
+        if (request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())) {
             throw new ConflictException("유통 기한이 구매 날짜보다 먼저입니다.");
         }
 
@@ -55,7 +55,7 @@ public class IngredientService {
         ingredientRepository.save(ingredient);
     }
 
-    public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType){
+    public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType) {
         existGroup(groupId);
         List<IngredientListResponse> list = ingredientRepository.ingredientSaveTypeList(groupId, saveType);
 
@@ -63,21 +63,20 @@ public class IngredientService {
         for (IngredientListResponse response : list) {
             long remainDays = ChronoUnit.DAYS.between(today, response.getIngredientExpirationDate());
 
-            if(remainDays < 0)
+            if (remainDays < 0)
                 response.setIngredientColor("black");
-            else if(remainDays <= 3)
+            else if (remainDays <= 3)
                 response.setIngredientColor("red");
-            else if(remainDays <= 7)
+            else if (remainDays <= 7)
                 response.setIngredientColor("yellow");
             else
                 response.setIngredientColor("green");
-
         }
         return list;
     }
 
     @Transactional
-    public void updateIngredient(long groupId, long ingredientId, IngredientRequest request, BindingResult result){
+    public void updateIngredient(long groupId, long ingredientId, IngredientRequest request, BindingResult result) {
         formValidate(result);
         existGroup(groupId);
         existIngredient(ingredientId);
@@ -85,25 +84,26 @@ public class IngredientService {
         Ingredient ingredient = getIngredient(ingredientId);
         existIngredientInGroup(groupId, ingredient);
 
-        if(request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())){
+        if (request.getIngredientExpirationDate().isBefore(request.getIngredientPurchaseDate())) {
             throw new ConflictException("유통 기한이 구매 날짜보다 먼저입니다.");
         }
 
-        if(checkIngredientCount(request.getIngredientCount())){
+        if (checkIngredientCount(request.getIngredientCount())) {
             ingredientRepository.deleteById(ingredientId);
-            return ;
+            return;
         }
 
         ingredient.updateIngredient(request);
     }
 
     @Transactional
-    public void deleteIngredient(long groupId, List<DeleteIngredientRequest> request, BindingResult result){
+    public void deleteIngredient(long groupId, List<DeleteIngredientRequest> request, BindingResult result) {
         formValidate(result);
         existGroup(groupId);
 
         for (DeleteIngredientRequest ingredientRequest : request) {
             Ingredient ingredient = getIngredient(ingredientRequest.getIngredientId());
+            System.out.println(ingredient.getIngredientId());
             existIngredientInGroup(groupId, ingredient);
 
             ingredientRepository.deleteById(ingredient.getIngredientId());
@@ -111,7 +111,7 @@ public class IngredientService {
     }
 
     @Transactional
-    public void updateIngredientCount(long groupId, List<UpdateIngredientCountRequest> request, BindingResult result){
+    public void updateIngredientCount(long groupId, List<UpdateIngredientCountRequest> request, BindingResult result) {
         formValidate(result);
         existGroup(groupId);
 
@@ -130,47 +130,47 @@ public class IngredientService {
         }
     }
 
-    private boolean checkIngredientCount(String ingredientCount){
+    private boolean checkIngredientCount(String ingredientCount) {
         char[] arr = ingredientCount.toCharArray();
         int s = 0;
-        for(char c : arr){
-            if(Character.isDigit(c)) s+=Character.getNumericValue(c);
+        for (char c : arr) {
+            if (Character.isDigit(c)) s += Character.getNumericValue(c);
         }
         return s == 0;
     }
 
-    private void formValidate(BindingResult result){
-        if(result.hasErrors()){
+    private void formValidate(BindingResult result) {
+        if (result.hasErrors()) {
             throw new BadRequestException("유효하지 않은 형식입니다.");
         }
     }
 
-    private Group getGroup(long groupId){
-        return groupRepository.findById(groupId).orElseThrow(()->{
+    private Group getGroup(long groupId) {
+        return groupRepository.findById(groupId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         });
     }
 
-    private void existGroup(long groupId){
-        if(!groupRepository.existsById(groupId)){
+    private void existGroup(long groupId) {
+        if (!groupRepository.existsById(groupId)) {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
         }
     }
 
-    public Ingredient getIngredient(long ingredientId){
-        return ingredientRepository.findById(ingredientId).orElseThrow(()->{
+    public Ingredient getIngredient(long ingredientId) {
+        return ingredientRepository.findById(ingredientId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 식재료입니다.");
         });
     }
 
-    private void existIngredient(long ingredientId){
-        if(!ingredientRepository.existsById(ingredientId)){
+    private void existIngredient(long ingredientId) {
+        if (!ingredientRepository.existsById(ingredientId)) {
             throw new DataNotFoundException("존재하지 않는 식재료입니다.");
         }
     }
 
-    private void existIngredientInGroup(long groupId, Ingredient ingredient){
-        if(!(ingredient.getGroup().getGroupId() == groupId)){
+    private void existIngredientInGroup(long groupId, Ingredient ingredient) {
+        if (!(ingredient.getGroup().getGroupId() == groupId)) {
             throw new DataNotFoundException("해당 그룹에 식재료가 없습니다.");
         }
     }

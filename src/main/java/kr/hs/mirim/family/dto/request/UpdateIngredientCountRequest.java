@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -17,6 +18,6 @@ public class UpdateIngredientCountRequest {
     private long ingredientId;
 
     @Schema(description = "변경할 수량", example = "1개")
-    @NotNull
+    @NotEmpty
     private String ingredientCount;
 }
