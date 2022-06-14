@@ -25,7 +25,7 @@ public class ImageService {
             throw new DataNotFoundException("해당하는 유저가 없습니다.");
         }
 
-        String saveName = "user_" + userId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+        String saveName = "user_" + userId + ".jpg";
         String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
@@ -38,7 +38,7 @@ public class ImageService {
             throw new DataNotFoundException("해당하는 식재료가 없습니다.");
         }
 
-        String saveName = "ingredient_" + ingredientId + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+        String saveName = "ingredient_" + ingredientId + ".jpg";
         String savePath = "/upload/" + saveName;
 
         saveFile(file, FILE_PATH, saveName);
