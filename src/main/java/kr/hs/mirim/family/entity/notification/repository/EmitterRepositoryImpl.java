@@ -1,4 +1,4 @@
-package kr.hs.mirim.family.entity.Notification.repository;
+package kr.hs.mirim.family.entity.notification.repository;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;

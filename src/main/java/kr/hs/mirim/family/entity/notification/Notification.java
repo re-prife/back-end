@@ -1,4 +1,4 @@
-package kr.hs.mirim.family.entity.Notification;
+package kr.hs.mirim.family.entity.notification;
 
 import kr.hs.mirim.family.entity.user.User;
 import lombok.AccessLevel;
