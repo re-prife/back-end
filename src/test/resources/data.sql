@@ -2,15 +2,15 @@ INSERT INTO GROUP_TB
 VALUES (1, 'mon0516', '민지네', '취준생 민지와 직딩 친구들과 함께 진행하는 프로젝트..^_^');
 
 INSERT INTO USER_TB
-VALUES (1, 'm04j00@gmail.com', '1.png', 'Min J', '취준생', 'doremisolsol', 1);
+VALUES (1, 'm04j00@gmail.com', '1.png', 'Min J', '취준생', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);
 INSERT INTO USER_TB
-VALUES (2, 'akwls@gmail.com', '2.png', '마진', '테크타카 1', 'doremisolsol', 1);
+VALUES (2, 'akwls@gmail.com', '2.png', '마진', '테크타카 1', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);
 INSERT INTO USER_TB
-VALUES (3, 'srin@gmail.com', '3.png', '세라', '테크타카 2', 'doremisolsol', 1);
+VALUES (3, 'srin@gmail.com', '3.png', '세라', '테크타카 2', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);
 INSERT INTO USER_TB
-VALUES (4, 'sky@gmail.com', '4.png', 'SKY', '비지피웍스', 'doremisolsol', 1);
+VALUES (4, 'sky@gmail.com', '4.png', 'SKY', '비지피웍스', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);
 INSERT INTO USER_TB
-VALUES (5, 'ywoo@gmail.com', '5.png', '가연어', '비거라지', 'doremisolsol', 1);
+VALUES (5, 'ywoo@gmail.com', '5.png', '가연어', '비거라지', '$2a$10$YtRPNN74FuaabDZ6XH6xpuF/X3.tpQbHRaLb02XYhtMmT1swYyPne', 1);
 
 INSERT INTO INGREDIENT_TB
 VALUES (1, NOW(), NOW(), 'VEGGIE', '3', '2024-02-02', '1.PNG', '햇감자 구워먹기', '햇감자', NOW(), 'ROOM_TEMP', 1);
@@ -94,4 +94,3 @@ INSERT INTO CHORE_TB
 VALUES (23, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
 INSERT INTO CHORE_TB
 VALUES (24, NOW(), NOW(), 'COOK', 'SUCCESS', NOW(), '하늘이 요리하는 날', 1, 1);
-
