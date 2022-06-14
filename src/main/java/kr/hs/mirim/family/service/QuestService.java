@@ -105,7 +105,7 @@ public class QuestService {
             if (quest.getAcceptUserId() != acceptorId) {
                 throw new ConflictException("심부름 수락자가 아닌 사람은 수락을 취소할 수 없습니다.");
             }
-            acceptorId = -1;
+            else acceptorId = -1;
         } else if (quest.getUser().getUserId() == acceptorId) {
             throw new ConflictException("심부름을 추가한 사람은 수락할 수 없습니다.");
         }
@@ -250,9 +250,7 @@ public class QuestService {
     }
 
     private Quest getQuest(long id) {
-        return questRepository.findById(id).orElseThrow(() -> {
-            throw new DataNotFoundException("심부름이 존재하지 않습니다.");
-        });
+        return questRepository.findById(id).orElseThrow();
     }
 
     private void relationValidate(long groupId, long questId, long userId) {

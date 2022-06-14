@@ -104,8 +104,9 @@ class QuestControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    //{"status":404,"message":"해당 그룹에 심부름이 존재하지 않습니다."}
     @Test
-    void 심부름_상세_조회_404_by_user() throws Exception {
+    void 심부름_상세_조회_404_by_quest() throws Exception {
         mockMvc.perform(get("/groups/1/quests/100"))
                 .andExpect(status().isNotFound());
     }
@@ -243,6 +244,12 @@ class QuestControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Transactional
+    @Test
+    void 심부름_수락_및_취소_200_by_accepter() throws Exception {
+        mockMvc.perform(put("/groups/1/quests/3/acceptor/3"))
+                .andExpect(status().isOk());
+    }
     @Transactional
     @Test
     void 심부름_수락_및_취소_404_by_group() throws Exception {
