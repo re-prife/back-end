@@ -92,7 +92,7 @@ public class QuestService {
      * - acceptorId가 존재하지 않거나 group에 속하지 않을 경우
      * 409 conflict
      * - completeCheck가 true일 경우 (이미 해결된 심부름일 경우)
-     * - quest의 acceptUserId가 -1이 아니고 API의 매개변수 acceptorId와 일치하지 않을 경우 (수락자가 존재하는데, 다른 사람이 API를 요청한 경우)
+     * - acceptorId가 -1이 아닌 경우 (이미 수락자가 존재할 경우)
      * - quest 추가한 사람이 API를 요청할 때
      *
      * @author: m04j00
@@ -107,13 +107,17 @@ public class QuestService {
         }
         if (quest.getAcceptUserId() != -1) {
             if (quest.getAcceptUserId() != acceptorId) {
-                throw new ConflictException("심부름 수락자가 아닌 사람은 수락을 취소할 수 없습니다.");
+                throw new ConflictException("이미 수락된 심부름입니다.");
             } else acceptorId = -1;
         } else if (quest.getUser().getUserId() == acceptorId) {
             throw new ConflictException("심부름을 추가한 사람은 수락할 수 없습니다.");
         }
 
         questRepository.updateAcceptUserId(questId, acceptorId);
+
+        if (acceptorId != -1) {
+            notificationService.questAcceptNotification(quest, acceptorId);
+        }
     }
 
     /*
