@@ -67,27 +67,22 @@ public class UserService {
             throw new ForbiddenException("회원 정보가 일치하지 않습니다.");
         }
 
+        Long groupId = null;
+        String groupInviteCode = null;
         if(groupCheck(user)){
-            return LoginUserResponse.builder()
-                    .userId(user.getUserId())
-                    .userName(user.getUserName())
-                    .userNickname(user.getUserNickname())
-                    .userEmail(user.getUserEmail())
-                    .userImagePath(user.getUserImagePath())
-                    .groupId(user.getGroup().getGroupId())
-                    .groupInviteCode(user.getGroup().getGroupInviteCode())
-                    .build();
-        }else{
-            return LoginUserResponse.builder()
-                    .userId(user.getUserId())
-                    .userName(user.getUserName())
-                    .userNickname(user.getUserNickname())
-                    .userEmail(user.getUserEmail())
-                    .userImagePath(user.getUserImagePath())
-                    .groupId(null)
-                    .groupInviteCode(null)
-                    .build();
+            groupId = user.getGroup().getGroupId();
+            groupInviteCode = user.getGroup().getGroupInviteCode();
         }
+
+        return LoginUserResponse.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userNickname(user.getUserNickname())
+                .userEmail(user.getUserEmail())
+                .userImagePath(user.getUserImagePath())
+                .groupId(groupId)
+                .groupInviteCode(groupInviteCode)
+                .build();
     }
 
     @Transactional
