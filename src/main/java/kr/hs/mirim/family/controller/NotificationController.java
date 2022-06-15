@@ -18,10 +18,10 @@ public class NotificationController {
 
     public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 
-    @Operation(tags = "NOTIFICATION", summary = "그룹 내, 실시간 알림 구독", description = "그룹에서 실시간으로 심부름 생성 및 집안일 인증 알림을 받는 API")
+    @Operation(tags = "NOTIFICATION", summary = "나에게로 오는 실시간 알림 구독", description = "실시간으로 심부름 생성 및 집안일 인증 알림을 받는 API")
     @CrossOrigin
-    @GetMapping(value = "/{groupId}", consumes = MediaType.ALL_VALUE,  produces="application/text; charset=utf8")
-    public SseEmitter subscribe(@PathVariable Long groupId) {
+    @GetMapping(value = "/{userId}", consumes = MediaType.ALL_VALUE,  produces="application/text; charset=utf8")
+    public SseEmitter subscribe(@PathVariable Long userId) {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
@@ -29,11 +29,11 @@ public class NotificationController {
             throw new InternalServerException(e.getMessage());
         }
 
-        sseEmitters.put(groupId, sseEmitter);
+        sseEmitters.put(userId, sseEmitter);
 
-        sseEmitter.onCompletion(() -> sseEmitters.remove(groupId));
-        sseEmitter.onTimeout(() -> sseEmitters.remove(groupId));
-        sseEmitter.onError((e) -> sseEmitters.remove(groupId));
+        sseEmitter.onCompletion(() -> sseEmitters.remove(userId));
+        sseEmitter.onTimeout(() -> sseEmitters.remove(userId));
+        sseEmitter.onError((e) -> sseEmitters.remove(userId));
 
         return sseEmitter;
     }
