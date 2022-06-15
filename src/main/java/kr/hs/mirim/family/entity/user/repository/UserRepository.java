@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryExtension {
@@ -27,4 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     @Transactional
     @Query(value = "UPDATE user_tb u set u.user_image_path = :userImagePath where u.user_id = :userId", nativeQuery = true)
     void updateUserImage(long userId, String userImagePath);
+
+    @Query(value = "SELECT userId FROM User where group = :group")
+    List<Long> findAllByGroup(Optional<Group> group);
 }
