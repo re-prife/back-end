@@ -8,16 +8,15 @@ import kr.hs.mirim.family.entity.chore.repository.ChoreRepository;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
 import kr.hs.mirim.family.entity.quest.Quest;
-import kr.hs.mirim.family.entity.quest.repository.QuestRepository;
 import kr.hs.mirim.family.entity.user.User;
 import kr.hs.mirim.family.entity.user.repository.UserRepository;
+import kr.hs.mirim.family.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
-import java.util.Optional;
 
 import static kr.hs.mirim.family.controller.NotificationController.sseEmitters;
 
@@ -29,24 +28,23 @@ public class NotificationService {
     private final GroupRepository groupRepository;
 
     @Transactional(readOnly = true)
-    public void questNotification(Quest quest) {
+    public void questNotification(Quest quest, List<Long> userIds) {
         Long groupId = quest.getGroup().getGroupId();
-        Optional<Group> group = groupRepository.findById(groupId);
-        List<Long> userIds = userRepository.findAllByGroup(group);
-        Long getU = quest.getUser().getUserId();
-        for (Long u : userIds) {
-            System.out.println(u);
-        }
-        System.out.println("---------------");
-        userIds.remove(getU);
-        for (Long u : userIds) {
-            System.out.println(u);
+        Group group = groupRepository.findById(groupId).orElseThrow();
+        if (userIds == null) {
+            userIds = userRepository.findAllByGroup(group);
+            userIds.remove(quest.getUser().getUserId());
+        } else {
+            List<User> usersInGroup = userRepository.findByGroupAndUserIdIn(group, userIds);
+            if (usersInGroup.size() != userIds.size()) {
+                throw new DataNotFoundException("알림을 보낼 그룹원 중 그룹에 속하지 않은 회원이 포함되어 있습니다.");
+            }
         }
 
         for (Long id : userIds) {
             if (sseEmitters.containsKey(id)) {
-
                 SseEmitter sseEmitter = sseEmitters.get(id);
+
                 try {
                     QuestNotificationResponse data = new QuestNotificationResponse(quest.getUser().getUserNickname(), quest.getQuestTitle());
                     sseEmitter.send(SseEmitter.event().name("new quest").data(data));
@@ -54,9 +52,7 @@ public class NotificationService {
                     sseEmitters.remove(groupId);
                 }
             }
-
         }
-
     }
 
     @Transactional(readOnly = true)
