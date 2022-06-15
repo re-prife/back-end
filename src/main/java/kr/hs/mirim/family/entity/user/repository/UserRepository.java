@@ -29,6 +29,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     @Query(value = "UPDATE user_tb u set u.user_image_path = :userImagePath where u.user_id = :userId", nativeQuery = true)
     void updateUserImage(long userId, String userImagePath);
 
-    @Query("SELECT u.userId from User u WHERE u.group.groupId = :groupId")
-    List<Long> findByGroup(Long groupId);
+    @Query(value = "SELECT userId FROM User where group = :group")
+    List<Long> findAllByGroup(Group group);
 }

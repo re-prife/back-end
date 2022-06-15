@@ -39,7 +39,7 @@ public class NotificationService {
     @Transactional(readOnly = true)
     public void choreCertifyNotification(Long choreId) {
         Chore chore = choreRepository.getById(choreId);
-        List<Long> userIds = userRepository.findByGroup(chore.getGroup().getGroupId());
+        List<Long> userIds = userRepository.findAllByGroup(chore.getGroup());
         userIds.remove(chore.getUser().getUserId());
 
         ChoreNotificationResponse data = new ChoreNotificationResponse(chore.getChoreTitle(), chore.getChoreCategory(), chore.getChoreCheck(), chore.getUser().getUserNickname(), chore.getChoreDate(), chore.getCreatedDate().toLocalDate(), chore.getModifiedDate().toLocalDate());
