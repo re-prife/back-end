@@ -226,6 +226,7 @@ public class QuestService {
         return QuestFindOneResponse.builder()
                 .questCreatedDate(quest.getCreatedDate())
                 .questTitle(quest.getQuestTitle())
+                .questContent(quest.getQuestContent())
                 .requestUserId(quest.getUser().getUserId())
                 .acceptUserId(quest.getAcceptUserId())
                 .completeCheck(quest.isCompleteCheck())
