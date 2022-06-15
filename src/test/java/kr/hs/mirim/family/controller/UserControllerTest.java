@@ -125,6 +125,19 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
+    //그룹에 참여하지 않은 회원일 경우 - 200
+    @Test
+    void 로그인_그룹없는_회원_200() throws Exception {
+        String userEmail = "freemily@gmail.com";
+        String userPassword = "doremisol";
+        LoginUserRequest loginUserRequest = new LoginUserRequest(userEmail, userPassword);
+
+        mockMvc.perform(post("/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(loginUserRequest)))
+                .andExpect(status().isOk());
+    }
+
     //로그인시 이메일 형식이 옳지 않은 경우 - 400
     @Test
     void 로그인_이메일형식_400() throws Exception {
@@ -168,19 +181,6 @@ class UserControllerTest {
     @Test
     void 로그인_존재하지않는_회원_404() throws Exception {
         String userEmail = "none@gmail.com";
-        String userPassword = "doremisol";
-        LoginUserRequest loginUserRequest = new LoginUserRequest(userEmail, userPassword);
-
-        mockMvc.perform(post("/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(loginUserRequest)))
-                .andExpect(status().isNotFound());
-    }
-
-    //그룹에 참여하지 않은 회원일 경우 - 404
-    @Test
-    void 로그인_그룹없는_회원_404() throws Exception {
-        String userEmail = "freemily@gmail.com";
         String userPassword = "doremisol";
         LoginUserRequest loginUserRequest = new LoginUserRequest(userEmail, userPassword);
 
