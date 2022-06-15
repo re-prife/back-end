@@ -34,11 +34,11 @@ public class IngredientController {
     @Operation(tags = "INGREDIENT", summary = "식재료 생성", description = "식재료를 생성하는 API")
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createIngredient(@ApiParam(value = "식재료를 생성할 그룹의 ID") @PathVariable long groupId,
+    public long createIngredient(@ApiParam(value = "식재료를 생성할 그룹의 ID") @PathVariable long groupId,
                                  @Valid @RequestBody IngredientRequest request,
                                  BindingResult bindingResult
     ) {
-        ingredientService.createIngredient(request, groupId, bindingResult);
+        return ingredientService.createIngredient(request, groupId, bindingResult);
     }
 
     @ApiResponses(value = {
