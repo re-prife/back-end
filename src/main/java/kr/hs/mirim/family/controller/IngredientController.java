@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.DeleteIngredientRequest;
 import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.dto.request.UpdateIngredientCountRequest;
+import kr.hs.mirim.family.dto.response.IngredientIdResponse;
 import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.service.IngredientService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,9 @@ public class IngredientController {
     @Operation(tags = "INGREDIENT", summary = "식재료 생성", description = "식재료를 생성하는 API")
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public long createIngredient(@ApiParam(value = "식재료를 생성할 그룹의 ID") @PathVariable long groupId,
-                                 @Valid @RequestBody IngredientRequest request,
-                                 BindingResult bindingResult
+    public IngredientIdResponse createIngredient(@ApiParam(value = "식재료를 생성할 그룹의 ID") @PathVariable long groupId,
+                                                 @Valid @RequestBody IngredientRequest request,
+                                                 BindingResult bindingResult
     ) {
         return ingredientService.createIngredient(request, groupId, bindingResult);
     }
