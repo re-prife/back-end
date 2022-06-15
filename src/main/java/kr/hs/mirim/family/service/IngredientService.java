@@ -30,7 +30,7 @@ public class IngredientService {
     private final GroupRepository groupRepository;
 
     @Transactional
-    public void createIngredient(IngredientRequest request, long groupId, BindingResult result) {
+    public long createIngredient(IngredientRequest request, long groupId, BindingResult result){
         Group group = getGroup(groupId);
         formValidate(result);
 
@@ -54,7 +54,7 @@ public class IngredientService {
                 .ingredientImagePath("")
                 .build();
 
-        ingredientRepository.save(ingredient);
+        return ingredientRepository.save(ingredient).getIngredientId();
     }
 
     public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType) {
@@ -105,7 +105,6 @@ public class IngredientService {
 
         for (DeleteIngredientRequest ingredientRequest : request) {
             Ingredient ingredient = getIngredient(ingredientRequest.getIngredientId());
-            System.out.println(ingredient.getIngredientId());
             existIngredientInGroup(groupId, ingredient);
 
             deleteImageFile(ingredient.getIngredientId());
