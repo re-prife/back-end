@@ -6,12 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
-@Schema(description = "심부름 생성 알림 Response")
+@Schema(description = "심부름 알림 Response")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestNotificationResponse {
-    @Schema(description = "심부름 요청자 닉네임", example = "비지피웍스")
+    @Schema(description = "심부름 요청자 / 수락자 닉네임", example = "비지피웍스")
     @NonNull
     private String userNickname;
 

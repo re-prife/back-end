@@ -7,14 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryExtension {
 
     boolean existsByUserEmail(String email);
-
     boolean existsByUserIdAndGroup(long id, Group group);
+
+    List<User> findByGroupAndUserIdIn(Group group, Collection<Long> userId);
 
     Optional<User> findByUserEmail(String email);
     Optional<User> findById(long userId);
