@@ -146,7 +146,7 @@ public class ChoreService {
             throw new BadRequestException("인증 요청 되지 않은 집안일 입니다.");
         } else if (chore.getChoreCheck().equals(FAIL)) {
             throw new DateOverException("이미 당번 활동에 대해 인증받지 못하고 종료된 집안일 입니다.");
-        }else if(chore.getChoreCheck().equals(SUCCESS)){
+        } else if (chore.getChoreCheck().equals(SUCCESS)) {
             throw new DateOverException("이미 당번 활동이 성공하여 종료된 집안일 입니다.");
         }
 
