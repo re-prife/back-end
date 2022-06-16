@@ -172,22 +172,6 @@ class IngredientControllerTest {
     }
 
     @Test
-    void 식재료_업데이트_204_식재료_0일_경우() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-        final IngredientRequest request = new IngredientRequest("감자", IngredientSaveType.FRIDGE, IngredientCategory.VEGGIE,
-                "0개", "냠냠", LocalDate.of(2022, 4, 11), LocalDate.of(2023, 4, 11));
-
-        mvc.perform(put("/groups/1/ingredients/2")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(request)))
-                .andExpect(status().is(204))
-                .andDo(print());
-    }
-
-    @Test
     void 식재료_업데이트_404_그룹아이디_없음() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -273,20 +257,6 @@ class IngredientControllerTest {
     }
 
     @Test
-    void 식재료_삭제_204() throws Exception {
-        List<DeleteIngredientRequest> data = new ArrayList<>();
-        data.add(new DeleteIngredientRequest(1));
-        data.add(new DeleteIngredientRequest(2));
-
-        mvc.perform(delete("/groups/1/ingredients")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(data)))
-                .andExpect(status().is(204))
-                .andDo(print());
-    }
-
-    @Test
     void 식재료_삭제_404_그룹아이디_없음() throws Exception {
         List<DeleteIngredientRequest> data = new ArrayList<>();
         data.add(new DeleteIngredientRequest(1));
@@ -333,7 +303,6 @@ class IngredientControllerTest {
     void 식재료_수량_갱신_204() throws Exception {
         List<UpdateIngredientCountRequest> data = new ArrayList<>();
         data.add(new UpdateIngredientCountRequest(1, "2g"));
-        data.add(new UpdateIngredientCountRequest(2, "0팩"));
 
         mvc.perform(put("/groups/1/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
