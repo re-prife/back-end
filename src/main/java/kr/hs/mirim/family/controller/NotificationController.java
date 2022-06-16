@@ -1,5 +1,6 @@
 package kr.hs.mirim.family.controller;
 
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.exception.InternalServerException;
@@ -21,7 +22,7 @@ public class NotificationController {
     @Operation(tags = "NOTIFICATION", summary = "나에게로 오는 실시간 알림 구독", description = "실시간으로 심부름 생성 및 집안일 인증 알림을 받는 API")
     @CrossOrigin
     @GetMapping(value = "/{userId}", consumes = MediaType.ALL_VALUE,  produces="application/text; charset=utf8")
-    public SseEmitter subscribe(@PathVariable Long userId) {
+    public SseEmitter subscribe(@ApiParam(value = "알림을 받는 회원의 ID") @PathVariable Long userId) {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
         try {
             sseEmitter.send(SseEmitter.event().name("connect"));
