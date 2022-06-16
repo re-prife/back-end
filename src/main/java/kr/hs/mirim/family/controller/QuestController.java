@@ -43,7 +43,7 @@ public class QuestController {
     ) {
         Quest quest = questService.createQuest(groupId, userId, request, bindingResult);
 
-        notificationService.questNotification(quest);
+        notificationService.questNotification(quest, request.getUserIds());
     }
 
     @ApiResponses(value = {

@@ -26,6 +26,10 @@ public class QuestFindOneResponse {
     @NonNull
     private String questTitle;
 
+    @Schema(description = "심부름 내용", example = "오늘 저녁은 꼭 치.킨 이었으면 좋겠어 ^.^")
+    @NonNull
+    private String questContent;
+
     @Schema(description = "심부름 완료 여부", example = "False")
     @NonNull
     private boolean completeCheck;
