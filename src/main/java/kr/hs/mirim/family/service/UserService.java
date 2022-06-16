@@ -142,10 +142,7 @@ public class UserService {
         List<UserChoreKingResponse> choreList = choreRepository.userChoreKing(user.getGroup().getGroupId(), localDate);
         HashMap<ChoreCategory, UserChoreKingResponse> choreMap = new HashMap<>();
         for (UserChoreKingResponse choreKingResponse : choreList) {
-            if (choreMap.containsKey(choreKingResponse.getCategory())) {
-                if (choreMap.get(choreKingResponse.getCategory()).getCount() < choreKingResponse.getCount())
-                    choreMap.put(choreKingResponse.getCategory(), choreKingResponse);
-            } else {
+            if (!choreMap.containsKey(choreKingResponse.getCategory())) {
                 choreMap.put(choreKingResponse.getCategory(), choreKingResponse);
             }
             if(choreMap.size() == 3) break;

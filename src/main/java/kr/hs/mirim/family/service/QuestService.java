@@ -28,6 +28,7 @@ public class QuestService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final NotificationService notificationService;
+
     /* *
      * 심부름 추가 기능
      * 심부름 추가 완료 시 200 OK
@@ -45,8 +46,11 @@ public class QuestService {
     @Transactional
     public Quest createQuest(long groupId, long userId, QuestRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
-        existsGroup(groupId);
-        User user = getUser(userId);
+        Group group = getGroup(groupId);
+        if (!userRepository.existsByUserIdAndGroup(userId, group)) {
+            throw new DataNotFoundException("존재하지 않는 회원입니다.");
+        }
+        User user = userRepository.findById(userId).orElseThrow();
         Quest quest = Quest.builder()
                 .questTitle(request.getQuestTitle())
                 .questContent(request.getQuestContent())
@@ -57,7 +61,7 @@ public class QuestService {
                 .build();
         questRepository.save(quest);
 
-       return quest;
+        return quest;
     }
 
     /* *
@@ -88,7 +92,7 @@ public class QuestService {
      * - acceptorId가 존재하지 않거나 group에 속하지 않을 경우
      * 409 conflict
      * - completeCheck가 true일 경우 (이미 해결된 심부름일 경우)
-     * - quest의 acceptUserId가 -1이 아니고 API의 매개변수 acceptorId와 일치하지 않을 경우 (수락자가 존재하는데, 다른 사람이 API를 요청한 경우)
+     * - acceptorId가 -1이 아닌 경우 (이미 수락자가 존재할 경우)
      * - quest 추가한 사람이 API를 요청할 때
      *
      * @author: m04j00
@@ -103,14 +107,17 @@ public class QuestService {
         }
         if (quest.getAcceptUserId() != -1) {
             if (quest.getAcceptUserId() != acceptorId) {
-                throw new ConflictException("심부름 수락자가 아닌 사람은 수락을 취소할 수 없습니다.");
-            }
-            acceptorId = -1;
+                throw new ConflictException("이미 수락된 심부름입니다.");
+            } else acceptorId = -1;
         } else if (quest.getUser().getUserId() == acceptorId) {
             throw new ConflictException("심부름을 추가한 사람은 수락할 수 없습니다.");
         }
 
         questRepository.updateAcceptUserId(questId, acceptorId);
+
+        if (acceptorId != -1) {
+            notificationService.questAcceptNotification(quest, acceptorId);
+        }
     }
 
     /*
@@ -213,10 +220,8 @@ public class QuestService {
      *
      * @author : yeonwoo1125
      * */
-    public QuestFindOneResponse findOneQuest(long groupId, long questId){
-        Group group = groupRepository.findById(groupId).orElseThrow(() -> {
-            throw new DataNotFoundException("존재하지 않는 그룹입니다.");
-        });
+    public QuestFindOneResponse findOneQuest(long groupId, long questId) {
+        Group group = getGroup(groupId);
         if (!questRepository.existsByQuestIdAndGroup(questId, group)) {
             throw new DataNotFoundException("해당 그룹에 심부름이 존재하지 않습니다.");
         }
@@ -225,6 +230,7 @@ public class QuestService {
         return QuestFindOneResponse.builder()
                 .questCreatedDate(quest.getCreatedDate())
                 .questTitle(quest.getQuestTitle())
+                .questContent(quest.getQuestContent())
                 .requestUserId(quest.getUser().getUserId())
                 .acceptUserId(quest.getAcceptUserId())
                 .completeCheck(quest.isCompleteCheck())
@@ -237,22 +243,14 @@ public class QuestService {
         }
     }
 
-    private void existsGroup(long groupId) {
-        if (!groupRepository.existsById(groupId)) {
+    private Group getGroup(long groupId) {
+        return groupRepository.findById(groupId).orElseThrow(() -> {
             throw new DataNotFoundException("존재하지 않는 그룹입니다.");
-        }
-    }
-
-    private User getUser(long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> {
-            throw new DataNotFoundException("존재하지 않는 회원입니다.");
         });
     }
 
     private Quest getQuest(long id) {
-        return questRepository.findById(id).orElseThrow(() -> {
-            throw new DataNotFoundException("심부름이 존재하지 않습니다.");
-        });
+        return questRepository.findById(id).orElseThrow();
     }
 
     private void relationValidate(long groupId, long questId, long userId) {
