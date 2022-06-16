@@ -139,16 +139,4 @@ public class NotificationService {
             }
         }
     }
-
-    private void sseEmitterNotification(long userId, Object data, String notificationName) {
-        if (sseEmitters.containsKey(userId)) {
-            SseEmitter sseEmitter = sseEmitters.get(userId);
-
-            try {
-                sseEmitter.send(SseEmitter.event().name(notificationName).data(data));
-            } catch (Exception e) {
-                sseEmitters.remove(userId);
-            }
-        }
-    }
 }
