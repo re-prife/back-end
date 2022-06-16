@@ -3,6 +3,7 @@ package kr.hs.mirim.family.service;
 import kr.hs.mirim.family.dto.request.DeleteIngredientRequest;
 import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.dto.request.UpdateIngredientCountRequest;
+import kr.hs.mirim.family.dto.response.IngredientIdResponse;
 import kr.hs.mirim.family.dto.response.IngredientListResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
@@ -30,7 +31,7 @@ public class IngredientService {
     private final GroupRepository groupRepository;
 
     @Transactional
-    public long createIngredient(IngredientRequest request, long groupId, BindingResult result){
+    public IngredientIdResponse createIngredient(IngredientRequest request, long groupId, BindingResult result) {
         Group group = getGroup(groupId);
         formValidate(result);
 
@@ -54,7 +55,9 @@ public class IngredientService {
                 .ingredientImagePath("")
                 .build();
 
-        return ingredientRepository.save(ingredient).getIngredientId();
+        ingredient = ingredientRepository.save(ingredient);
+
+        return new IngredientIdResponse(ingredient.getIngredientId());
     }
 
     public List<IngredientListResponse> ingredientSaveTypeList(long groupId, String saveType) {
