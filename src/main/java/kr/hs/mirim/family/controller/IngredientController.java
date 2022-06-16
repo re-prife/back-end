@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.hs.mirim.family.custom.CustomCollectionValidator;
 import kr.hs.mirim.family.dto.request.DeleteIngredientRequest;
 import kr.hs.mirim.family.dto.request.IngredientRequest;
 import kr.hs.mirim.family.dto.request.UpdateIngredientCountRequest;
@@ -25,6 +26,7 @@ import java.util.List;
 @RequestMapping("/groups/{groupId}/ingredients")
 public class IngredientController {
     private final IngredientService ingredientService;
+    private final CustomCollectionValidator validator;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "식재료 생성 성공"),
@@ -80,6 +82,7 @@ public class IngredientController {
     public void deleteIngredient(@ApiParam(value = "식재료가 속한 그룹의 ID") @PathVariable long groupId,
                                  @RequestBody @Valid List<DeleteIngredientRequest> request,
                                  BindingResult result) {
+        validator.validate(request, result);
         ingredientService.deleteIngredient(groupId, request, result);
     }
 
@@ -94,6 +97,7 @@ public class IngredientController {
     public void updateIngredientCount(@ApiParam(value = "식재료가 속한 그룹의 ID") @PathVariable long groupId,
                                       @RequestBody @Valid List<UpdateIngredientCountRequest> request,
                                       BindingResult result) {
+        validator.validate(request, result);
         ingredientService.updateIngredientCount(groupId, request, result);
     }
 

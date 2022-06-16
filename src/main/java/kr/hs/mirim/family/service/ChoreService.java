@@ -146,6 +146,8 @@ public class ChoreService {
             throw new BadRequestException("인증 요청 되지 않은 집안일 입니다.");
         } else if (chore.getChoreCheck().equals(FAIL)) {
             throw new DateOverException("이미 당번 활동에 대해 인증받지 못하고 종료된 집안일 입니다.");
+        } else if (chore.getChoreCheck().equals(SUCCESS)) {
+            throw new DateOverException("이미 당번 활동이 성공하여 종료된 집안일 입니다.");
         }
 
         if (choreCheck.equals(BEFORE)) {
@@ -155,12 +157,10 @@ public class ChoreService {
         }
 
         if (!chore.getChoreCheck().equals(choreCheck)) {
-            if (!choreCheck.toString().isEmpty()) {
-                if (choreCheck.equals(SUCCESS)) {
-                    choreRepository.updateChoreCheck(choreId, SUCCESS);
-                } else {
-                    throw new ConflictException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
-                }
+            if (choreCheck.equals(SUCCESS)) {
+                choreRepository.updateChoreCheck(choreId, SUCCESS);
+            } else {
+                throw new ConflictException("이미 끝난 집안일에 대하여 다시 인증요청을 보낼 수 없습니다.");
             }
         }
     }

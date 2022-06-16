@@ -43,7 +43,7 @@ public class QuestController {
     ) {
         Quest quest = questService.createQuest(groupId, userId, request, bindingResult);
 
-        notificationService.questNotification(quest);
+        notificationService.questNotification(quest, request.getUserIds());
     }
 
     @ApiResponses(value = {
@@ -104,14 +104,13 @@ public class QuestController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "심부름 갱신 성공"),
+            @ApiResponse(responseCode = "200", description = "심부름 갱신 성공"),
             @ApiResponse(responseCode = "404", description = "groupId가 존재하지 않을 경우\n\nquestId 또는 requesterId가 존재하지 않거나 그룹에 속하지 않을 경우"),
             @ApiResponse(responseCode = "405", description = "심부름 수락자가 있는 경우"),
             @ApiResponse(responseCode = "409", description = "requesterId가 심부름 요청자와 일지하지 않을 경우")
     })
     @Operation(tags = "QUEST", summary = "심부름 갱신", description = "심부름 갱신 API")
     @PutMapping("/{questId}")
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public QuestResponse updateQuest(
             @ApiParam(value = "심부름이 속한 그룹 ID") @PathVariable long groupId,
             @ApiParam(value = "갱신할 심부름 ID") @PathVariable long questId,
