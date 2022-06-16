@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
+import kr.hs.mirim.family.entity.chore.ChoreCheck;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,10 @@ public class ChoreListResponse {
     @Schema(description = "집안일 제목", example = "하늘이 요리하는 날")
     @NotNull
     private String choreTitle;
+
+    @Schema(description = "집안일 상태", example = "BEFORE")
+    @NotNull
+    private ChoreCheck choreCheck;
 
     @Schema(description = "집안일 카테고리", example = "COOK")
     @NotNull
