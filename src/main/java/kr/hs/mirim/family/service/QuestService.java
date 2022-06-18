@@ -27,7 +27,6 @@ public class QuestService {
     private final QuestRepository questRepository;
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
-    private final NotificationService notificationService;
 
     /* *
      * 심부름 추가 기능
@@ -116,7 +115,7 @@ public class QuestService {
         questRepository.updateAcceptUserId(questId, acceptorId);
 
         if (acceptorId != -1) {
-            notificationService.questAcceptNotification(quest, acceptorId);
+            //Web socket 실행
         }
     }
 

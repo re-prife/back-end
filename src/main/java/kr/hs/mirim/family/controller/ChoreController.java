@@ -9,7 +9,6 @@ import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import kr.hs.mirim.family.dto.request.ChoreCertifyReactionRequest;
 import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.service.ChoreService;
-import kr.hs.mirim.family.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -25,7 +24,6 @@ import java.util.List;
 @RequestMapping("/groups/{groupId}/chores")
 public class ChoreController {
     private final ChoreService choreService;
-    private final NotificationService notificationService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "집안일 생성 성공"),
@@ -76,7 +74,6 @@ public class ChoreController {
     public void choreCertify(@ApiParam(value = "집안일이 속한 그룹의 ID") @PathVariable long groupId,
                              @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId) {
         choreService.choreCertify(groupId, choreId);
-        notificationService.choreCertifyNotification(choreId);
     }
 
     @ApiResponses(value = {
@@ -91,7 +88,6 @@ public class ChoreController {
                                      @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId,
                                      @RequestBody ChoreCertifyReactionRequest choreCertifyReactionRequest) {
         choreService.choreCertifyReaction(groupId, choreId, choreCertifyReactionRequest);
-        notificationService.choreCertifyReactionNotification(choreId);
     }
 
     @ApiResponses(value = {
