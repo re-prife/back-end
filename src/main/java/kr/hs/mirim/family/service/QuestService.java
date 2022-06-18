@@ -113,10 +113,6 @@ public class QuestService {
         }
 
         questRepository.updateAcceptUserId(questId, acceptorId);
-
-        if (acceptorId != -1) {
-            //Web socket 실행
-        }
     }
 
     /*
