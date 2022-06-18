@@ -43,7 +43,7 @@ public class QuestService {
      * @author: m04j00
      * */
     @Transactional
-    public Quest createQuest(long groupId, long userId, QuestRequest request, BindingResult bindingResult) {
+    public void createQuest(long groupId, long userId, QuestRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
         Group group = getGroup(groupId);
         if (!userRepository.existsByUserIdAndGroup(userId, group)) {
@@ -59,8 +59,6 @@ public class QuestService {
                 .group(user.getGroup())
                 .build();
         questRepository.save(quest);
-
-        return quest;
     }
 
     /* *

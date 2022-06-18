@@ -39,7 +39,7 @@ public class QuestController {
             @ApiParam(value = "심부름이 속한 그룹 ID") @PathVariable long groupId,
             @ApiParam(value = "심부름을 생성할 회원 ID") @PathVariable long userId
     ) {
-        Quest quest = questService.createQuest(groupId, userId, request, bindingResult);
+        questService.createQuest(groupId, userId, request, bindingResult);
     }
 
     @ApiResponses(value = {
