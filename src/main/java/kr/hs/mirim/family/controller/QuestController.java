@@ -9,7 +9,6 @@ import kr.hs.mirim.family.dto.request.QuestRequest;
 import kr.hs.mirim.family.dto.response.QuestFindOneResponse;
 import kr.hs.mirim.family.dto.response.QuestResponse;
 import kr.hs.mirim.family.entity.quest.Quest;
-import kr.hs.mirim.family.service.NotificationService;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,6 @@ import java.util.List;
 @RequestMapping(value = "/groups/{groupId}/quests")
 public class QuestController {
     private final QuestService questService;
-    private final NotificationService notificationService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "심부름 생성 성공"),
@@ -42,8 +40,6 @@ public class QuestController {
             @ApiParam(value = "심부름을 생성할 회원 ID") @PathVariable long userId
     ) {
         Quest quest = questService.createQuest(groupId, userId, request, bindingResult);
-
-        notificationService.questNotification(quest, request.getUserIds());
     }
 
     @ApiResponses(value = {
