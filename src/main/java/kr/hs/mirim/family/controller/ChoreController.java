@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
+import kr.hs.mirim.family.dto.response.ChoreCertifyReactionResponse;
 import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.service.ChoreService;
 import lombok.RequiredArgsConstructor;
@@ -83,9 +84,9 @@ public class ChoreController {
     })
     @Operation(tags = "CHORE", summary = "집안일 인증 요청 응답", description = "인증 요청에 대한 응답을 갱신하는 API")
     @PutMapping("/{choreId}/reaction")
-    public void choreCertifyReaction(@ApiParam(value = "집안일이 속한 그룹의 ID") @PathVariable long groupId,
-                                     @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId) {
-        choreService.choreCertifyReaction(groupId, choreId);
+    public ChoreCertifyReactionResponse choreCertifyReaction(@ApiParam(value = "집안일이 속한 그룹의 ID") @PathVariable long groupId,
+                                                             @ApiParam(value = "집안일 상태를 변경할 집안일의 ID") @PathVariable long choreId) {
+        return choreService.choreCertifyReaction(groupId, choreId);
     }
 
     @ApiResponses(value = {
