@@ -56,10 +56,6 @@ public class ChoreService {
 
         ChoreCategory choreCategory = enumCategoryValid(createChoreRequest.getChoreCategory());
 
-        if (choreRepository.existsByChoreDateAndChoreCategoryAndUser_UserId(createChoreRequest.getChoreDate(), choreCategory, createChoreRequest.getChoreUserId())) {
-            throw new ConflictException("이미 존재하는 집안일입니다.");
-        }
-
         formValidate(bindingResult);
 
         Chore chore = Chore.builder()
