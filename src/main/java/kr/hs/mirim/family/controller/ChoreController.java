@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
-import kr.hs.mirim.family.dto.request.ChoreCertifyReactionRequest;
 import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.service.ChoreService;
 import lombok.RequiredArgsConstructor;
