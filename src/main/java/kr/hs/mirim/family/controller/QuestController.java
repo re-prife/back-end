@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hs.mirim.family.dto.request.QuestRequest;
 import kr.hs.mirim.family.dto.response.QuestFindOneResponse;
+import kr.hs.mirim.family.dto.response.QuestIdResponse;
 import kr.hs.mirim.family.dto.response.QuestResponse;
-import kr.hs.mirim.family.entity.quest.Quest;
 import kr.hs.mirim.family.service.QuestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,13 +33,13 @@ public class QuestController {
     @Operation(tags = "QUEST", summary = "심부름 생성", description = "심부름을 생성하는 API")
     @PostMapping("/{userId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createQuest(
+    public QuestIdResponse createQuest(
             @Valid @RequestBody QuestRequest request,
             BindingResult bindingResult,
             @ApiParam(value = "심부름이 속한 그룹 ID") @PathVariable long groupId,
             @ApiParam(value = "심부름을 생성할 회원 ID") @PathVariable long userId
     ) {
-        questService.createQuest(groupId, userId, request, bindingResult);
+        return questService.createQuest(groupId, userId, request, bindingResult);
     }
 
     @ApiResponses(value = {

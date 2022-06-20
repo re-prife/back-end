@@ -2,6 +2,7 @@ package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.QuestRequest;
 import kr.hs.mirim.family.dto.response.QuestFindOneResponse;
+import kr.hs.mirim.family.dto.response.QuestIdResponse;
 import kr.hs.mirim.family.dto.response.QuestResponse;
 import kr.hs.mirim.family.entity.group.Group;
 import kr.hs.mirim.family.entity.group.repository.GroupRepository;
@@ -30,7 +31,7 @@ public class QuestService {
 
     /* *
      * 심부름 추가 기능
-     * 심부름 추가 완료 시 200 OK
+     * 심부름 추가 완료 시 201 OK
      *
      * dto form이 일치하지 않으면 400 Bad request
      * 그룹이 존재하지 않으면 404 Not found
@@ -43,7 +44,7 @@ public class QuestService {
      * @author: m04j00
      * */
     @Transactional
-    public void createQuest(long groupId, long userId, QuestRequest request, BindingResult bindingResult) {
+    public QuestIdResponse createQuest(long groupId, long userId, QuestRequest request, BindingResult bindingResult) {
         formValidate(bindingResult);
         Group group = getGroup(groupId);
         if (!userRepository.existsByUserIdAndGroup(userId, group)) {
@@ -59,6 +60,7 @@ public class QuestService {
                 .group(user.getGroup())
                 .build();
         questRepository.save(quest);
+        return new QuestIdResponse(quest.getQuestId());
     }
 
     /* *

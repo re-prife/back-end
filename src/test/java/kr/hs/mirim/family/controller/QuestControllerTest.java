@@ -39,7 +39,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_생성_200() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 200 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 200 code test");
 
         mockMvc.perform(post("/groups/1/quests/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -50,7 +50,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_생성_400() throws Exception {
-        QuestRequest request = new QuestRequest("", "", null);
+        QuestRequest request = new QuestRequest("", "");
 
         mockMvc.perform(post("/groups/1/quests/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -61,7 +61,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_생성_404_by_group() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 404 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 404 code test");
 
         mockMvc.perform(post("/groups/100/quests/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +72,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_생성_404_by_user() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 404 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 404 code test");
 
         mockMvc.perform(post("/groups/1/quests/100")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_갱신_200() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 200 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 200 code test");
 
         mockMvc.perform(put("/groups/1/quests/2?requesterId=1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,7 +125,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_갱신_400() throws Exception {
-        QuestRequest request = new QuestRequest("", "quest 400 code test", null);
+        QuestRequest request = new QuestRequest("", "quest 400 code test");
 
         mockMvc.perform(put("/groups/1/quests/2?requesterId=1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -136,7 +136,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_갱신_404_by_group() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 404 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 404 code test");
 
         mockMvc.perform(put("/groups/100/quests/2?requesterId=1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -147,7 +147,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_갱신_404_by_quest() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 404 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 404 code test");
 
         mockMvc.perform(put("/groups/1/quests/100?requesterId=1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -158,7 +158,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_갱신_404_by_requester() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 404 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 404 code test");
 
         mockMvc.perform(put("/groups/1/quests/2?requesterId=100")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +169,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_갱신_405() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 405 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 405 code test");
 
         mockMvc.perform(put("/groups/1/quests/1?requesterId=1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -180,7 +180,7 @@ class QuestControllerTest {
     @Transactional
     @Test
     void 심부름_갱신_409() throws Exception {
-        QuestRequest request = new QuestRequest("quest test", "quest 409 code test", null);
+        QuestRequest request = new QuestRequest("quest test", "quest 409 code test");
 
         mockMvc.perform(put("/groups/1/quests/2?requesterId=3")
                         .contentType(MediaType.APPLICATION_JSON)
