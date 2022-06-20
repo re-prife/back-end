@@ -1,6 +1,7 @@
 package kr.hs.mirim.family.service;
 
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
+import kr.hs.mirim.family.dto.response.ChoreCertifyReactionResponse;
 import kr.hs.mirim.family.dto.response.ChoreListResponse;
 import kr.hs.mirim.family.entity.chore.Chore;
 import kr.hs.mirim.family.entity.chore.ChoreCategory;
@@ -128,7 +129,7 @@ public class ChoreService {
      * @author : SRin23
      */
     @Transactional(noRollbackFor = DateOverException.class)
-    public void choreCertifyReaction(long groupId, long choreId) {
+    public ChoreCertifyReactionResponse choreCertifyReaction(long groupId, long choreId) {
         existsGroup(groupId);
         choreCheckFail(getChore(choreId));
         Chore chore = choreRepository.getById(choreId);
@@ -143,6 +144,10 @@ public class ChoreService {
         } else {
             choreRepository.updateChoreCheck(choreId, SUCCESS);
         }
+
+        return ChoreCertifyReactionResponse.builder()
+                .requesterId(chore.getUser().getUserId())
+                .build();
     }
 
 
