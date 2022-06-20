@@ -134,21 +134,6 @@ class ChoreControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    void 집안일당번_이미존재_409() throws Exception {
-        String choreTitle = "하늘이 요리하는 날";
-        String choreCategory = "COOK";
-        LocalDate choreDate = LocalDate.now();
-        long choreUserId = 4;
-
-        CreateChoreRequest createUserRequest = new CreateChoreRequest(choreTitle, choreCategory, choreDate, choreUserId);
-
-        mockMvc.perform(post("/groups/1/chores")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(createUserRequest)))
-                .andExpect(status().isConflict());
-    }
-
     //지난날짜에 대하여 집안일을 생성하는 경우 - 409
     @Test
     void 집안일당번_생성_지난날짜_409() throws Exception {
@@ -269,7 +254,6 @@ class ChoreControllerTest {
     void 집안일_인증요청_BEFORE_지난날짜_FAIL_상태_409() throws Exception {
         mockMvc.perform(put("/groups/1/chores/16/certify"))
                 .andExpect(status().isConflict());
-
     }
 
     //인증 요청한 집안일에 대한 응답이 성공적으로 수행된 경우 - 200
