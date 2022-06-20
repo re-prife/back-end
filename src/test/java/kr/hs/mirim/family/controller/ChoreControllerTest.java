@@ -2,7 +2,6 @@ package kr.hs.mirim.family.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kr.hs.mirim.family.dto.request.ChoreCertifyReactionRequest;
 import kr.hs.mirim.family.dto.request.CreateChoreRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -135,21 +134,6 @@ class ChoreControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    void 집안일당번_이미존재_409() throws Exception {
-        String choreTitle = "하늘이 요리하는 날";
-        String choreCategory = "COOK";
-        LocalDate choreDate = LocalDate.now();
-        long choreUserId = 4;
-
-        CreateChoreRequest createUserRequest = new CreateChoreRequest(choreTitle, choreCategory, choreDate, choreUserId);
-
-        mockMvc.perform(post("/groups/1/chores")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(createUserRequest)))
-                .andExpect(status().isConflict());
-    }
-
     //지난날짜에 대하여 집안일을 생성하는 경우 - 409
     @Test
     void 집안일당번_생성_지난날짜_409() throws Exception {
@@ -270,105 +254,47 @@ class ChoreControllerTest {
     void 집안일_인증요청_BEFORE_지난날짜_FAIL_상태_409() throws Exception {
         mockMvc.perform(put("/groups/1/chores/16/certify"))
                 .andExpect(status().isConflict());
-
     }
 
     //인증 요청한 집안일에 대한 응답이 성공적으로 수행된 경우 - 200
     @Test
     void 집안일_인증응답_SUCCESS_성공_200() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/13/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
-                .andExpect(status().isOk());
-    }
-
-    //값이 아무것도 들어오지 않아 변경사항이 없고, 응답이 성공적으로 수행된 경우 - 200
-    @Test
-    void 집안일_인증응답_REQUEST이면서_값없음_성공_200() throws Exception {
-        String reaction = "";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/13/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/1/chores/13/reaction"))
                 .andExpect(status().isOk());
     }
 
     //집안일 인증에 대한 응답을 받았을때, 집안일의 상태가 아직 인증요청을 하지 않은 BEFORE상태인 경우 - 400
     @Test
     void 집안일_인증응답_BEFORE_상태_400() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/1/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/1/chores/1/reaction"))
                 .andExpect(status().isBadRequest());
-    }
-
-    //집안일 인증에 대한 응답으로 실패(FAIL)을 반환하는 경우 - 403
-    @Test
-    void 집안일_인증응답_FAIL_상태반환_403() throws Exception {
-        String reaction = "FAIL";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/13/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
-                .andExpect(status().isForbidden());
     }
 
     //집안일 인증에 대한 응답을 하는 그룹이 존재하지 않는 경우 - 404
     @Test
     void 집안일_인증응답_그룹없음_404() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/-1/chores/13/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/-1/chores/13/reaction"))
                 .andExpect(status().isNotFound());
     }
 
     //집안일 인증에 대한 응답을 하는 집안일이 존재하지 않는 경우 - 404
     @Test
     void 집안일_인증응답_집안일없음_404() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/-1/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/1/chores/-1/reaction"))
                 .andExpect(status().isNotFound());
     }
 
     //집안일 인증에 대한 응답을 받는 집안일이 해당 그룹에 존재하지 않는 경우 - 404
     @Test
     void 집안일_인증응답_그룹에집안일없음_404() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/2/chores/13/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
-                .andExpect(status().isNotFound());
-    }
-
-    //집안일 인증에 대한 응답이 존재하지 않는 상태로 반환된 경우 - 404
-    @Test
-    void 집안일_인증응답_집안일상태없음_404() throws Exception {
-        String reaction = "NONE";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/13/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/2/chores/13/reaction"))
                 .andExpect(status().isNotFound());
     }
 
     //집안일 인증에 대한 응답을 받는 집안일의 현 상태가 실패(FAIL)일 경우 - 409
     @Test
     void 집안일_인증응답_FAIL_상태_409() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/12/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/1/chores/12/reaction"))
                 .andExpect(status().isConflict());
     }
 
@@ -376,34 +302,14 @@ class ChoreControllerTest {
     //집안일 현재 상태가 REQUEST이면서, 지난집안일인 경우 - 409
     @Test
     void 집안일_인증응답_REQUEST_지난날짜_FAIL_상태_409() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/14/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/1/chores/14/reaction"))
                 .andExpect(status().isConflict());
     }
 
     //집안일 현재 상태가 SUCCESS이면서, 지난집안일인 경우 - 409
     @Test
     void 집안일_인증응답_지난날짜_SUCCESS_상태_409() throws Exception {
-        String reaction = "SUCCESS";
-
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/15/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
-                .andExpect(status().isConflict());
-    }
-
-    //현재상태가 SUCCESS인데, 인증 응답으로 SUCCESS를 받은 경우 - 409
-    @Test
-    void 집안일_인증응답_SUCCESS이면서_SUCCESS요청_409() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/2/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/1/chores/15/reaction"))
                 .andExpect(status().isConflict());
     }
 
@@ -411,33 +317,7 @@ class ChoreControllerTest {
     //집안일 현재 상태가 BEFORE이면서, 지난집안일인 경우 - 409
     @Test
     void 집안일_인증응답_BEFORE_지난날짜_FAIL_상태_409() throws Exception {
-        String reaction = "SUCCESS";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/16/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
-                .andExpect(status().isConflict());
-    }
-
-    //집안일 인증에 대한 응답을 받는 집안일의 현 상태가 인증요청전(BEFORE)일 경우 - 409
-    @Test
-    void 집안일_인증응답_BEFORE_상태반환_409() throws Exception {
-        String reaction = "BEFORE";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/13/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
-                .andExpect(status().isConflict());
-    }
-
-    //집안일 인증에 대한 응답을 받는 집안일의 현 상태 이미 성공(SUCCESS)일 경우 - 409
-    @Test
-    void 집안일_인증응답_끝난집안일_409() throws Exception {
-        String reaction = "REQUEST";
-        ChoreCertifyReactionRequest choreCertifyReactionRequest = new ChoreCertifyReactionRequest(reaction);
-        mockMvc.perform(put("/groups/1/chores/2/reaction")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(choreCertifyReactionRequest)))
+        mockMvc.perform(put("/groups/1/chores/16/reaction"))
                 .andExpect(status().isConflict());
     }
 
