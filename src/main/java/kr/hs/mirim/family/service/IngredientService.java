@@ -111,7 +111,9 @@ public class IngredientService {
             Ingredient ingredient = getIngredient(ingredientRequest.getIngredientId());
             existIngredientInGroup(groupId, ingredient);
 
-            deleteImageFile(ingredient.getIngredientId());
+            if(!ingredient.getIngredientImagePath().equals(""))
+                deleteImageFile(ingredient.getIngredientId());
+            ingredientRepository.deleteById(ingredient.getIngredientId());
         }
     }
 
@@ -128,7 +130,9 @@ public class IngredientService {
             long requestIngredientId = ingredientRequest.getIngredientId();
 
             if (checkIngredientCount(requestCount)) {
-                deleteImageFile(requestIngredientId);
+                if(!ingredient.getIngredientImagePath().equals(""))
+                    deleteImageFile(requestIngredientId);
+                ingredientRepository.deleteById(requestIngredientId);
             } else {
                 ingredientRepository.ingredientCountUpdate(groupId, requestIngredientId, requestCount);
             }
@@ -137,12 +141,7 @@ public class IngredientService {
 
     private void deleteImageFile(long ingredientId){
         File file = new File("/home/ubuntu/family/upload/ingredient_"+ingredientId+".jpg");
-        if(file.delete()){
-            ingredientRepository.deleteById(ingredientId);
-        }
-        else {
-            throw new InternalServerException("식재료를 삭제하지 못했습니다.");
-        }
+        file.delete();
     }
 
     private boolean checkIngredientCount(String ingredientCount) {
