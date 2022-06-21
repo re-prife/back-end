@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import java.time.YearMonth;
 
 import static kr.hs.mirim.family.entity.quest.QQuest.*;
+import static kr.hs.mirim.family.entity.user.QUser.*;
 
 public class QuestRepositoryImpl extends QuerydslRepositorySupport implements QuestRepositoryExtension {
     private final JPAQueryFactory queryFactory;
@@ -29,7 +30,10 @@ public class QuestRepositoryImpl extends QuerydslRepositorySupport implements Qu
                 ))
                 .from(quest)
                 .groupBy(quest.acceptUserId)
-                .where(quest.group.groupId.eq(groupId), quest.completeCheck.eq(true), quest.createdDate.month().eq(date.getMonthValue()), quest.modifiedDate.year().eq(date.getYear()))
+                .where(quest.group.groupId.eq(groupId),
+                        quest.completeCheck.eq(true),
+                        quest.createdDate.month().eq(date.getMonthValue()),
+                        quest.modifiedDate.year().eq(date.getYear()))
                 .fetchFirst();
     }
 
@@ -39,13 +43,18 @@ public class QuestRepositoryImpl extends QuerydslRepositorySupport implements Qu
                 .select(Projections.fields(
                         MonthQuestKingResponse.class,
                         quest.acceptUserId.as("userId"),
-                        quest.user.userNickname,
-                        quest.user.userImagePath,
-                        quest.count().as("count")
+                        user.userNickname,
+                        user.userImagePath,
+                        quest.questId.count().as("count")
+
                 ))
-                .from(quest)
+                .from(quest, user)
                 .groupBy(quest.acceptUserId)
-                .where(quest.group.groupId.eq(groupId), quest.completeCheck.eq(true), quest.createdDate.month().eq(date.getMonthValue()), quest.modifiedDate.year().eq(date.getYear()))
+                .where(user.userId.eq(quest.acceptUserId),
+                        quest.group.groupId.eq(groupId),
+                        quest.completeCheck.eq(true),
+                        quest.createdDate.month().eq(date.getMonthValue()),
+                        quest.modifiedDate.year().eq(date.getYear()))
                 .fetchFirst();
     }
 }
