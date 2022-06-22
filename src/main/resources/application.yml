@@ -16,3 +16,5 @@ spring:
       ddl-auto: update
     open-in-view: false
     defer-datasource-initialization: true
+server:
+  port: 8081
